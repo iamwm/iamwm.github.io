@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>对象引用、可变性[流畅的Python] - 搬砖工的日常</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="rgozi" /><meta name="description" content="记录一下在读《流程的python》时对自己有用的知识点。
+" /><meta name="keywords" content="搬砖工, 技术博客" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.84.1 with theme even" />
+
+
+<link rel="canonical" href="https://rgozi.com/post/fluent_python_chapter8/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="对象引用、可变性[流畅的Python]" />
+<meta property="og:description" content="记录一下在读《流程的python》时对自己有用的知识点。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://rgozi.com/post/fluent_python_chapter8/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2017-08-20T23:23:12&#43;00:00" />
+<meta property="article:modified_time" content="2017-08-20T23:23:12&#43;00:00" />
+
+<meta itemprop="name" content="对象引用、可变性[流畅的Python]">
+<meta itemprop="description" content="记录一下在读《流程的python》时对自己有用的知识点。"><meta itemprop="datePublished" content="2017-08-20T23:23:12&#43;00:00" />
+<meta itemprop="dateModified" content="2017-08-20T23:23:12&#43;00:00" />
+<meta itemprop="wordCount" content="2696">
+<meta itemprop="keywords" content="python,读书,可变类型,深浅拷贝," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="对象引用、可变性[流畅的Python]"/>
+<meta name="twitter:description" content="记录一下在读《流程的python》时对自己有用的知识点。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">搬砖工的日常</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">搬砖工的日常</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">对象引用、可变性[流畅的Python]</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2017-08-20 </span>
+        <div class="post-category">
+            <a href="/categories/python/"> python </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents"></nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>记录一下在读《流程的python》时对自己有用的知识点。</p>
+<h1 id="1-变量不是盒子">1. 变量不是盒子</h1>
+<p>进行赋值操作的时候，并不是将一个对象放在变量构成的<code>盒子</code>中。实际上，在进行赋值操作的时候，等号右边的对象是在它被创建之后才把等号左边的变量分配给它，相当于给这个对象贴上了一个标签🏷️。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">In [1]: class Gizmo:
+   ...:     def __init__(self):
+   ...:         print(id(self))
+   ...:
+
+In [2]: x = Gizmo()
+4418370088
+
+In [3]: y = Gizmo()[0]
+4418271496
+---------------------------------------------------------------------------
+AttributeError                            Traceback (most recent call last)
+&lt;ipython-input-3-81d29164ac5d&gt; in &lt;module&gt;()
+----&gt; 1 y = Gizmo()[0]
+
+AttributeError: Gizmo instance has no attribute &#39;__getitem__&#39;
+</code></pre></td></tr></table>
+</div>
+</div><p>可以看到，在将变量x分配给类Gizmo的一个实例之前，Gizmo的实例已经被创建。</p>
+<h1 id="2-标识相等性和别名">2. 标识、相等性和别名</h1>
+<p>正如上边所说，变量相当于是一个对象的标签，当然，一个对象可以被贴上许多标签，即多个变量绑定同一个对象。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">In [4]: list1 = [0,1,2,3,4,5]
+
+In [5]: list2 = list1
+
+In [6]: list2
+Out[6]: [0, 1, 2, 3, 4, 5]
+
+In [7]: list2.append(6)
+
+In [8]: list1
+Out[8]: [0, 1, 2, 3, 4, 5, 6]
+</code></pre></td></tr></table>
+</div>
+</div><p>可以看到list1和list2是同一个对象的不同标签。
+但是，如何才能判断两个变量是否绑定的是同一个对象？</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">In [9]: list3 = [0,1,2,3,4,5,6]
+
+In [10]: list3 == list1 == list2
+Out[10]: True
+</code></pre></td></tr></table>
+</div>
+</div><p>接着上边的例子，我们现在有一个叫做list3的变量，它和list1、list2是相等的，但是它们三个绑定的是同一个对象吗？python官方文档中有这样的描述：</p>
+<blockquote>
+<p>每个变量都有标识、类型和值。对象一旦创建，它的标识绝对不会变化；你可以把标识当作该对象在内存中的地址。is运算符用以比较两个对象的标识，内建函数<code>id()</code>返回对象标识的整数表示。</p>
+</blockquote>
+<pre><code>```
+In [12]: list1 is list2
+Out[12]: True
+
+In [13]: list3 is list1
+Out[13]: False
+
+In [14]: id(list1)
+Out[14]: 4418368144
+
+In [15]: id(list2)
+Out[15]: 4418368144
+
+In [16]: id(list3)
+Out[16]: 4418128064
+```
+可以看到`list1 is list2`并且`id(list1) == id(list2)`,这说明list1和list2绑定的是同一个对象，list3则和list1或者list2绑定的是不同的对象，即使是`list3 == list1 == list2`
+</code></pre>
+<h1 id="3-运算符is和">3. 运算符<code>is</code>和<code>==</code></h1>
+<p>通过上边的例子，有个直观的印象就是</p>
+<blockquote>
+<p><code>is</code>用于比较对象的标识，<code>==</code>用于比较对象的值</p>
+</blockquote>
+<pre><code>通常情况下，我们会更多的使用`==`进行对象间的值的比较，但是在&lt;strong&gt;变量和单例值之间的比较，更应该使用`is`&lt;/strong&gt;。这是因为: &lt;strong&gt;`is`运算符比`==`更快，因为它不能重载，这样python不用寻找并调用特殊方法，而是直接比较两个整数ID。`a == b`是语法糖，等同于执行`a.__eq__(b)`。继承自object的`__eq__`方法比较的是两个对象的ID，结果和`is`一样，但是多数内置类型都定义了更有意义的方式，覆盖了`__eq__`，这样就可能会给相等性测试带来更多复杂的处理工作。&lt;/strong&gt;
+</code></pre>
+<h1 id="4-元组的相对不可变性">4. 元组的相对不可变性</h1>
+<p>元组与多数python的集合类型一样（这里的一样指的是：列表、字典、集等而不包括像是str，bytes和array.array这样的单一类型序列，它们保存的不是引用，而是在连续内存中保存的数据本身），保存的是对象的引用。所以，如果引用的元素是可变的，即使元组本身不变，它其中的元素也是可变的。<!-- raw HTML omitted -->元组的不可变性，指的是它其中保存的引用不变（数据结构和物理内容），与引用的对象无关<!-- raw HTML omitted --></p>
+<h1 id="5-copy和deepcopy">5. copy和deepcopy</h1>
+<p>由上边的例子可以看到，像列表、字典等集合类型，它们内部保存的是对象的引用，所以就会出现这样的情况：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">In [33]: l1 = [3,[4,5,6],(7,8,9)]
+
+In [34]: l2 = list(l1)
+
+In [35]: l2
+Out[35]: [3, [4, 5, 6], (7, 8, 9)]
+
+In [36]: l1.append(0)
+
+In [37]: l1[1].append(&#39;x&#39;)
+
+In [38]: print(l1)
+[3, [4, 5, 6, &#39;x&#39;], (7, 8, 9), 0]
+
+In [39]: print(l2)
+[3, [4, 5, 6, &#39;x&#39;], (7, 8, 9)]
+
+In [40]: l2[1] += [&#39;y&#39;,&#39;z&#39;]
+
+In [41]: l2[2] += (&#39;x&#39;,&#39;y&#39;,&#39;z&#39;)
+
+In [42]: l1
+Out[42]: [3, [4, 5, 6, &#39;x&#39;, &#39;y&#39;, &#39;z&#39;], (7, 8, 9), 0]
+
+In [43]: l2
+Out[43]: [3, [4, 5, 6, &#39;x&#39;, &#39;y&#39;, &#39;z&#39;], (7, 8, 9, &#39;x&#39;, &#39;y&#39;, &#39;z&#39;)]
+</code></pre></td></tr></table>
+</div>
+</div><p>In [33]和In [34]进行了简单的列表复制，通过内置的构造函数来完成赋值。这个时候<code>l1 == l2</code>并且<code>l1 is not l2</code>它们绑定了不同的对象。所以In [36]中l1.append(0)并不会对l2造成影响。
+但是由于列表内部保存的是对象的引用，所以<code>l1[1] == [4,5,6]</code>，如果对l1[1]进行操作，l2自然会收到影响。
+In [40]和In [41]分别对l2[1]和l2[2]进行操作，列表在进行<code>+=</code>操作之后，会就地修改列表，但对于元组来说<code>+=</code>操作会创建一个新的元组然后重新绑定给变量<!-- raw HTML omitted -->l2[2]<!-- raw HTML omitted -->，这样<code>l1[2]</code>和<code>l2[2]</code>就不是同一个对象。（个人觉得，上边的这个过程可以当作一道优秀的面试题目😊）</p>
+<blockquote>
+<p>对<code>+=</code>或者<code>*=</code>所做的增量复制操作来说，如果操作符左侧绑定的是不可变对象，会创建一个新的对象，如果是可变对象，会就地修改</p>
+</blockquote>
+<pre><code>默认情况下，python进行的复制都是浅复制（副本共享内部对象的引用）,通过copy模块提供的deepcopy和copy可以为任何对象做深复制或者浅复制。
+```
+In [55]: class Bus:
+    ...:     def __init__(self,passengers=None):
+    ...:         if passengers is None:
+    ...:             self.passengers = []
+    ...:         else:
+    ...:             self.passengers = passengers
+    ...:     def pick(self,name):
+    ...:         self.passengers.append(name)
+    ...:     def drop(self,name):
+    ...:         self.passengers.remove(name)
+    ...:
+
+In [56]: import copy
+
+In [57]: bus1 = Bus(['wm','ws','ls','gjy'])
+
+In [58]: bus2 = copy.copy(bus1)
+
+In [59]: bus3 = copy.deepcopy(bus1)
+
+In [60]: map(id,[bus1,bus2,bus3])
+Out[60]: [4418132448, 4416805992, 4416805920]
+
+In [61]: bus1.drop('wm')
+
+In [62]: bus2.passengers
+Out[62]: ['ws', 'ls', 'gjy']
+
+In [63]: bus3.passengers
+Out[63]: ['wm', 'ws', 'ls', 'gjy']
+
+In [64]: map(id,[bus1.passengers,bus2.passengers,bus3.passengers])
+Out[64]: [4419499288, 4419499288, 4418048440]
+```
+
+可以看到，通过deepcopy，bus3和bus1之间并没有共享内部对象的引用，而通过copy生成的bus2的`passengers`和bus1是相同的对象。
+</code></pre>
+<h1 id="6-不要使用可变类型作为参数的默认值">6. 不要使用可变类型作为参数的默认值</h1>
+<p>通过下边的例子可以证明上边的这条忠告：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">In [67]: class HauntedBus:
+    ...:     def __init__(self,passengers=[]):
+    ...:         self.passengers = passengers
+    ...:     def pick(self,name):
+    ...:         self.passengers.append(name)
+    ...:     def drop(self,name):
+    ...:         self.passengers.remove(name)
+    ...:
+
+In [68]: bus1 = HauntedBus([&#39;wm&#39;,&#39;ws&#39;,&#39;ls&#39;])
+
+In [69]: bus1.passengers
+Out[69]: [&#39;wm&#39;, &#39;ws&#39;, &#39;ls&#39;]
+
+In [70]: bus1.pick(&#39;gjy&#39;)
+
+In [71]: bus1.drop(&#39;ws&#39;)
+
+In [72]: bus1.passengers
+Out[72]: [&#39;wm&#39;, &#39;ls&#39;, &#39;gjy&#39;]
+
+In [73]: bus2 = HauntedBus()
+
+In [74]: bus2.pick(&#39;wm&#39;)
+
+In [76]: bus2.passengers
+Out[76]: [&#39;wm&#39;]
+
+In [77]: bus3 = HauntedBus()
+
+In [78]: bus3.pick(&#39;ws&#39;)
+
+In [79]: bus3.passengers
+Out[79]: [&#39;wm&#39;, &#39;ws&#39;]
+</code></pre></td></tr></table>
+</div>
+</div><p>可以看到，在没有定义初始乘客的HauntedBus实例会共享同一个乘客列表，这是因为<code>self.passengers</code>变成了<code>passengers</code>参数默认值的别名，默认值在定义函数时计算，因此默认值变成了函数对象的属性，因此，如果默认值是可变对象，并且修改了它的值，那么后续的函数调用都会收到影响。</p>
+<h1 id="7-防御可变参数">7. 防御可变参数</h1>
+<p>如果一个函数接受的是可变参数，那么应该谨慎的考虑是否想要修改传入的参数，是否想要将对这个可变对象的修改作用到函数体之外？</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">In [81]: overwatch_team = [&#39;wm&#39;,&#39;ws&#39;,&#39;ls&#39;,&#39;gjy&#39;,&#39;ll&#39;]
+
+In [82]: class Twilightbus:
+    ...:     def __init__(self,passengers=None):
+    ...:         if passengers is None:
+    ...:             self.passengers = []
+    ...:         else:
+    ...:             self.passengers = passengers
+    ...:     def pick(self,name):
+    ...:         self.passengers.append(name)
+    ...:     def drop(self,name):
+    ...:         self.passengers.remove(name)
+    ...:
+
+In [83]: bus = Twilightbus(overwatch_team)
+
+In [84]: bus.drop(&#39;wm&#39;)
+
+In [85]: bus.drop(&#39;ws&#39;)
+
+In [86]: overwatch_team
+Out[86]: [&#39;ls&#39;, &#39;gjy&#39;, &#39;ll&#39;]
+</code></pre></td></tr></table>
+</div>
+</div><p>可以看到Twilightbus可以让乘客莫名其妙的销声匿迹😨。这是因为，在将参数passenger传给Twilightbus的时候，实际上是将<code>self.passengers</code>变成了passengers的别名，所以每当乘客下车执行<code>drop()</code>的时候，直接将乘客从列表中抹去。
+如果想要避免这种状况，可以在初始化函数中做一些修改:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">def __init__(self,passengers):
+    if passengers is None:
+        self.passengers = []
+    else:
+        self.passengers = list(passengers)
+</code></pre></td></tr></table>
+</div>
+</div><p>经过上边这样的内部处理，就不会发生上边的幽灵巴士案件。所以，在类中直接把参数复制给实例变量以前一定要考虑清楚。</p>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">rgozi</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2017-08-20
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/python/">python</a>
+          <a href="/tags/%E8%AF%BB%E4%B9%A6/">读书</a>
+          <a href="/tags/%E5%8F%AF%E5%8F%98%E7%B1%BB%E5%9E%8B/">可变类型</a>
+          <a href="/tags/%E6%B7%B1%E6%B5%85%E6%8B%B7%E8%B4%9D/">深浅拷贝</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/python%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95%E6%8C%87%E5%8D%97/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">python魔术方法指南[转]</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/iterablesiterators%E5%92%8Cgenerators/">
+            <span class="next-text nav-default">Iterables,Iterators和Generators</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="eclipse_sv@whu.edu.cn" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/iamwm" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.douban.com/people/Eclipsesss/" class="iconfont icon-douban" title="douban"></a>
+      <a href="https://space.bilibili.com/44041814/" class="iconfont icon-bilibili" title="bilibili"></a>
+  <a href="https://rgozi.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">rgozi</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-173630995-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

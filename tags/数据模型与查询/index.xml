@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>数据模型与查询 on 搬砖工的日常</title>
+    <link>https://rgozi.com/tags/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%9F%A5%E8%AF%A2/</link>
+    <description>Recent content in 数据模型与查询 on 搬砖工的日常</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 15 May 2021 09:27:12 +0000</lastBuildDate><atom:link href="https://rgozi.com/tags/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%9F%A5%E8%AF%A2/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>数据模型与查询</title>
+      <link>https://rgozi.com/post/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%9F%A5%E8%AF%A2/</link>
+      <pubDate>Sat, 15 May 2021 09:27:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%9F%A5%E8%AF%A2/</guid>
+      <description>&lt;p&gt;对于应用程序开发人员来说，我们的编码过程很多场景下都是对现实世界的代码描述。这个描述过程可以理解为数据模型的构建过程。数据模型不仅影响着代码的编写方式（面向对象、函数式编程等等），它也会影响我们后续解决问题的思路。&lt;/p&gt;
+&lt;p&gt;在计算机系统中，我们常常通过构建层级结构来解构整个系统（例如计算机存储器的层级结构），一个复杂的应用程序往往会有多个中间层次，每个层次都提供一个明确的数据模型来隐藏更低层次中的复杂性。这些抽象出来的数据模型能够为构建整个系统的不同角色提供有效协作的基础。&lt;/p&gt;
+&lt;p&gt;常见和常用的数据模型，可以抽象为几大类：关系模型、文档模型和图数据模型。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

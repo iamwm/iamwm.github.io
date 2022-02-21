@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ubuntu on 搬砖工的日常</title>
+    <link>https://rgozi.com/tags/ubuntu/</link>
+    <description>Recent content in ubuntu on 搬砖工的日常</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Thu, 01 Mar 2018 13:45:39 +0000</lastBuildDate><atom:link href="https://rgozi.com/tags/ubuntu/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>开发常用各种源设置</title>
+      <link>https://rgozi.com/post/%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%90%84%E7%A7%8D%E6%BA%90%E8%AE%BE%E7%BD%AE/</link>
+      <pubDate>Thu, 01 Mar 2018 13:45:39 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%90%84%E7%A7%8D%E6%BA%90%E8%AE%BE%E7%BD%AE/</guid>
+      <description>&lt;p&gt;在日常开发过程中，经常会受到国内网络环境限制导致类似：apt install大半天、brew install卡条、npm install一直转圈等诸多蛋疼的事情。
+恰好我最近重装了笔记本操作系统，也记录一下我在开发过程中需要设置国内源改善开发环境的过程。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

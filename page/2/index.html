@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>搬砖工的日常</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="rgozi" /><meta name="description" content="搬砖路上有你有我." /><meta name="keywords" content="搬砖工, 技术博客" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.84.1 with theme even" />
+
+
+<link rel="canonical" href="https://rgozi.com/" />
+  <link href="https://rgozi.com/index.xml" rel="alternate" type="application/rss+xml" title="搬砖工的日常" />
+  <link href="https://rgozi.com/index.xml" rel="feed" type="application/rss+xml" title="搬砖工的日常" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="搬砖工的日常" />
+<meta property="og:description" content="搬砖路上有你有我." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://rgozi.com/" />
+
+<meta itemprop="name" content="搬砖工的日常">
+<meta itemprop="description" content="搬砖路上有你有我."><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="搬砖工的日常"/>
+<meta name="twitter:description" content="搬砖路上有你有我."/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">搬砖工的日常</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">搬砖工的日常</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <section id="posts" class="posts">
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/mongo-can-not-add-session-to-cache-%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E5%92%8C%E8%A7%A3%E5%86%B3/">mongo can not add session to cache问题排查和解决</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2020-07-19 </span>
+      <div class="post-category">
+          <a href="/categories/mongodb/"> mongodb </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      最近我们的线上mongo集群发生了一次事故，主要原因是后台应用在进行mongo读写的时候报错，错误描述是pymongo.errors.Ope
+    </div>
+    <div class="read-more">
+      <a href="/post/mongo-can-not-add-session-to-cache-%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E5%92%8C%E8%A7%A3%E5%86%B3/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/1asyncio%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F/">asyncio的前世今生</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2020-07-01 </span>
+      <div class="post-category">
+          <a href="/categories/python/"> python </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>在提到python的asyncio的时候，我们会联想到async/await，event loop，coroutine，selector，Task，Future等等相关的内容，那么asyncio到底是谁(asyncio本身)，它从哪里来的(为什么需要asyncio)，要到哪里去(它能够解决什么问题)呢？</p>
+    </div>
+    <div class="read-more">
+      <a href="/post/1asyncio%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/%E8%BF%91%E6%9C%9F%E7%9A%84%E6%83%B3%E6%B3%95%E5%92%8C%E8%A7%84%E5%88%92/">近期的想法和规划</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2020-04-07 </span>
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>时隔两年，重新开始更新博客，不禁感叹一句时间过得太快了。这两年时间里，自己在生活、学习方方面面都有很大改变。放缓脚步，静心思考，结合当前的状态，对过去两年的成长做好总结，对未来一段时间的发展做好规划，也是非常必须的。</p>
+    </div>
+    <div class="read-more">
+      <a href="/post/%E8%BF%91%E6%9C%9F%E7%9A%84%E6%83%B3%E6%B3%95%E5%92%8C%E8%A7%84%E5%88%92/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%90%84%E7%A7%8D%E6%BA%90%E8%AE%BE%E7%BD%AE/">开发常用各种源设置</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2018-03-01 </span>
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>在日常开发过程中，经常会受到国内网络环境限制导致类似：apt install大半天、brew install卡条、npm install一直转圈等诸多蛋疼的事情。
+恰好我最近重装了笔记本操作系统，也记录一下我在开发过程中需要设置国内源改善开发环境的过程。</p>
+    </div>
+    <div class="read-more">
+      <a href="/post/%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%90%84%E7%A7%8D%E6%BA%90%E8%AE%BE%E7%BD%AE/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/react&#43;cesium%E5%BC%80%E5%8F%91%E5%B0%8F%E7%BB%93/">react&#43;cesium开发小结</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2018-02-23 </span>
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>从一月份开始，主要在做cesium的开发，和之前不同的是这次是在react框架的基础上进行开发的😄</p>
+    </div>
+    <div class="read-more">
+      <a href="/post/react&#43;cesium%E5%BC%80%E5%8F%91%E5%B0%8F%E7%BB%93/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/2017%E6%8A%80%E6%9C%AF%E6%88%90%E9%95%BF%E5%B0%8F%E7%BB%93/">2017小结</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2018-01-09 </span>
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>今天写完年度工作总结之后，才想起快有两个多月没有更新博客了，主要是因为从十月末开始，我的生活和工作环境都有比较大的变动，索性来一篇所谓的年度小结来概括一下2017这一整年值得纪念的点点滴滴。</p>
+    </div>
+    <div class="read-more">
+      <a href="/post/2017%E6%8A%80%E6%9C%AF%E6%88%90%E9%95%BF%E5%B0%8F%E7%BB%93/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/%E5%89%8D%E7%AB%AF%E9%A1%B9%E7%9B%AE%E7%9A%84%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E5%92%8C%E9%83%A8%E7%BD%B2/">前端项目的自动化测试和部署初试</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2017-11-17 </span>
+      <div class="post-category">
+          <a href="/categories/%E5%89%8D%E7%AB%AF/"> 前端 </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>项目的正常运行离不开完备的测试和正确的部署。通常在项目开发的过程中，我们会写出不同类型的测试从而最大程度的减少bug查找修复时间、降低项目重构成本、增加项目迭代过程中对代码质量的信心，保证项目正常上线。为了能够给用户呈现最新的项目开发成果，一次次手动拷贝代码、登陆远程主机、配置代码运行环境显然比较低效。所以，自动化测试和部署能够有效提升项目开发效率。
+这篇博客也是总结一下我最近在开发的一个前端项目中使用<!-- raw HTML omitted -->jenkins+gitlab<!-- raw HTML omitted -->进行自动化测试和部署的过程。</p>
+    </div>
+    <div class="read-more">
+      <a href="/post/%E5%89%8D%E7%AB%AF%E9%A1%B9%E7%9B%AE%E7%9A%84%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E5%92%8C%E9%83%A8%E7%BD%B2/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/%E4%BD%BF%E7%94%A8docker%E5%AE%89%E8%A3%85jenkins/">使用docker安装jenkins</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2017-11-09 </span>
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>最近在学习jenkins相关的东西，想在自己电脑上安装一套jenkins环境，发现可以通过docker来完成这个任务，下面主要记录一下安装过程。</p>
+    </div>
+    <div class="read-more">
+      <a href="/post/%E4%BD%BF%E7%94%A8docker%E5%AE%89%E8%A3%85jenkins/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/%E7%A6%BB%E7%BA%BF%E7%8E%AF%E5%A2%83python%E9%A1%B9%E7%9B%AE%E7%9A%84%E9%83%A8%E7%BD%B2/">离线环境python项目的部署</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2017-10-24 </span>
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>最近自己参与的一个项目接近尾声，需要把代码部署到甲方提供的服务器。本来想着没有什么困难，谁知道甲方提供的服务器需要连接到vpn堡垒机之后才能连接，并且服务器是不能与外网直接连接的。知道真相的我眼泪掉下来。</p>
+    </div>
+    <div class="read-more">
+      <a href="/post/%E7%A6%BB%E7%BA%BF%E7%8E%AF%E5%A2%83python%E9%A1%B9%E7%9B%AE%E7%9A%84%E9%83%A8%E7%BD%B2/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/%E5%9C%A8vultr%E4%B8%8A%E6%90%AD%E5%BB%BAshadowsock/">在vultr上搭建shadowsocks</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2017-10-13 </span>
+      <div class="post-category">
+          <a href="/categories/%E7%9E%8E%E6%90%9E/"> 瞎搞 </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>为啥突然想要自己搭一个shadowsocks呢，事情的起因是这样的：<a href="https://github.com/getlantern/forum">蓝灯</a>这个项目在<a href="https://github.com/trending">git trending</a>上连续上榜多日，看了评论发现原来这个东西是个vpn，很多人用来当梯子。因为最近种种原因这个梯子现在用不成了，所以很多用户跑来吐槽。我一直比较懒，都是直接买的现成的vpn，现在一直在用这个官网经常上不去的<a href="https://netfits.net.cn/">netfits</a>，总体感觉还行，就是价格有点贵，所以趁着这个十一长假之后的第一个周五下午来搞点事情，搭一个自己的ss服务器。
+<img src="https://rgozi.com/pics/lantern.png" alt="lantern.png"></p>
+    </div>
+    <div class="read-more">
+      <a href="/post/%E5%9C%A8vultr%E4%B8%8A%E6%90%AD%E5%BB%BAshadowsock/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    </section>
+  
+  <nav class="pagination">
+    <a class="prev" href="/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text">上一页</span>
+      </a>
+    <a class="next" href="/page/3/">
+        <span class="next-text">下一页</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+  </nav>
+        </div>
+        
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="eclipse_sv@whu.edu.cn" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/iamwm" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.douban.com/people/Eclipsesss/" class="iconfont icon-douban" title="douban"></a>
+      <a href="https://space.bilibili.com/44041814/" class="iconfont icon-bilibili" title="bilibili"></a>
+  <a href="https://rgozi.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>rgozi</span>
+  </span>
+  <div class="container">
+        备案号：<a href="https://beian.miit.gov.cn/" target="_blank">鄂ICP备20003011号-1</a>
+    </div>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-173630995-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

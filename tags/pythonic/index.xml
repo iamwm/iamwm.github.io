@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>pythonic on 搬砖工的日常</title>
+    <link>https://rgozi.com/tags/pythonic/</link>
+    <description>Recent content in pythonic on 搬砖工的日常</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 28 Nov 2016 14:09:12 +0000</lastBuildDate><atom:link href="https://rgozi.com/tags/pythonic/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>如何让你的代码更加pythonic</title>
+      <link>https://rgozi.com/post/%E5%A6%82%E4%BD%95%E8%AE%A9%E4%BD%A0%E7%9A%84%E4%BB%A3%E7%A0%81%E6%9B%B4%E5%8A%A0pythonic/</link>
+      <pubDate>Mon, 28 Nov 2016 14:09:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/%E5%A6%82%E4%BD%95%E8%AE%A9%E4%BD%A0%E7%9A%84%E4%BB%A3%E7%A0%81%E6%9B%B4%E5%8A%A0pythonic/</guid>
+      <description>&lt;p&gt;对于开发者而言，代码风格是一件很重要的事情，它往往会关系到你代码的可读性甚至是执行效率。对于python而言，经常会在招聘要求中有一条：&lt;!-- raw HTML omitted --&gt;pythonic的代码&lt;!-- raw HTML omitted --&gt;。那究竟什么是pythonic，什么样的代码才是pythonic的代码，我自己也一直有让自己的代码更加pythonic，总结平时的工作学习就有了如下这些。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

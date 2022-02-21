@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>读Mongodb权威指南有感 - 搬砖工的日常</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="rgozi" /><meta name="description" content="由于之前从图书馆借的书已经到期了，前天下午趁着好天气去图书馆了一趟，顺便借回来两本《Mongodb权威指南》和《Web性能权威指南》。没想到两天时间就把前边那本看完了。总体感觉还不错，这本书写的比较细致，很适合入门学习，同时在看书的过程中，我发现了之前没有主要到的一些知识点，并且改变了我之前的一些错误认识，所以还是很有必要记录一下的。
+" /><meta name="keywords" content="搬砖工, 技术博客" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.84.1 with theme even" />
+
+
+<link rel="canonical" href="https://rgozi.com/post/%E8%AF%BBmongodb%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97%E6%9C%89%E6%84%9F/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="读Mongodb权威指南有感" />
+<meta property="og:description" content="由于之前从图书馆借的书已经到期了，前天下午趁着好天气去图书馆了一趟，顺便借回来两本《Mongodb权威指南》和《Web性能权威指南》。没想到两天时间就把前边那本看完了。总体感觉还不错，这本书写的比较细致，很适合入门学习，同时在看书的过程中，我发现了之前没有主要到的一些知识点，并且改变了我之前的一些错误认识，所以还是很有必要记录一下的。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://rgozi.com/post/%E8%AF%BBmongodb%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97%E6%9C%89%E6%84%9F/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2016-11-25T10:50:12&#43;00:00" />
+<meta property="article:modified_time" content="2016-11-25T10:50:12&#43;00:00" />
+
+<meta itemprop="name" content="读Mongodb权威指南有感">
+<meta itemprop="description" content="由于之前从图书馆借的书已经到期了，前天下午趁着好天气去图书馆了一趟，顺便借回来两本《Mongodb权威指南》和《Web性能权威指南》。没想到两天时间就把前边那本看完了。总体感觉还不错，这本书写的比较细致，很适合入门学习，同时在看书的过程中，我发现了之前没有主要到的一些知识点，并且改变了我之前的一些错误认识，所以还是很有必要记录一下的。"><meta itemprop="datePublished" content="2016-11-25T10:50:12&#43;00:00" />
+<meta itemprop="dateModified" content="2016-11-25T10:50:12&#43;00:00" />
+<meta itemprop="wordCount" content="3374">
+<meta itemprop="keywords" content="读书,mongodb," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="读Mongodb权威指南有感"/>
+<meta name="twitter:description" content="由于之前从图书馆借的书已经到期了，前天下午趁着好天气去图书馆了一趟，顺便借回来两本《Mongodb权威指南》和《Web性能权威指南》。没想到两天时间就把前边那本看完了。总体感觉还不错，这本书写的比较细致，很适合入门学习，同时在看书的过程中，我发现了之前没有主要到的一些知识点，并且改变了我之前的一些错误认识，所以还是很有必要记录一下的。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">搬砖工的日常</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">搬砖工的日常</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">读Mongodb权威指南有感</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2016-11-25 </span>
+        <div class="post-category">
+            <a href="/categories/mongodb/"> Mongodb </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#ttl索引">TTL索引</a></li>
+    <li><a href="#explain">explain()</a></li>
+    <li><a href="#如何用索引">如何用索引</a></li>
+    <li><a href="#mongodb自带工具">mongodb自带工具</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#关于副本集">关于副本集</a></li>
+    <li><a href="#关于分片">关于分片</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>由于之前从图书馆借的书已经到期了，前天下午趁着好天气去图书馆了一趟，顺便借回来两本<a href="https://book.douban.com/subject/25798102/">《Mongodb权威指南》</a>和<a href="https://book.douban.com/subject/25856314/">《Web性能权威指南》</a>。没想到两天时间就把前边那本看完了。总体感觉还不错，这本书写的比较细致，很适合入门学习，同时在看书的过程中，我发现了之前没有主要到的一些知识点，并且改变了我之前的一些错误认识，所以还是很有必要记录一下的。</p>
+<h1 id="没注意到的点">没注意到的点</h1>
+<h2 id="ttl索引">TTL索引</h2>
+<p>TTL(time-to-live)索引在mongodb中主要起到的作用就是在指定时间里，如果一条记录都没有发生变化就会被自动移除，可以起到类似redis中EXPIRE命令的作用。它的用法如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># 在表col中为lastOp字段建立TTL索引，过期时间是60*60，单位为秒
+db.col.ensuerIndex({&#39;lastOp&#39;:1},{&#39;expireAfterSecs&#39;:60*60})
+</code></pre></td></tr></table>
+</div>
+</div><p>注意点：</p>
+<ol>
+<li>TTL索引必须建立在日期类型的字段上</li>
+<li>TTL索引不能够是复合索引，但是如果建立了TTL索引，它可以在排序和查询中对检索速度有优化</li>
+<li>在实际应用中，如果建立了这种索引，为防止删除正在进行的会话，可以在进行操作的过程中update这个字段</li>
+</ol>
+<h2 id="explain">explain()</h2>
+<p>数据入了库，如何能够在最短的时间内检索出来是一个很重要的问题。在mongodb中，有各式各样的索引：最为普通的单字段索引、多个字段联合起来的复合索引、上边刚说到的TTL索引还有针对地理空间的地理空间索引。索引往往会对检索效率有质的提升，但是如何才能够知道自己建立的索引有没有起作用？explain()和hint()这两个方法可以给你一个答复。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># 未建立索引
+&gt; db.Position.find({&#39;company&#39;:&#39;拉勾网&#39;}).explain()
+{
+	&#34;queryPlanner&#34; : {
+		&#34;plannerVersion&#34; : 1,
+		&#34;namespace&#34; : &#34;lagou.Position&#34;,
+		&#34;indexFilterSet&#34; : false,
+		&#34;parsedQuery&#34; : {
+			&#34;company&#34; : {
+				&#34;$eq&#34; : &#34;拉勾网&#34;
+			}
+		},
+		&#34;winningPlan&#34; : {
+			&#34;stage&#34; : &#34;COLLSCAN&#34;,
+			&#34;filter&#34; : {
+				&#34;company&#34; : {
+					&#34;$eq&#34; : &#34;拉勾网&#34;
+				}
+			},
+			&#34;direction&#34; : &#34;forward&#34;
+		},
+		&#34;rejectedPlans&#34; : [ ]
+	},
+	...
+}
+# 索引之后
+&gt; db.Position.find({&#39;company&#39;:&#39;拉勾网&#39;}).explain()
+{
+	&#34;queryPlanner&#34; : {
+		&#34;plannerVersion&#34; : 1,
+		&#34;namespace&#34; : &#34;lagou.Position&#34;,
+		&#34;indexFilterSet&#34; : false,
+		&#34;parsedQuery&#34; : {
+			&#34;company&#34; : {
+				&#34;$eq&#34; : &#34;拉勾网&#34;
+			}
+		},
+		&#34;winningPlan&#34; : {
+			&#34;stage&#34; : &#34;FETCH&#34;,
+			&#34;inputStage&#34; : {
+				&#34;stage&#34; : &#34;IXSCAN&#34;,
+				&#34;keyPattern&#34; : {
+					&#34;company&#34; : 1
+				},
+				&#34;indexName&#34; : &#34;company_1&#34;,
+				&#34;isMultiKey&#34; : false,
+				&#34;multiKeyPaths&#34; : {
+					&#34;company&#34; : [ ]
+				},
+				&#34;isUnique&#34; : false,
+				&#34;isSparse&#34; : false,
+				&#34;isPartial&#34; : false,
+				&#34;indexVersion&#34; : 2,
+				&#34;direction&#34; : &#34;forward&#34;,
+				&#34;indexBounds&#34; : {
+					&#34;company&#34; : [
+						&#34;[\&#34;拉勾网\&#34;, \&#34;拉勾网\&#34;]&#34;
+					]
+				}
+			}
+		},
+		&#34;rejectedPlans&#34; : [ ]
+	},
+	...
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>可以看到，在建立索引前后，explain()的结果在&quot;winningPlan&quot;字段中有明显不同，未建立索引的时候：<code>&quot;stage&quot; : &quot;COLLSCAN&quot;</code>建立索引之后：<code>&quot;stage&quot; : &quot;IXSCAN&quot;</code>。前者的COLLSCAN表示的意思是通过全表扫描的方式检索，后边的则是通过已经建立的索引进行检索。
+再来一例：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># 未建立索引
+&gt; db.Position.find({&#39;loc&#39;:{$near:{$geometry:{type:&#39;Point&#39;,coordinates:[113,40]}}}}).explain()
+2016-11-25T14:13:23.421+0800 E QUERY    [main] Error: explain failed: {
+	&#34;ok&#34; : 0,
+	&#34;errmsg&#34; : &#34;error processing query: ns=lagou.PositionTree: GEONEAR  field=loc maxdist=1.79769e+308 isNearSphere=0\nSort: {}\nProj: {}\n planner returned error: unable to find index for $geoNear query&#34;,
+	&#34;code&#34; : 2,
+	&#34;codeName&#34; : &#34;BadValue&#34;
+}
+# 建立索引
+&gt; db.Position.ensureIndex({loc:&#39;2dsphere&#39;})
+{
+	&#34;createdCollectionAutomatically&#34; : false,
+	&#34;numIndexesBefore&#34; : 2,
+	&#34;numIndexesAfter&#34; : 3,
+	&#34;ok&#34; : 1
+}
+# 索引之后
+&gt; db.Position.find({&#39;loc&#39;:{$near:{$geometry:{type:&#39;Point&#39;,coordinates:[113,40]}}}}).explain()
+{
+	&#34;queryPlanner&#34; : {
+		...,
+		&#34;winningPlan&#34; : {
+			&#34;stage&#34; : &#34;GEO_NEAR_2DSPHERE&#34;,
+			&#34;keyPattern&#34; : {
+				&#34;loc&#34; : &#34;2dsphere&#34;
+			},
+			&#34;indexName&#34; : &#34;loc_2dsphere&#34;,
+			&#34;indexVersion&#34; : 2
+		},
+		&#34;rejectedPlans&#34; : [ ]
+	},
+	...
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>由于之前一直只是停留在会用mongodb的阶段，像类似explain()这样的数据库调优的方法会用的比较少。现在的话感觉还是仔细研究关于mongodb的各个方面还是很有必要的。不能在使用的过程中只会有“啊！好特么快呀！”或者是“沃艸，怎么这么慢”的感性认识，知道如何让它变快才是重点。</p>
+<h2 id="如何用索引">如何用索引</h2>
+<p>还记得当初曾经去南通封闭开发，遇到一个问题，由于在mongodb中一个集合存的数据过多，造成在检索的时候出现超时的情况。如果没有记错的话，我记得造成检索失败的原因是由于那个集合的大小超出了我笔记本的物理内存大小，通过普通的“全表扫描”的方法已经无法完成正常的检索。在建立了索引之后，数据量增大10倍检索速度也是杠杠的。
+所以说，索引对于数据库来说是极其重要的，当然，这个东西我会在以后深入研究它的原理。在平常的使用过程中，对于一个集合，该不该建立索引，如何建立索引，都是很应该考虑的事情。</p>
+<blockquote>
+<p>索引通常适用的情况：在集合数据量较大的时候，同时经常需要查询的字段索引基数较大的情况。这里所说的索引基数指的是集合中某个字段拥有不同值的数量，一个字段的索引基数越高，在这个键上建立索引就越有用，这是因为索引能够快速地讲搜索范围缩小。另外，如果你需要进行地理空间方面的检索，2dsphere或者2d索引是必须的。</p>
+</blockquote>
+<h2 id="mongodb自带工具">mongodb自带工具</h2>
+<p>在各个版本的mongodb发行版中，bin目录下除了mongo和mongod其他几个工具也都很好用：
+使用mongostat可以实时看到当前mongod实例的运行和负载情况，mongotop则类似linux系统中的top工具，mongofiles则可以很方便的操作数据库的gridfs。其他的各个工具相信在以后的使用中都会有接触。</p>
+<h1 id="错误的认识">错误的认识</h1>
+<p>由于之前的实践比较少，也没有耐着性子仔细系统的学习mongodb，直到看了这本书才发现之前有很多理解是错的（并且我在用的时候还真的是这样干的），这部分错误认识主要集中在mongodb的副本集合分片那部分。</p>
+<h2 id="关于副本集">关于副本集</h2>
+<p>之前总是想着副本集是用以缓解mongodb读写压力，进行读写分离用的，primary节点负责数据写入，各个secondary节点则从primary实时获取最新数据，并提供给应用程序读取数据的能力。仔细看了这本书之后，感觉之前真是很傻很天真，而且深切觉得这种分布式存储在实现过程中要考虑的东西是那么多。</p>
+<blockquote>
+<p>使用副本集可以将数据保存到多台服务器上，建议在所有的生产环境中都要使用。使用mongodb的副本集，即使一台或者多台服务器出错，也可以保证应用程序正常运行和数据安全。副本集是一组服务器，其中有一个主服务器primary，用于处理来自客户端的请求（当然是包括读和写），还有多个备份服务器secondary，用以保存主服务器的数据副本。如果主服务器崩溃，备份服务器会选举出一个成员将其升级为主服务器。</p>
+</blockquote>
+<p>其中最大的误解在与副本集成员数据同步的原理。如上边所说，我一直以为从节点的数据都是实时从主节点上读取到的，所以主节点负责写入数据，在写入的同时从节点复制数据（这样会给主节点造成较大的负载），所以从节点就来负责数据的读取吧。我完全都没意识到数据一致性的问题（对于数据时效性要求较高的情况）还有如果在写入负载大的时候，从节点还从主节点读取数据，主节点不就崩了吗。
+而实际上副本集实现数据同步是这样的：</p>
+<blockquote>
+<p>副本集用以在多台服务器之间备份数据，mongodb的复制功能是通过操作日志oplog实现的，操作日志包含了主节点的每一次写操作。oplog是主节点的local数据库中的一个固定集合。备份节点通过查询这个集合就可以知道需要进行复制的操作。每个从节点都维护自己的oplog，记录每一次从主节点复制数据的操作，并且每个副本集成员都可以作为同步源提供给其他成员。</p>
+</blockquote>
+<h2 id="关于分片">关于分片</h2>
+<p>由于之前用到的数据量还没有大到必须使用分片的程度，这次看书也是对分片有了重新的认识。
+分片主要用于将数据拆分，将数据分散存放到不同的机器上，mongodb支持自动分片，可以使数据库架构对应用程序不可见，简化系统管理。mongodb的分片允许你创建一个包含许多台机器的集群，也就是说上边所说的副本集可以作为分片的一个节点，每个分片用于维护一个数据集的子集。
+分片可以带来的优势：</p>
+<ul>
+<li>增加可用RAM</li>
+<li>增加可用磁盘空间</li>
+<li>减轻单台服务器的负载</li>
+<li>提升整个系统的吞吐量</li>
+</ul>
+<h1 id="一些其他的想法">一些其他的想法</h1>
+<p>到目前为止，最新的mongodb版本已经推出到3.4。mongodb的发展不能说不快，这款对开发者极其友好的数据库真的可以下功夫仔细学习、研究和使用。一些好的特性：除了相对高效的读写之外，Aggregation、map-reduce都可以应用在大数据处理上，官方提供的主流开发语言的驱动，和spark结合的connector在数据实时分析上也会有不错的效果。
+而上边说到的这些东西，我想只有通过自己不断的实践练习才能在实际应用中游刃有余。</p>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">rgozi</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2016-11-25
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E8%AF%BB%E4%B9%A6/">读书</a>
+          <a href="/tags/mongodb/">mongodb</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/%E5%A6%82%E4%BD%95%E8%AE%A9%E4%BD%A0%E7%9A%84%E4%BB%A3%E7%A0%81%E6%9B%B4%E5%8A%A0pythonic/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">如何让你的代码更加pythonic</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/mongodb_aggregation/">
+            <span class="next-text nav-default">Mongodb Aggregation Pipleline</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="eclipse_sv@whu.edu.cn" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/iamwm" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.douban.com/people/Eclipsesss/" class="iconfont icon-douban" title="douban"></a>
+      <a href="https://space.bilibili.com/44041814/" class="iconfont icon-bilibili" title="bilibili"></a>
+  <a href="https://rgozi.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">rgozi</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-173630995-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

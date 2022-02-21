@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>asyncio的前世今生 - 搬砖工的日常</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="rgozi" /><meta name="description" content="在提到python的asyncio的时候，我们会联想到async/await，event loop，coroutine，selector，Task，Future等等相关的内容，那么asyncio到底是谁(asyncio本身)，它从哪里来的(为什么需要asyncio)，要到哪里去(它能够解决什么问题)呢？
+" /><meta name="keywords" content="搬砖工, 技术博客" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.84.1 with theme even" />
+
+
+<link rel="canonical" href="https://rgozi.com/post/1asyncio%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="asyncio的前世今生" />
+<meta property="og:description" content="在提到python的asyncio的时候，我们会联想到async/await，event loop，coroutine，selector，Task，Future等等相关的内容，那么asyncio到底是谁(asyncio本身)，它从哪里来的(为什么需要asyncio)，要到哪里去(它能够解决什么问题)呢？" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://rgozi.com/post/1asyncio%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-07-01T09:27:12&#43;00:00" />
+<meta property="article:modified_time" content="2020-07-01T09:27:12&#43;00:00" />
+
+<meta itemprop="name" content="asyncio的前世今生">
+<meta itemprop="description" content="在提到python的asyncio的时候，我们会联想到async/await，event loop，coroutine，selector，Task，Future等等相关的内容，那么asyncio到底是谁(asyncio本身)，它从哪里来的(为什么需要asyncio)，要到哪里去(它能够解决什么问题)呢？"><meta itemprop="datePublished" content="2020-07-01T09:27:12&#43;00:00" />
+<meta itemprop="dateModified" content="2020-07-01T09:27:12&#43;00:00" />
+<meta itemprop="wordCount" content="2333">
+<meta itemprop="keywords" content="python,asyncio," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="asyncio的前世今生"/>
+<meta name="twitter:description" content="在提到python的asyncio的时候，我们会联想到async/await，event loop，coroutine，selector，Task，Future等等相关的内容，那么asyncio到底是谁(asyncio本身)，它从哪里来的(为什么需要asyncio)，要到哪里去(它能够解决什么问题)呢？"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">搬砖工的日常</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">搬砖工的日常</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">asyncio的前世今生</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-07-01 </span>
+        <div class="post-category">
+            <a href="/categories/python/"> python </a>
+            </div>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#asyncio是什么">asyncio是什么</a></li>
+    <li><a href="#asyncio从何而来">asyncio从何而来</a>
+      <ul>
+        <li><a href="#从生成器到coroutine">从生成器到coroutine</a></li>
+        <li><a href="#event-loop">event loop</a></li>
+      </ul>
+    </li>
+    <li><a href="#asyncio生态">asyncio生态</a></li>
+    <li><a href="#参考文章">参考文章</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>在提到python的asyncio的时候，我们会联想到async/await，event loop，coroutine，selector，Task，Future等等相关的内容，那么asyncio到底是谁(asyncio本身)，它从哪里来的(为什么需要asyncio)，要到哪里去(它能够解决什么问题)呢？</p>
+<h2 id="asyncio是什么">asyncio是什么</h2>
+<p>python官方文档中，对于asyncio模块是这样描述的：</p>
+<blockquote>
+<p>asyncio 是用来编写 <strong>并发</strong> 代码的库，使用 <strong>async/await</strong> 语法。</p>
+<p>asyncio 被用作多个提供高性能 Python 异步框架的基础，包括网络和网站服务，数据库连接库，分布式任务队列等等。</p>
+<p>asyncio 往往是构建 IO 密集型和高层级 <strong>结构化</strong> 网络代码的最佳选择。</p>
+<p>asyncio 提供一组 <strong>高层级</strong> API 用于:</p>
+<ul>
+<li>并发地 <a href="https://docs.python.org/zh-cn/3/library/asyncio-task.html#coroutine">运行 Python 协程</a> 并对其执行过程实现完全控制;</li>
+<li>执行 <a href="https://docs.python.org/zh-cn/3/library/asyncio-stream.html#asyncio-streams">网络 IO 和 IPC</a>;</li>
+<li>控制 <a href="https://docs.python.org/zh-cn/3/library/asyncio-subprocess.html#asyncio-subprocess">子进程</a>;</li>
+<li>通过 <a href="https://docs.python.org/zh-cn/3/library/asyncio-queue.html#asyncio-queues">队列</a> 实现分布式任务;</li>
+<li><a href="https://docs.python.org/zh-cn/3/library/asyncio-sync.html#asyncio-sync">同步</a> 并发代码;</li>
+</ul>
+<p>此外，还有一些 <strong>低层级</strong> API 以支持 <em>库和框架的开发者</em> 实现:</p>
+<ul>
+<li>创建和管理 <a href="https://docs.python.org/zh-cn/3/library/asyncio-eventloop.html#asyncio-event-loop">事件循环</a>，以提供异步 API 用于 <a href="https://docs.python.org/zh-cn/3/library/asyncio-eventloop.html#asyncio.loop.create_server"><code>网络化</code></a>, 运行 <a href="https://docs.python.org/zh-cn/3/library/asyncio-eventloop.html#asyncio.loop.subprocess_exec"><code>子进程</code></a>，处理 <a href="https://docs.python.org/zh-cn/3/library/asyncio-eventloop.html#asyncio.loop.add_signal_handler"><code>OS 信号</code></a> 等等;</li>
+<li>使用 <a href="https://docs.python.org/zh-cn/3/library/asyncio-protocol.html#asyncio-transports-protocols">transports</a> 实现高效率协议;</li>
+<li>通过 async/await 语法 <a href="https://docs.python.org/zh-cn/3/library/asyncio-future.html#asyncio-futures">桥接</a> 基于回调的库和代码。</li>
+</ul>
+</blockquote>
+<p>很多人都说asyncio是python最具雄心壮志的库之一，我也同意这种说法，尤其在现在这样万物互联的时代，如果一门编程语言不能够提供一个完善的网络异步编程方案应对并发压力，将会很难得到开发者的青睐。</p>
+<p>不同于golang的<a href="%5Bhttps://zh.wikipedia.org/zh-cn/%E4%BA%A4%E8%AB%87%E5%BE%AA%E5%BA%8F%E7%A8%8B%E5%BC%8F%5D(https://zh.wikipedia.org/zh-cn/%E4%BA%A4%E8%AB%87%E5%BE%AA%E5%BA%8F%E7%A8%8B%E5%BC%8F)">CSP模型</a>和<code>不要通过共享内存来通信，我们应该使用通信来共享内存</code>的设计和实践理念。asyncio通过<code>事件循环Event loop</code>来调度有限的cpu资源，利用<code>async/await</code>语法糖 + <code>selectors</code>模块有效避免阻塞获得并发能力。</p>
+<h2 id="asyncio从何而来">asyncio从何而来</h2>
+<p>asyncio的大致发展历程可以在这里看到：<a href="https://asyncio-notes.readthedocs.io/en/latest/asyncio-history.html">History of asyncio</a></p>
+<p>结合文章<a href="https://snarky.ca/how-the-heck-does-async-await-work-in-python-3-5/">How the heck does async/await work in Python 3.5</a> asyncio模块发展至今的重要节点大概如下图所示：</p>
+<p><img src="http://qdarfscff.bkt.clouddn.com/asyncio.png" alt=""></p>
+<p>现在我们可以轻易的在代码中写类似这样的代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="k">async</span> <span class="k">def</span> <span class="nf">do_stuff</span><span class="p">():</span>
+	<span class="k">await</span> <span class="n">db_operte</span><span class="p">()</span>		<span class="c1"># time cost</span>
+	<span class="k">await</span> <span class="n">mq_process</span><span class="p">()</span>		<span class="c1"># time cost</span>
+	<span class="k">await</span> <span class="n">http_response</span><span class="p">()</span>	<span class="c1"># time cost</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>不用担心进程由于其中一些耗时较高的io操作而被阻塞离不开这些相关的概念：<code>coroutine</code>、<code>event loop</code>、<code>async/await</code>，下边稍微研究一下几个关键节点。</p>
+<h3 id="从生成器到coroutine">从生成器到coroutine</h3>
+<p>维基百科中，对于coroutine（协程）的解释如下：</p>
+<blockquote>
+<p><strong>协程</strong>是计算机程序的一类组件，推广了<a href="https://zh.wikipedia.org/wiki/%E5%8D%8F%E4%BD%9C%E5%BC%8F%E5%A4%9A%E4%BB%BB%E5%8A%A1">协作式多任务</a>的<a href="https://zh.wikipedia.org/wiki/%E5%AD%90%E7%A8%8B%E5%BA%8F">子程序</a>，允许执行被挂起与被恢复。相对子例程而言，协程更为一般和灵活，但在实践中使用没有子例程那样广泛。协程更适合于用来实现彼此熟悉的程序组件，如<a href="https://zh.wikipedia.org/wiki/%E5%8D%8F%E4%BD%9C%E5%BC%8F%E5%A4%9A%E4%BB%BB%E5%8A%A1">协作式多任务</a>、<a href="https://zh.wikipedia.org/wiki/%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86">异常处理</a>、<a href="https://zh.wikipedia.org/wiki/%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF">事件循环</a>、<a href="https://zh.wikipedia.org/wiki/%E8%BF%AD%E4%BB%A3%E5%99%A8">迭代器</a>、<a href="https://zh.wikipedia.org/wiki/%E6%83%B0%E6%80%A7%E6%B1%82%E5%80%BC">无限列表</a>和<a href="https://zh.wikipedia.org/wiki/%E7%AE%A1%E9%81%93_(%E8%BD%AF%E4%BB%B6)">管道</a>。</p>
+</blockquote>
+<p>其中，最为关键的作用就是<strong>允许执行被挂起与被恢复</strong>。那么python的协程从无到有的过程是什么样的呢？</p>
+<h4 id="pep-255--引入生成器">PEP 255  引入生成器</h4>
+<p>时间回到2001年，随着<a href="https://www.python.org/dev/peps/pep-0255/">PEP 255</a>生成器被引入python2.2主要用来解决python中可迭代对象的惰性求值。</p>
+<h4 id="yield">yield</h4>
+<p>不过直到python2.5才能通过关键字<code>yield</code> 来将代码执行片段暂停，这对于迭代器节省内存和用python来控制无限列表非常有用。</p>
+<p>仅仅能够将代码执行片段暂停，节省内存，无限列表这些特性都仅仅是对python中可迭代对象的加强。</p>
+<h4 id="pep-342">PEP 342</h4>
+<p>直到<a href="https://www.python.org/dev/peps/pep-0342/">Coroutines via Enhanced Generators</a>，这个提案最重要的是引入两个新的特性：</p>
+<ol>
+<li><code>send()</code>，这就让程序员不仅仅能够将代码执行片段暂停，并且可以在特定的时刻通过<code>send()</code>恢复代码片段的执行或者通过send(param)可以将指定的参数传入，更好地控制代码的执行流程</li>
+<li>允许yield可以在<code>try/finally</code>片段中使用，解决了协程中异常的捕获</li>
+<li>对生成器增加新的方法<code>trow()</code>，解决了协程中异常的popup</li>
+</ol>
+<h4 id="pep-380">PEP 380</h4>
+<p>python3.3在这个提案中，引入了<code>yiled from</code>让程序员能够更轻松地去实现生成器/协程，并且它能够让你更轻松地将一系列的协程串联起来。</p>
+<h4 id="pep-3156">PEP 3156</h4>
+<p>asyncio模块作为标准库引入，于此一起引入的除了<code>event loop</code>概念以及关于<code>event loop</code>的api，还有<code>Future</code>、<code>Transport</code>、<code>Protocols</code>, 并且增加了对协程的流程控制。</p>
+<h4 id="pep-492">PEP 492</h4>
+<p>引入<code>async/await</code>语法糖，让程序员异步编程就像写同步代码一样容易。</p>
+<h3 id="event-loop">event loop</h3>
+<p>讲到这里，asyncio模块的使用已经和现在我们平常使用的场景比较相近了。那么问题来了，为什么使用asyncio就能够让python在web编程中提升并发能力呢？</p>
+<p>这里就不得不引出<code>event loop</code>事件循环。事件循环在编程领域并不少见，简单来说，事件循环可以理解为一个调度器，它会关注指定的一些事件(比如文件描述符是否可读)，在事件到达指定状态的时候，它负责帮忙执行另外一段指定的代码片段。</p>
+<p>在python中，asyncio模块提供了<strong>event loop</strong>，在实际使用中，asyncio利用<a href="https://docs.python.org/3/library/selectors.html#module-selectors">selectors模块</a>来获取一个socket是否已经准备好读取/写入数据。这样，就可以在io阻塞的时候，event loop就可以自动的把cpu资源交给其他代码段执行，在io准备好之后，在进行数据的读取/写入。</p>
+<h2 id="asyncio生态">asyncio生态</h2>
+<p>和一些其他python web开发者交流发现，目前使用asyncio的并不是很多，大家更多地还是使用flask、Django这些框架。不过我们公司一直在使用tornado+asyncio生态进行开发。我们常用到的一些库有以下这些：</p>
+<ul>
+<li>Web框架：tornado5.1，tornado在5.0之后就默认使用了asyncio的event loop</li>
+<li>mongo：<a href="https://motor.readthedocs.io/en/stable/">motor</a></li>
+<li>redis: <a href="https://github.com/aio-libs/aioredis">aioredis</a></li>
+<li>Rabbitmq: <a href="https://aio-pika.readthedocs.io/en/latest/">aio-pika</a></li>
+</ul>
+<p>在出现一些第三方的中间件没有提供支持asyncio的驱动的时候，一般可以通过<code>run_in_excutor</code>来避免io操作对主进程的阻塞。</p>
+<h2 id="参考文章">参考文章</h2>
+<ol>
+<li><a href="https://snarky.ca/how-the-heck-does-async-await-work-in-python-3-5/">How the heck does async/await work in Python 3.5</a></li>
+<li><a href="https://docs.python.org/zh-cn/3/library/asyncio.html">asyncio官方文档</a></li>
+<li><a href="https://asyncio-notes.readthedocs.io/en/latest/asyncio-history.html">History of asyncio</a></li>
+<li><a href="https://github.com/python/asyncio">asyncio项目地址</a></li>
+<li><a href="https://www.youtube.com/watch?v=lYe8W04ERnY">David Beazley&rsquo;s Python Brasil 2015 keynote</a></li>
+</ol>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">rgozi</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-07-01
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/python/">python</a>
+          <a href="/tags/asyncio/">asyncio</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/mongo-can-not-add-session-to-cache-%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E5%92%8C%E8%A7%A3%E5%86%B3/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">mongo can not add session to cache问题排查和解决</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/%E8%BF%91%E6%9C%9F%E7%9A%84%E6%83%B3%E6%B3%95%E5%92%8C%E8%A7%84%E5%88%92/">
+            <span class="next-text nav-default">近期的想法和规划</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="eclipse_sv@whu.edu.cn" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/iamwm" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.douban.com/people/Eclipsesss/" class="iconfont icon-douban" title="douban"></a>
+      <a href="https://space.bilibili.com/44041814/" class="iconfont icon-bilibili" title="bilibili"></a>
+  <a href="https://rgozi.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>rgozi</span>
+  </span>
+  <div class="container">
+        备案号：<a href="https://beian.miit.gov.cn/" target="_blank">鄂ICP备20003011号-1</a>
+    </div>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-173630995-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

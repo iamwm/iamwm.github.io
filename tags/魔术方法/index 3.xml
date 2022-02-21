@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>魔术方法 on 搬砖工的日常</title>
+    <link>https://rgozi.com/tags/%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95/</link>
+    <description>Recent content in 魔术方法 on 搬砖工的日常</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 22 Aug 2017 09:23:12 +0000</lastBuildDate><atom:link href="https://rgozi.com/tags/%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>python魔术方法指南[转]</title>
+      <link>https://rgozi.com/post/python%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95%E6%8C%87%E5%8D%97/</link>
+      <pubDate>Tue, 22 Aug 2017 09:23:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/python%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95%E6%8C%87%E5%8D%97/</guid>
+      <description>&lt;p&gt;转自&lt;a href=&#34;http://pycoders-weekly-chinese.readthedocs.io/en/latest/issue6/a-guide-to-pythons-magic-methods.html&#34;&gt;Python 魔术方法指南&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

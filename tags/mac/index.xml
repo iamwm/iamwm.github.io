@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>mac on 搬砖工的日常</title>
+    <link>https://rgozi.com/tags/mac/</link>
+    <description>Recent content in mac on 搬砖工的日常</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Thu, 09 Nov 2017 13:45:39 +0000</lastBuildDate><atom:link href="https://rgozi.com/tags/mac/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用docker安装jenkins</title>
+      <link>https://rgozi.com/post/%E4%BD%BF%E7%94%A8docker%E5%AE%89%E8%A3%85jenkins/</link>
+      <pubDate>Thu, 09 Nov 2017 13:45:39 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/%E4%BD%BF%E7%94%A8docker%E5%AE%89%E8%A3%85jenkins/</guid>
+      <description>&lt;p&gt;最近在学习jenkins相关的东西，想在自己电脑上安装一套jenkins环境，发现可以通过docker来完成这个任务，下面主要记录一下安装过程。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

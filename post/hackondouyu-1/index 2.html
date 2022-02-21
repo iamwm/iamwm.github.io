@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Hack On Douyu -- 1 - 搬砖工的日常</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="rgozi" /><meta name="description" content="距离上次更新又有一段时间了，毕业答辩之后，确实和同学们一起出去嗨了一段时间，由于还没入职，在家清净的环境中可以好好学一下一直感兴趣的东西啦。
+" /><meta name="keywords" content="搬砖工, 技术博客" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.84.1 with theme even" />
+
+
+<link rel="canonical" href="https://rgozi.com/post/hackondouyu-1/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Hack On Douyu -- 1" />
+<meta property="og:description" content="距离上次更新又有一段时间了，毕业答辩之后，确实和同学们一起出去嗨了一段时间，由于还没入职，在家清净的环境中可以好好学一下一直感兴趣的东西啦。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://rgozi.com/post/hackondouyu-1/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2016-07-20T21:52:12&#43;00:00" />
+<meta property="article:modified_time" content="2016-07-20T21:52:12&#43;00:00" />
+
+<meta itemprop="name" content="Hack On Douyu -- 1">
+<meta itemprop="description" content="距离上次更新又有一段时间了，毕业答辩之后，确实和同学们一起出去嗨了一段时间，由于还没入职，在家清净的环境中可以好好学一下一直感兴趣的东西啦。"><meta itemprop="datePublished" content="2016-07-20T21:52:12&#43;00:00" />
+<meta itemprop="dateModified" content="2016-07-20T21:52:12&#43;00:00" />
+<meta itemprop="wordCount" content="2392">
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Hack On Douyu -- 1"/>
+<meta name="twitter:description" content="距离上次更新又有一段时间了，毕业答辩之后，确实和同学们一起出去嗨了一段时间，由于还没入职，在家清净的环境中可以好好学一下一直感兴趣的东西啦。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">搬砖工的日常</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">搬砖工的日常</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Hack On Douyu -- 1</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2016-07-20 </span>
+        <div class="post-category">
+            <a href="/categories/coding/"> coding </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents"></nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>距离上次更新又有一段时间了，毕业答辩之后，确实和同学们一起出去嗨了一段时间，由于还没入职，在家清净的环境中可以好好学一下一直感兴趣的东西啦。</p>
+<p>一直对网络爬虫很感兴趣，所以就开始学习很想学的python，用了之后也是感觉非常棒。期间抓过包括知乎、豆瓣、煎蛋还有个壁纸网站的数据，而抓去最多的还是直播网站斗鱼。数据抓下来之后如何使用是个问题，我的办法是用这些数据通过python的web框架flask搭建一个网站，也算是这段时间的学习成果。网站的构建自然少不了前端，也是硬着头皮学习了bootstrap，了解了一些css、javascript的知识。这段时间的学习成果主要是<a href="https://github.com/wangmengcn/LearningFlask">LearningFlask</a>、<a href="https://github.com/wangmengcn/BeautifulPics">BeautifulPics</a>、<a href="https://github.com/wangmengcn/Danmu">Danmu</a>和<a href="https://github.com/wangmengcn/DouyuFan">DouyuFan</a>这四个项目（由于也是刚接触python，代码质量可能不是太高 －。－）。而最后这个DouyuFan算是对前边几个项目的总结。DouyuFan主要是通过斗鱼网站弹幕信息的抓取，获取直播礼物的分布情况，历史数据记录以及当前最热门房间信息。
+接下来我就用三次分别介绍我在数据抓取、后台搭建以及前后端数据通讯中学到的知识和遇到的问题。</p>
+<h1 id="开播房间数据获取">开播房间数据获取</h1>
+<p>使用python抓取过数据的同学肯定对<a href="http://docs.python-requests.org/en/master/">request</a>和<a href="https://www.crummy.com/software/BeautifulSoup/bs4/doc/">Beautiful Soup</a>这两个库不陌生。
+号称http for humans的requests缺失不是沽名钓誉，他在页面数据的抓取上确实简单明了。
+通常情况下，requests和Beautiful Soup配合使用。以对斗鱼当前直播房间的抓取为例：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># -*- coding: utf-8 -*-
+from bs4 import BeautifulSoup  # 导入BeautifulSoup，提取网页中目标元素
+import re						# re 正则表达式，在快速查找和过滤元素中有出色表现
+import requests					# reqeusts 用以获取页面数据
+from datetime import datetime
+from pymongo import MongoClient
+</code></pre></td></tr></table>
+</div>
+</div><p>首先导入上述这几个库，然后可以伪造http请求header，这样可以减少爬虫被服务器ban掉的可能。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">HOST = &#34;http://www.douyu.com&#34;
+Directory_url = &#34;http://www.douyu.com/directory?isAjax=1&#34;
+Qurystr = &#34;/?page=1&amp;isAjax=1&#34;
+
+agent = &#39;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.86 Safari/537.36&#39;
+accept = &#34;text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8&#34;
+connection = &#34;keep-alive&#34;
+CacheControl = &#34;no-cache&#34;
+UpgradeInsecureRequests = 1
+headers = {
+    &#39;User-Agent&#39;: agent,
+    &#39;Host&#39;: HOST,
+    &#39;Accept&#39;: accept,
+    &#39;Cache-Control&#39;: CacheControl,
+    &#39;Connection&#39;: connection,
+    &#39;Upgrade-InsecureRequests&#39;: UpgradeInsecureRequests
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>然后就是开播房间数据的获取和入库：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">cli = MongoClient(host=&#34;ip&#34;,port=xxx)
+db = cli[&#34;Douyu&#34;]
+col = db[&#34;Roominfo&#34;]
+
+
+def get_roominfo(data):
+    if data:
+        firstpage = BeautifulSoup(data)
+        roomlist = firstpage.select(&#39;li&#39;)
+        print len(roomlist)
+        if roomlist:
+            for room in roomlist:
+                try:
+                    roomid = room[&#34;data-rid&#34;]
+                    roomtitle = room.a[&#34;title&#34;]
+                    roomtitle = roomtitle.encode(&#39;utf-8&#39;)
+                    roomowner = room.select(&#34;p &gt; span&#34;)
+                    roomtag = room.select(&#34;div &gt; span&#34;)
+                    roomimg = room.a
+                    roomtag = roomtag[0].string
+                    date = datetime.now()
+                    # now = datetime.datetime(
+                    # date.year, date.month, date.day, date.hour, date.minute)
+                    if len(roomowner) == 2:
+                        zbname = roomowner[0].string
+                        audience = roomowner[1].get_text()
+                        audience = audience.encode(&#39;utf-8&#39;).decode(&#39;utf-8&#39;)
+                        image = roomimg.span.img[&#34;data-original&#34;]
+                        word = u&#34;万&#34;    # 在页面中获取的房间人数以万为单位的str需要转换为int型，以便入库
+                        if word in audience:
+                            r = re.compile(r&#39;(\d+)(\.?)(\d*)&#39;)
+                            data = r.match(audience).group(0)
+                            audience = int(float(data) * 10000)
+                        else:
+                            audience = int(audience)
+                        roominfo = {
+                            &#34;roomid&#34;: int(roomid),
+                            &#34;roomtitle&#34;: roomtitle,
+                            &#34;anchor&#34;: zbname,
+                            &#34;audience&#34;: audience,
+                            &#34;tag&#34;: roomtag,
+                            &#34;date&#34;: date,
+                            &#34;img&#34; : image
+                        }
+                        col.insert_one(roominfo)
+                    # print roomid,&#34;:&#34;,roomtitle
+                except Exception, e:
+                    pass
+
+
+def insert_info():
+    session = requests.session()
+    pagecontent = session.get(Directory_url).text
+    pagesoup = BeautifulSoup(pagecontent)
+    games = pagesoup.select(&#39;a&#39;)
+    col.drop()
+    for game in games:
+        links = game[&#34;href&#34;]
+        gameurl = HOST + links + Qurystr
+        print gameurl
+        gamedata = session.get(gameurl).text
+        get_roominfo(gamedata)
+</code></pre></td></tr></table>
+</div>
+</div><p>我平常习惯使用mongodb作为数据存储，首先建立与数据库的连接，然后通过获取<a href="http://www.douyu.com/directory?isAjax=1">斗鱼当前所有房间分类</a>，接着逐一获取每个分类中开播的房间数据，并记录每个房间的roomid（房间号，斗鱼直播间唯一标识）、roomtitle（房间标题）、anchor（主播id）、audience（观众人数）、tag（房间所属分类）、date（数据获取时间）、img（直播间封面图片）。通过定时执行此脚本，可以获取当前观众人数最多的房间(通常大都是lol的直播 ＝。＝)，也可以在之后通过roomid查询到关于对应直播间必要的信息。</p>
+<h1 id="弹幕数据获取">弹幕数据获取</h1>
+<p>经常看斗鱼直播的同学肯定知道“弹幕大神”这个词，我最初想要抓取弹幕的目的是想通过大量的获取直播间弹幕数据进行一些自然语言分析，由于那些东西一直没学习，也就没再弄，但是，通过弹幕，可以获取到在全频道广播的火箭信息，长时间监测这些数据应该也是一件有意思的事情。
+说干就干，想要获取到直播间的弹幕数据不同于上边所说的页面数据抓取，好在斗鱼官方也提供了一个获取弹幕的途径(斗鱼弹幕服务器第三方接入协议)[http://dev-bbs.douyutv.com/forum.php?mod=viewthread&amp;tid=109]，文档中对如何获取弹幕数据、以及弹幕信息类型有具体的说明，这也大大降低了获取弹幕数据的难度。
+看过这个协议之后，通过建立与弹幕服务器的tcp连接，可以不断的获取到弹幕数据，我使用的是(socket)[https://docs.python.org/2/library/socket.html]这个库。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">HOST = &#39;openbarrage.douyutv.com&#39;
+PORT = 8601
+RID = 97376
+LOGIN_INFO = &#34;type@=loginreq/username@=qq_aPSMdfM5&#34; + \
+    &#34;/password@=1234567890123456/roomid@=&#34; + str(RID) + &#34;/&#34;
+JION_GROUP = &#34;type@=joingroup/rid@=&#34; + str(RID) + &#34;/gid@=-9999&#34; + &#34;/&#34;
+ROOM_ID = &#34;type@=qrl/rid@=&#34; + str(RID) + &#34;/&#34;
+KEEP_ALIVE = &#34;type@=keeplive/tick@=&#34; + \
+    str(int(time.time())) + &#34;/vbw@=0/k@=19beba41da8ac2b4c7895a66cab81e23/&#34;
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+</code></pre></td></tr></table>
+</div>
+</div><p>在这里，需要注意几个变量： host port roomid gid 。其中HOST是弹幕服务器地址，port是对外开放的端口，roomid则是主播间对应的id，gid是要加入的弹幕频道，－9999频道可以获取到所有弹幕，也就是“海量弹幕”频道。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">def get_Hotroom():
+    hotroom = roomcol.find().limit(1).sort(
+        [(&#34;audience&#34;, pymongo.DESCENDING), (&#34;date&#34;, pymongo.DESCENDING)])
+    for item in hotroom:
+        return item[&#34;roomid&#34;]
+        
+def create_Conn():
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.connect((HOST, PORT))
+    RID = get_Hotroom()
+    print &#34;当前最热房间:&#34;, RID
+    LOGIN_INFO = &#34;type@=loginreq/username@=qq_aPSMdfM5&#34; + \
+        &#34;/password@=1234567890123456/roomid@=&#34; + str(RID) + &#34;/&#34;
+    print LOGIN_INFO
+    JION_GROUP = &#34;type@=joingroup/rid@=&#34; + str(RID) + &#34;/gid@=-9999&#34; + &#34;/&#34;
+    print JION_GROUP
+    s.sendall(tranMsg(LOGIN_INFO))
+    s.sendall(tranMsg(JION_GROUP))
+    return s
+</code></pre></td></tr></table>
+</div>
+</div><p>之后，通过get_Hotroom()获取到当前最热门房间（人数最多的房间），通过create_Conn()建立与服务器的连接。连接建立之后就可以开心的获取并保存弹幕数据了:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">def insert_msg(sock):
+    sendtime = 0
+    while True:
+        if sendtime % 20 == 0:
+            print &#34;----------Keep Alive---------&#34;
+            try:
+                sock.sendall(tranMsg(KEEP_ALIVE))
+            except socket.error:
+                print &#34;alive error&#34;
+                sock = create_Conn()
+                insert_msg(sock)
+        sendtime += 1
+        print sendtime
+        try:
+            data = sock.recv(4000)
+            if data:
+                strdata = repr(data)
+                if &#34;type@=spbc&#34; in strdata:
+                    get_rocket(data)
+                if &#34;type@=chatmsg&#34; in strdata:
+                    get_chatmsg(data)
+        except socket.error:
+            print &#34;chat error&#34;
+            sock = create_Conn()
+            insert_msg(sock)
+        time.sleep(1)
+</code></pre></td></tr></table>
+</div>
+</div><p>每20秒向服务器发送一条KEEP_ALIVE用以使连接保活，通过获取到的数据特点，将普通聊天弹幕和火箭广播弹幕区分开来，并且保存在不同的数据库中从而为之后提供不同的用途。
+弹幕数据获取大致是这样的：
+<img src="https://rgozi.com/pics/Douyufandanmu.gif" alt="获取弹幕"></p>
+<h1 id="后续内容">后续内容</h1>
+<p>至此，此项目的数据获取工作已经完成，在接下来两篇内容会分别介绍如何使用这些数据构建页面，以及在此过程中遇到的问题。</p>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">rgozi</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2016-07-20
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/post/hackondouyu-2/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Hack On Douyu -- 2</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/%E5%88%A9%E7%94%A8redis%E5%88%B6%E4%BD%9C%E9%A1%B5%E9%9D%A2%E8%AE%BF%E9%97%AE%E8%AE%A1%E6%95%B0%E5%99%A8/">
+            <span class="next-text nav-default">利用redis制作页面访问计数器</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="eclipse_sv@whu.edu.cn" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/iamwm" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.douban.com/people/Eclipsesss/" class="iconfont icon-douban" title="douban"></a>
+      <a href="https://space.bilibili.com/44041814/" class="iconfont icon-bilibili" title="bilibili"></a>
+  <a href="https://rgozi.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">rgozi</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-173630995-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,731 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on 搬砖工的日常</title>
+    <link>https://rgozi.com/tags/</link>
+    <description>Recent content in Tags on 搬砖工的日常</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 13 Feb 2022 09:27:12 +0000</lastBuildDate><atom:link href="https://rgozi.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>2PL</title>
+      <link>https://rgozi.com/tags/2pl/</link>
+      <pubDate>Sun, 13 Feb 2022 09:27:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/2pl/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ACID</title>
+      <link>https://rgozi.com/tags/acid/</link>
+      <pubDate>Sun, 13 Feb 2022 09:27:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/acid/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>DDIA</title>
+      <link>https://rgozi.com/tags/ddia/</link>
+      <pubDate>Sun, 13 Feb 2022 09:27:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/ddia/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>事务</title>
+      <link>https://rgozi.com/tags/%E4%BA%8B%E5%8A%A1/</link>
+      <pubDate>Sun, 13 Feb 2022 09:27:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/%E4%BA%8B%E5%8A%A1/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>数据密集型系统设计</title>
+      <link>https://rgozi.com/tags/%E6%95%B0%E6%8D%AE%E5%AF%86%E9%9B%86%E5%9E%8B%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/</link>
+      <pubDate>Sun, 13 Feb 2022 09:27:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/%E6%95%B0%E6%8D%AE%E5%AF%86%E9%9B%86%E5%9E%8B%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>读书笔记</title>
+      <link>https://rgozi.com/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</link>
+      <pubDate>Sun, 13 Feb 2022 09:27:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>sharding</title>
+      <link>https://rgozi.com/tags/sharding/</link>
+      <pubDate>Sat, 11 Sep 2021 09:27:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/sharding/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>分布式系统</title>
+      <link>https://rgozi.com/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/</link>
+      <pubDate>Sat, 11 Sep 2021 09:27:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>分片</title>
+      <link>https://rgozi.com/tags/%E5%88%86%E7%89%87/</link>
+      <pubDate>Sat, 11 Sep 2021 09:27:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/%E5%88%86%E7%89%87/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>can not add session to cache</title>
+      <link>https://rgozi.com/tags/can-not-add-session-to-cache/</link>
+      <pubDate>Tue, 10 Aug 2021 21:27:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/can-not-add-session-to-cache/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>mongodb</title>
+      <link>https://rgozi.com/tags/mongodb/</link>
+      <pubDate>Tue, 10 Aug 2021 21:27:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/mongodb/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>线上问题</title>
+      <link>https://rgozi.com/tags/%E7%BA%BF%E4%B8%8A%E9%97%AE%E9%A2%98/</link>
+      <pubDate>Tue, 10 Aug 2021 21:27:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/%E7%BA%BF%E4%B8%8A%E9%97%AE%E9%A2%98/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>副本集</title>
+      <link>https://rgozi.com/tags/%E5%89%AF%E6%9C%AC%E9%9B%86/</link>
+      <pubDate>Sat, 24 Jul 2021 09:27:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/%E5%89%AF%E6%9C%AC%E9%9B%86/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>复制</title>
+      <link>https://rgozi.com/tags/%E5%A4%8D%E5%88%B6/</link>
+      <pubDate>Sat, 24 Jul 2021 09:27:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/%E5%A4%8D%E5%88%B6/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>asyncio</title>
+      <link>https://rgozi.com/tags/asyncio/</link>
+      <pubDate>Thu, 01 Jul 2021 09:27:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/asyncio/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>python</title>
+      <link>https://rgozi.com/tags/python/</link>
+      <pubDate>Thu, 01 Jul 2021 09:27:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/python/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>数据的存储与检索</title>
+      <link>https://rgozi.com/tags/%E6%95%B0%E6%8D%AE%E7%9A%84%E5%AD%98%E5%82%A8%E4%B8%8E%E6%A3%80%E7%B4%A2/</link>
+      <pubDate>Sat, 05 Jun 2021 09:27:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/%E6%95%B0%E6%8D%AE%E7%9A%84%E5%AD%98%E5%82%A8%E4%B8%8E%E6%A3%80%E7%B4%A2/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>数据模型与查询</title>
+      <link>https://rgozi.com/tags/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%9F%A5%E8%AF%A2/</link>
+      <pubDate>Sat, 15 May 2021 09:27:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%9F%A5%E8%AF%A2/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>CS:APP</title>
+      <link>https://rgozi.com/tags/csapp/</link>
+      <pubDate>Sat, 17 Apr 2021 09:27:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/csapp/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>异常控制流</title>
+      <link>https://rgozi.com/tags/%E5%BC%82%E5%B8%B8%E6%8E%A7%E5%88%B6%E6%B5%81/</link>
+      <pubDate>Sat, 17 Apr 2021 09:27:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/%E5%BC%82%E5%B8%B8%E6%8E%A7%E5%88%B6%E6%B5%81/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>操作系统</title>
+      <link>https://rgozi.com/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</link>
+      <pubDate>Sat, 17 Apr 2021 09:27:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>进程</title>
+      <link>https://rgozi.com/tags/%E8%BF%9B%E7%A8%8B/</link>
+      <pubDate>Sun, 07 Mar 2021 09:27:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/%E8%BF%9B%E7%A8%8B/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>aggregation</title>
+      <link>https://rgozi.com/tags/aggregation/</link>
+      <pubDate>Sun, 19 Jul 2020 09:27:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/aggregation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>瞎写</title>
+      <link>https://rgozi.com/tags/%E7%9E%8E%E5%86%99/</link>
+      <pubDate>Tue, 07 Apr 2020 16:33:10 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/%E7%9E%8E%E5%86%99/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>apt</title>
+      <link>https://rgozi.com/tags/apt/</link>
+      <pubDate>Thu, 01 Mar 2018 13:45:39 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/apt/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>npm</title>
+      <link>https://rgozi.com/tags/npm/</link>
+      <pubDate>Thu, 01 Mar 2018 13:45:39 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/npm/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>pip</title>
+      <link>https://rgozi.com/tags/pip/</link>
+      <pubDate>Thu, 01 Mar 2018 13:45:39 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/pip/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ubuntu</title>
+      <link>https://rgozi.com/tags/ubuntu/</link>
+      <pubDate>Thu, 01 Mar 2018 13:45:39 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/ubuntu/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>yarn</title>
+      <link>https://rgozi.com/tags/yarn/</link>
+      <pubDate>Thu, 01 Mar 2018 13:45:39 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/yarn/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>cesium</title>
+      <link>https://rgozi.com/tags/cesium/</link>
+      <pubDate>Fri, 23 Feb 2018 13:45:39 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/cesium/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>react</title>
+      <link>https://rgozi.com/tags/react/</link>
+      <pubDate>Fri, 23 Feb 2018 13:45:39 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/react/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>redux</title>
+      <link>https://rgozi.com/tags/redux/</link>
+      <pubDate>Fri, 23 Feb 2018 13:45:39 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/redux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>总结</title>
+      <link>https://rgozi.com/tags/%E6%80%BB%E7%BB%93/</link>
+      <pubDate>Tue, 09 Jan 2018 13:45:39 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/%E6%80%BB%E7%BB%93/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>gitlab</title>
+      <link>https://rgozi.com/tags/gitlab/</link>
+      <pubDate>Fri, 17 Nov 2017 22:41:24 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/gitlab/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>jenkins</title>
+      <link>https://rgozi.com/tags/jenkins/</link>
+      <pubDate>Fri, 17 Nov 2017 22:41:24 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/jenkins/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>自动化</title>
+      <link>https://rgozi.com/tags/%E8%87%AA%E5%8A%A8%E5%8C%96/</link>
+      <pubDate>Fri, 17 Nov 2017 22:41:24 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/%E8%87%AA%E5%8A%A8%E5%8C%96/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>docker</title>
+      <link>https://rgozi.com/tags/docker/</link>
+      <pubDate>Thu, 09 Nov 2017 13:45:39 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/docker/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>mac</title>
+      <link>https://rgozi.com/tags/mac/</link>
+      <pubDate>Thu, 09 Nov 2017 13:45:39 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/mac/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>pip2pi</title>
+      <link>https://rgozi.com/tags/pip2pi/</link>
+      <pubDate>Tue, 24 Oct 2017 15:27:54 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/pip2pi/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>离线环境</title>
+      <link>https://rgozi.com/tags/%E7%A6%BB%E7%BA%BF%E7%8E%AF%E5%A2%83/</link>
+      <pubDate>Tue, 24 Oct 2017 15:27:54 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/%E7%A6%BB%E7%BA%BF%E7%8E%AF%E5%A2%83/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>shadowsock</title>
+      <link>https://rgozi.com/tags/shadowsock/</link>
+      <pubDate>Fri, 13 Oct 2017 22:41:24 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/shadowsock/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>vultr</title>
+      <link>https://rgozi.com/tags/vultr/</link>
+      <pubDate>Fri, 13 Oct 2017 22:41:24 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/vultr/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>http proxy</title>
+      <link>https://rgozi.com/tags/http-proxy/</link>
+      <pubDate>Mon, 28 Aug 2017 13:23:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/http-proxy/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>proxyhunter</title>
+      <link>https://rgozi.com/tags/proxyhunter/</link>
+      <pubDate>Mon, 28 Aug 2017 13:23:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/proxyhunter/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>requests</title>
+      <link>https://rgozi.com/tags/requests/</link>
+      <pubDate>Mon, 28 Aug 2017 13:23:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/requests/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>oop</title>
+      <link>https://rgozi.com/tags/oop/</link>
+      <pubDate>Tue, 22 Aug 2017 09:23:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/oop/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>魔术方法</title>
+      <link>https://rgozi.com/tags/%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95/</link>
+      <pubDate>Tue, 22 Aug 2017 09:23:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>可变类型</title>
+      <link>https://rgozi.com/tags/%E5%8F%AF%E5%8F%98%E7%B1%BB%E5%9E%8B/</link>
+      <pubDate>Sun, 20 Aug 2017 23:23:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/%E5%8F%AF%E5%8F%98%E7%B1%BB%E5%9E%8B/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>深浅拷贝</title>
+      <link>https://rgozi.com/tags/%E6%B7%B1%E6%B5%85%E6%8B%B7%E8%B4%9D/</link>
+      <pubDate>Sun, 20 Aug 2017 23:23:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/%E6%B7%B1%E6%B5%85%E6%8B%B7%E8%B4%9D/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>读书</title>
+      <link>https://rgozi.com/tags/%E8%AF%BB%E4%B9%A6/</link>
+      <pubDate>Sun, 20 Aug 2017 23:23:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/%E8%AF%BB%E4%B9%A6/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>generator</title>
+      <link>https://rgozi.com/tags/generator/</link>
+      <pubDate>Thu, 10 Aug 2017 19:23:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/generator/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>iterable</title>
+      <link>https://rgozi.com/tags/iterable/</link>
+      <pubDate>Thu, 10 Aug 2017 19:23:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/iterable/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>iterator</title>
+      <link>https://rgozi.com/tags/iterator/</link>
+      <pubDate>Thu, 10 Aug 2017 19:23:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/iterator/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>可迭代对象</title>
+      <link>https://rgozi.com/tags/%E5%8F%AF%E8%BF%AD%E4%BB%A3%E5%AF%B9%E8%B1%A1/</link>
+      <pubDate>Thu, 10 Aug 2017 19:23:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/%E5%8F%AF%E8%BF%AD%E4%BB%A3%E5%AF%B9%E8%B1%A1/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>生成器</title>
+      <link>https://rgozi.com/tags/%E7%94%9F%E6%88%90%E5%99%A8/</link>
+      <pubDate>Thu, 10 Aug 2017 19:23:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/%E7%94%9F%E6%88%90%E5%99%A8/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>迭代器</title>
+      <link>https://rgozi.com/tags/%E8%BF%AD%E4%BB%A3%E5%99%A8/</link>
+      <pubDate>Thu, 10 Aug 2017 19:23:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/%E8%BF%AD%E4%BB%A3%E5%99%A8/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>itertools</title>
+      <link>https://rgozi.com/tags/itertools/</link>
+      <pubDate>Wed, 09 Aug 2017 19:23:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/itertools/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>文档</title>
+      <link>https://rgozi.com/tags/%E6%96%87%E6%A1%A3/</link>
+      <pubDate>Wed, 09 Aug 2017 19:23:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/%E6%96%87%E6%A1%A3/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>标准库</title>
+      <link>https://rgozi.com/tags/%E6%A0%87%E5%87%86%E5%BA%93/</link>
+      <pubDate>Wed, 09 Aug 2017 19:23:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/%E6%A0%87%E5%87%86%E5%BA%93/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>classmethod</title>
+      <link>https://rgozi.com/tags/classmethod/</link>
+      <pubDate>Thu, 03 Aug 2017 11:31:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/classmethod/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>staticmethod</title>
+      <link>https://rgozi.com/tags/staticmethod/</link>
+      <pubDate>Thu, 03 Aug 2017 11:31:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/staticmethod/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>celery</title>
+      <link>https://rgozi.com/tags/celery/</link>
+      <pubDate>Wed, 19 Jul 2017 14:05:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/celery/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>fabric</title>
+      <link>https://rgozi.com/tags/fabric/</link>
+      <pubDate>Wed, 19 Jul 2017 14:05:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/fabric/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>C&#43;&#43;</title>
+      <link>https://rgozi.com/tags/c&#43;&#43;/</link>
+      <pubDate>Fri, 30 Jun 2017 17:10:30 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/c&#43;&#43;/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>gdal</title>
+      <link>https://rgozi.com/tags/gdal/</link>
+      <pubDate>Fri, 30 Jun 2017 17:10:30 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/gdal/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>vs2017</title>
+      <link>https://rgozi.com/tags/vs2017/</link>
+      <pubDate>Fri, 30 Jun 2017 17:10:30 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/vs2017/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>zlib</title>
+      <link>https://rgozi.com/tags/zlib/</link>
+      <pubDate>Fri, 30 Jun 2017 17:10:30 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/zlib/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>爬虫</title>
+      <link>https://rgozi.com/tags/%E7%88%AC%E8%99%AB/</link>
+      <pubDate>Sun, 29 Jan 2017 11:11:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/%E7%88%AC%E8%99%AB/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>auth</title>
+      <link>https://rgozi.com/tags/auth/</link>
+      <pubDate>Tue, 17 Jan 2017 11:11:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/auth/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>flask</title>
+      <link>https://rgozi.com/tags/flask/</link>
+      <pubDate>Wed, 28 Dec 2016 16:11:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/flask/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>socketio</title>
+      <link>https://rgozi.com/tags/socketio/</link>
+      <pubDate>Wed, 28 Dec 2016 16:11:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/socketio/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>pythonic</title>
+      <link>https://rgozi.com/tags/pythonic/</link>
+      <pubDate>Mon, 28 Nov 2016 14:09:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/pythonic/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>github</title>
+      <link>https://rgozi.com/tags/github/</link>
+      <pubDate>Sun, 06 Nov 2016 18:33:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/github/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>hexo</title>
+      <link>https://rgozi.com/tags/hexo/</link>
+      <pubDate>Sun, 06 Nov 2016 18:33:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/hexo/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Node.js</title>
+      <link>https://rgozi.com/tags/node.js/</link>
+      <pubDate>Mon, 05 Oct 2015 22:00:45 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/node.js/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Redis</title>
+      <link>https://rgozi.com/tags/redis/</link>
+      <pubDate>Mon, 05 Oct 2015 22:00:45 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/redis/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Nginx</title>
+      <link>https://rgozi.com/tags/nginx/</link>
+      <pubDate>Mon, 17 Aug 2015 22:41:24 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/nginx/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>php</title>
+      <link>https://rgozi.com/tags/php/</link>
+      <pubDate>Fri, 14 Aug 2015 14:25:50 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/php/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Linux命令</title>
+      <link>https://rgozi.com/tags/linux%E5%91%BD%E4%BB%A4/</link>
+      <pubDate>Fri, 07 Aug 2015 14:50:19 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/linux%E5%91%BD%E4%BB%A4/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Lua</title>
+      <link>https://rgozi.com/tags/lua/</link>
+      <pubDate>Tue, 04 Aug 2015 09:14:27 +0000</pubDate>
+      
+      <guid>https://rgozi.com/tags/lua/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>oop on 搬砖工的日常</title>
+    <link>https://rgozi.com/tags/oop/</link>
+    <description>Recent content in oop on 搬砖工的日常</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 22 Aug 2017 09:23:12 +0000</lastBuildDate><atom:link href="https://rgozi.com/tags/oop/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>python魔术方法指南[转]</title>
+      <link>https://rgozi.com/post/python%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95%E6%8C%87%E5%8D%97/</link>
+      <pubDate>Tue, 22 Aug 2017 09:23:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/python%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95%E6%8C%87%E5%8D%97/</guid>
+      <description>&lt;p&gt;转自&lt;a href=&#34;http://pycoders-weekly-chinese.readthedocs.io/en/latest/issue6/a-guide-to-pythons-magic-methods.html&#34;&gt;Python 魔术方法指南&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>python中@classmethod和@staticmethod的理解</title>
+      <link>https://rgozi.com/post/%E5%85%B3%E4%BA%8Epython%E7%9A%84classmethod%E5%92%8Cstaticmethod%E7%9A%84%E7%90%86%E8%A7%A3/</link>
+      <pubDate>Thu, 03 Aug 2017 11:31:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/%E5%85%B3%E4%BA%8Epython%E7%9A%84classmethod%E5%92%8Cstaticmethod%E7%9A%84%E7%90%86%E8%A7%A3/</guid>
+      <description>&lt;p&gt;一直对python中@classmethod和@staticmethod的用法和区别不是很理解,一顿google之后发现还是stackoverflow真的是程序员的好朋友.在这个问题&lt;a href=&#34;https://stackoverflow.com/questions/12179271/meaning-of-classmethod-and-staticmethod-for-beginner&#34;&gt;Meaning of @classmethod and @staticmethod for beginner?&lt;/a&gt;中,几个大神的回答还是很好的.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

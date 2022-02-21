@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>flask几种部署方式实践 - 搬砖工的日常</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="rgozi" /><meta name="description" content="flask作为一款轻量级web框架，具有诸多优点。我喜欢它的原因是它具有高度的可扩展性，广泛的各类插件，丰富的开发文档。在开发调试过程中，我们往往会简单的使用flask自带的web服务器。但是在实际的生产环境中，flask自带的web服务器很难满足需求。
+" /><meta name="keywords" content="搬砖工, 技术博客" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.84.1 with theme even" />
+
+
+<link rel="canonical" href="https://rgozi.com/post/flask%E9%83%A8%E7%BD%B2%E6%96%B9%E5%BC%8F%E5%AE%9E%E8%B7%B5/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="flask几种部署方式实践" />
+<meta property="og:description" content="flask作为一款轻量级web框架，具有诸多优点。我喜欢它的原因是它具有高度的可扩展性，广泛的各类插件，丰富的开发文档。在开发调试过程中，我们往往会简单的使用flask自带的web服务器。但是在实际的生产环境中，flask自带的web服务器很难满足需求。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://rgozi.com/post/flask%E9%83%A8%E7%BD%B2%E6%96%B9%E5%BC%8F%E5%AE%9E%E8%B7%B5/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2016-12-12T15:32:12&#43;00:00" />
+<meta property="article:modified_time" content="2016-12-12T15:32:12&#43;00:00" />
+
+<meta itemprop="name" content="flask几种部署方式实践">
+<meta itemprop="description" content="flask作为一款轻量级web框架，具有诸多优点。我喜欢它的原因是它具有高度的可扩展性，广泛的各类插件，丰富的开发文档。在开发调试过程中，我们往往会简单的使用flask自带的web服务器。但是在实际的生产环境中，flask自带的web服务器很难满足需求。"><meta itemprop="datePublished" content="2016-12-12T15:32:12&#43;00:00" />
+<meta itemprop="dateModified" content="2016-12-12T15:32:12&#43;00:00" />
+<meta itemprop="wordCount" content="2698">
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="flask几种部署方式实践"/>
+<meta name="twitter:description" content="flask作为一款轻量级web框架，具有诸多优点。我喜欢它的原因是它具有高度的可扩展性，广泛的各类插件，丰富的开发文档。在开发调试过程中，我们往往会简单的使用flask自带的web服务器。但是在实际的生产环境中，flask自带的web服务器很难满足需求。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">搬砖工的日常</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">搬砖工的日常</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">flask几种部署方式实践</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2016-12-12 </span>
+        <div class="post-category">
+            <a href="/categories/python/"> python </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#gunicorn">gunicorn</a></li>
+    <li><a href="#tornado">Tornado</a></li>
+    <li><a href="#gevent">Gevent</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>flask作为一款轻量级web框架，具有诸多优点。我喜欢它的原因是它具有高度的可扩展性，广泛的各类插件，丰富的开发文档。在开发调试过程中，我们往往会简单的使用flask自带的web服务器。但是在实际的生产环境中，flask自带的web服务器很难满足需求。</p>
+<p>所以，在生产环境中，部署flask应该用什么呢？这首先就不得不说WSGI了。</p>
+<h1 id="wsgi">WSGI</h1>
+<p>WSGI(python web server gateway interface)，python web服务器网关接口。它是python语言定义的web服务器和web应用程序之间的一种简单通用的接口。WSGI可以分为两个部分：一个是服务器或者说是网关，另一个可以成为web应用或者说是应用框架。在处理来自前端的请求是，服务器会为应用程序提供环境上下文及一个回调函数。在应用程序完成请求之后，将先前的回调函数结果返回给前端。因此，对于flask而言，这里的WSGI可以起到的功能：</p>
+<ol>
+<li>重写环境变量，根据目标url将请求消息路由到对应的应用对象；</li>
+<li>允许在一个进程中运行多个web应用程序或者框架；</li>
+<li>可以起到负载均衡远端请求的作用；</li>
+<li>对请求或者返回内容进行处理。</li>
+</ol>
+<p>因此，只要遵照WSGI协议的web应用都可以部署在对应的webserver之后。或者说WSGI之于python，就如同Fastcgi之于php。</p>
+<h1 id="独立的wsgi容器">独立的WSGI容器</h1>
+<p>如果同时有好几个东西在面前，能够实现的功能类似，我肯定会选择更容易操作的。在flask部署这件事情上，我会选择一些独立的WSGI容器来部署flask。</p>
+<h2 id="gunicorn">gunicorn</h2>
+<p><a href="http://gunicorn.org/">gunicorn</a>是一个unix用的WSGI HTTP服务器。它是从ruby的unicorn项目中移植过来的。它基于&quot;pre-fork worker&quot;模型，会预先开启大量进程，等待并处理接收到的请求，每个单独进程可以同时处理它们各自接到的请求，避免进程启动和销毁的开销。但是gunicorn是基于阻塞式的io，并发能力稍弱。如果要想用它来部署flask应用相当简便。</p>
+<ul>
+<li>第一步，要通过pip安装gunicorn，<code>pip install gunicorn</code></li>
+<li>在安装完成之后，通过命令：<code>gunicorn -w 4 -b 127.0.0.1:4000 run:app</code>就可以将所要启动的flask应用程序启动。</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">→ gunicorn -w 4 -b 127.0.0.1:4000 run:app
+[2016-12-12 21:44:16 +0800] [81837] [INFO] Starting gunicorn 19.6.0
+[2016-12-12 21:44:16 +0800] [81837] [INFO] Listening at: http://127.0.0.1:4000 (81837)
+[2016-12-12 21:44:16 +0800] [81837] [INFO] Using worker: sync
+[2016-12-12 21:44:16 +0800] [81840] [INFO] Booting worker with pid: 81840
+[2016-12-12 21:44:16 +0800] [81841] [INFO] Booting worker with pid: 81841
+[2016-12-12 21:44:16 +0800] [81842] [INFO] Booting worker with pid: 81842
+[2016-12-12 21:44:16 +0800] [81843] [INFO] Booting worker with pid: 81843
+</code></pre></td></tr></table>
+</div>
+</div><p>其中-w指的是预定义的工作进程数，-b指的是要绑定的ip和端口，run是flask的启动python文件，app则是flask应用程序实例。比如说，我的run.py文件中是这样的</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">app = Flask(__name__)
+if __name__ == &#39;__main__&#39;:
+    app.run(debug=True, host=&#39;0.0.0.0&#39;, port=4000)
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="tornado">Tornado</h2>
+<p><a href="http://www.tornadoweb.org/">Tornado</a>，它是一款开源的可伸缩、非阻塞式的web服务器和工具集。在高并发的应用场景中有不错的效果。同样，要想通过Tornado来部署flask也是很简便的：</p>
+<ul>
+<li>第一步，通过pip安装<code>pip install tornado</code></li>
+<li>第二部，在你的flask启动文件夹中新建py文件，然后输入这些内容，在启动的时候通过这个新建的文件启动即可:</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">from tornado.wsgi import WSGIContainer
+from tornado.httpserver import HTTPServer
+from tornado.ioloop import IOLoop
+from run import app
+http_server = HTTPServer(WSGIContainer(app))
+http_server.listen(4000)
+IOLoop.instance().start()
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="gevent">Gevent</h2>
+<p><a href="http://www.gevent.org/">Gevent</a>是一个基于协同程序的python库，与tornado的部署方式类似，通过gevent部署flask也是十分的便利：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">from gevent.wsgi import WSGIServer
+from run import app
+http_server = WSGIServer((&#39;&#39;, 4000), app)
+http_server.serve_forever()
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="nginx-http代理">nginx http代理</h1>
+<p>单纯依靠上述的这些wsgi容器在生产环境中还是不够的，往往还要在这些容器前边在部署一个nginx做http转发。nginx可以起到负载均衡、流量控制、日志管理等等更加精细的工作。对nginx的配置文件做简单的修改即可完成：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">server {
+    listen 80;
+
+    server_name _;
+
+    access_log  /var/log/nginx/access.log;
+    error_log  /var/log/nginx/error.log;
+
+    location / {
+        proxy_pass         http://127.0.0.1:4000/;
+        proxy_redirect     off;
+
+        proxy_set_header   Host             $host;
+        proxy_set_header   X-Real-IP        $remote_addr;
+        proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;
+    }
+}
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="其他的部署方式">其他的部署方式</h1>
+<p>当然，除了通过上述几个wsgi容器来简单的部署flask以外，还有其他几种方式也可以选择：<a href="http://www.pythondoc.com/flask/deploying/mod_wsgi.html">mod_wsgi</a>、<a href="http://www.pythondoc.com/flask/deploying/uwsgi.html">uwsgi</a>、<a href="http://www.pythondoc.com/flask/deploying/fastcgi.html">fastcgi</a>、<a href="http://www.pythondoc.com/flask/deploying/cgi.html">cgi</a>。</p>
+<h1 id="进程管理工具supervisor">进程管理工具supervisor</h1>
+<p>最近在找flask生产环境部署相关的内容，无意间碰到一个神器：<a href="http://supervisord.org/">supervisord</a>。
+它是一个使用python编写的进程管理工具，可以很方便的开启、关闭或者重启进程。当你的主机不小心挂掉的时候，通过配制好的supervisord可以很方便的重启服务而不用一行一行敲命令。要想使用supervisord，只需要这几步：</p>
+<ul>
+<li>第一步，当然还是安装：<code>sudo pip install supervisor</code></li>
+<li>安装完成之后，主要的任务就是要完成配置文件：<code>echo_supervisord_conf &gt; /path/to/supervisord.conf</code>，先将supervisord的相关配置导出到指定路径以供修改；</li>
+<li>下面主要修改我们比较关注的部分：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">[program:usercenter]
+directory = /home/leon/projects/usercenter ; 程序的启动目录
+command = gunicorn -c gunicorn.py wsgi:app  ; 启动命令，可以看出与手动在命令行启动的命令是一样的
+autostart = true     ; 在 supervisord 启动的时候也自动启动
+startsecs = 5        ; 启动 5 秒后没有异常退出，就当作已经正常启动了
+autorestart = true   ; 程序异常退出后自动重启
+startretries = 3     ; 启动失败自动重试次数，默认是 3
+user = leon          ; 用哪个用户启动
+redirect_stderr = true  ; 把 stderr 重定向到 stdout，默认 false
+stdout_logfile_maxbytes = 20MB  ; stdout 日志文件大小，默认 50MB
+stdout_logfile_backups = 20     ; stdout 日志文件备份数
+; stdout 日志文件，需要注意当指定目录不存在时无法正常启动，所以需要手动创建目录（supervisord 会自动创建日志文件）
+stdout_logfile = /data/logs/usercenter_stdout.log
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>按照上边的内容，完成修改之后，比如说我的这个：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">[program:flask]
+command=python ./app/main/run.py
+[program:getmsg]
+command=python ./app/dataCollector/Collector/rocket.py
+</code></pre></td></tr></table>
+</div>
+</div><p>进入对应的目录，键入<code>supervisord -c manage.conf</code>就可以了</p>
+<ul>
+<li>接下来通过supervisorctl就可以查看当前进程运行的状态，启动或者关闭指定进程了：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">→ supervisorctl -c  manage.conf
+flask                            RUNNING   pid 79541, uptime 4:43:15
+getmsg                           STOPPED   Dec 12 07:17 PM
+supervisor&gt; stop flask
+flask: stopped
+supervisor&gt; status
+flask                            STOPPED   Dec 12 09:43 PM
+getmsg                           STOPPED   Dec 12 07:17 PM
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="crontab在python虚拟环境中的使用">crontab在python虚拟环境中的使用</h1>
+<p>使用python开发的同学往往会使用virtualenv来使自己的开发环境纯净不受干扰，我在使用过程中需要将一个python脚本通过crontab定期执行。在编写了对应的crontab配置文件之后，并没有按照预想的方式来。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">0,15,30,45 * * * * python /home/eclipse/git/env/DouyuFan/app/dataCollector/Collector/allRooms.py
+</code></pre></td></tr></table>
+</div>
+</div><p>感觉明明没有问题，可脚本为什么不执行呢，思考一下，由于是在虚拟环境中运行，直接通过python+脚本文件的方式，使用的python解译器是系统中的python而不是虚拟环境中的那个。所以上边的crontab配置改成这样就可以顺利运行了：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">0,15,30,45 * * * * /home/eclipse/git/env/bin/python /home/eclipse/git/env/DouyuFan/app/dataCollector/Collector/allRooms.py
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="关于python学习相关的想法">关于python学习相关的想法</h1>
+<p>由于自己缺乏在实际生产环境中的工作经验，这方面知识有很大一部分欠缺。只能通过自己慢慢摸索。另外，看了前几天刚买的python cookbook之后，感觉像是进入了python的新世界，有很多方法和内容都是之前没有尝试过的，未来要走的路还有很长，加油！</p>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">rgozi</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2016-12-12
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/post/flask-socketio%E7%9A%84%E4%B8%80%E6%AC%A1%E4%BD%BF%E7%94%A8%E7%BB%8F%E5%8E%86/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">flask-socketio的一次使用记录</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/%E5%A6%82%E4%BD%95%E8%AE%A9%E4%BD%A0%E7%9A%84%E4%BB%A3%E7%A0%81%E6%9B%B4%E5%8A%A0pythonic/">
+            <span class="next-text nav-default">如何让你的代码更加pythonic</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="eclipse_sv@whu.edu.cn" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/iamwm" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.douban.com/people/Eclipsesss/" class="iconfont icon-douban" title="douban"></a>
+      <a href="https://space.bilibili.com/44041814/" class="iconfont icon-bilibili" title="bilibili"></a>
+  <a href="https://rgozi.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">rgozi</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-173630995-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

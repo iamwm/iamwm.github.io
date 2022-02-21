@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on 搬砖工的日常</title>
+    <link>https://rgozi.com/categories/</link>
+    <description>Recent content in Categories on 搬砖工的日常</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 19 Jul 2020 09:27:12 +0000</lastBuildDate><atom:link href="https://rgozi.com/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>mongodb</title>
+      <link>https://rgozi.com/categories/mongodb/</link>
+      <pubDate>Sun, 19 Jul 2020 09:27:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/categories/mongodb/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>python</title>
+      <link>https://rgozi.com/categories/python/</link>
+      <pubDate>Wed, 01 Jul 2020 09:27:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/categories/python/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>前端</title>
+      <link>https://rgozi.com/categories/%E5%89%8D%E7%AB%AF/</link>
+      <pubDate>Fri, 17 Nov 2017 22:41:24 +0000</pubDate>
+      
+      <guid>https://rgozi.com/categories/%E5%89%8D%E7%AB%AF/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>瞎搞</title>
+      <link>https://rgozi.com/categories/%E7%9E%8E%E6%90%9E/</link>
+      <pubDate>Fri, 13 Oct 2017 22:41:24 +0000</pubDate>
+      
+      <guid>https://rgozi.com/categories/%E7%9E%8E%E6%90%9E/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>hexo</title>
+      <link>https://rgozi.com/categories/hexo/</link>
+      <pubDate>Sun, 06 Nov 2016 18:33:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/categories/hexo/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Java</title>
+      <link>https://rgozi.com/categories/java/</link>
+      <pubDate>Wed, 21 Sep 2016 08:26:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/categories/java/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>心情文字</title>
+      <link>https://rgozi.com/categories/%E5%BF%83%E6%83%85%E6%96%87%E5%AD%97/</link>
+      <pubDate>Fri, 26 Aug 2016 11:43:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/categories/%E5%BF%83%E6%83%85%E6%96%87%E5%AD%97/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>coding</title>
+      <link>https://rgozi.com/categories/coding/</link>
+      <pubDate>Tue, 02 Aug 2016 09:40:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/categories/coding/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Redis</title>
+      <link>https://rgozi.com/categories/redis/</link>
+      <pubDate>Tue, 11 Aug 2015 14:50:19 +0000</pubDate>
+      
+      <guid>https://rgozi.com/categories/redis/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Linux</title>
+      <link>https://rgozi.com/categories/linux/</link>
+      <pubDate>Fri, 07 Aug 2015 14:50:19 +0000</pubDate>
+      
+      <guid>https://rgozi.com/categories/linux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>服务器</title>
+      <link>https://rgozi.com/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/</link>
+      <pubDate>Tue, 04 Aug 2015 09:14:27 +0000</pubDate>
+      
+      <guid>https://rgozi.com/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

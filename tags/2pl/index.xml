@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>2PL on 搬砖工的日常</title>
+    <link>https://rgozi.com/tags/2pl/</link>
+    <description>Recent content in 2PL on 搬砖工的日常</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 13 Feb 2022 09:27:12 +0000</lastBuildDate><atom:link href="https://rgozi.com/tags/2pl/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>事务</title>
+      <link>https://rgozi.com/post/%E4%BA%8B%E5%8A%A1/</link>
+      <pubDate>Sun, 13 Feb 2022 09:27:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/%E4%BA%8B%E5%8A%A1/</guid>
+      <description>&lt;p&gt;在系统运行过程中，可能随时随地都会发生意外中断：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;数据库软件或硬件故障&lt;/li&gt;
+&lt;li&gt;应用程序崩溃&lt;/li&gt;
+&lt;li&gt;网络连接断开&lt;/li&gt;
+&lt;li&gt;数据库并发读写&lt;/li&gt;
+&lt;li&gt;应用程序竞态条件&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;为了实现可靠性，整个系统必须处理这些故障，但是实现相对完备的容错机制工作量巨大。**事务（transaction）**一直是简化问题的首选机制。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>asyncio loop的运行循环 - 搬砖工的日常</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="rgozi" /><meta name="description" content="通过run_forever或run_until_complete方法可以让我们完成初始化的loop run起来。
+其中run_until_complete是将需要执行的函数&amp;quot;Task&amp;quot;化之后再调用run_forever，而run_forever真正将loop **loop**起来是通过
+1 2 3 4  while True: self._run_once() if self._stopping: break   来实现的。
+" /><meta name="keywords" content="搬砖工, 技术博客" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.84.1 with theme even" />
+
+
+<link rel="canonical" href="https://rgozi.com/post/11-asyncio-loop%E8%BF%90%E8%A1%8C%E6%B5%81%E7%A8%8B/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="asyncio loop的运行循环" />
+<meta property="og:description" content="通过run_forever或run_until_complete方法可以让我们完成初始化的loop run起来。
+其中run_until_complete是将需要执行的函数&quot;Task&quot;化之后再调用run_forever，而run_forever真正将loop **loop**起来是通过
+
+
+1
+2
+3
+4
+
+
+ while True:
+                self._run_once()
+                if self._stopping:
+                    break
+
+
+来实现的。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://rgozi.com/post/11-asyncio-loop%E8%BF%90%E8%A1%8C%E6%B5%81%E7%A8%8B/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-07-01T09:27:12&#43;00:00" />
+<meta property="article:modified_time" content="2021-07-01T09:27:12&#43;00:00" />
+
+<meta itemprop="name" content="asyncio loop的运行循环">
+<meta itemprop="description" content="通过run_forever或run_until_complete方法可以让我们完成初始化的loop run起来。
+其中run_until_complete是将需要执行的函数&quot;Task&quot;化之后再调用run_forever，而run_forever真正将loop **loop**起来是通过
+
+
+1
+2
+3
+4
+
+
+ while True:
+                self._run_once()
+                if self._stopping:
+                    break
+
+
+来实现的。"><meta itemprop="datePublished" content="2021-07-01T09:27:12&#43;00:00" />
+<meta itemprop="dateModified" content="2021-07-01T09:27:12&#43;00:00" />
+<meta itemprop="wordCount" content="1791">
+<meta itemprop="keywords" content="python,asyncio," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="asyncio loop的运行循环"/>
+<meta name="twitter:description" content="通过run_forever或run_until_complete方法可以让我们完成初始化的loop run起来。
+其中run_until_complete是将需要执行的函数&quot;Task&quot;化之后再调用run_forever，而run_forever真正将loop **loop**起来是通过
+
+
+1
+2
+3
+4
+
+
+ while True:
+                self._run_once()
+                if self._stopping:
+                    break
+
+
+来实现的。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">搬砖工的日常</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">搬砖工的日常</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">asyncio loop的运行循环</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-07-01 </span>
+        <div class="post-category">
+            <a href="/categories/python/"> python </a>
+            </div>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#_run_once">_run_once()</a></li>
+    <li><a href="#coroutine">coroutine</a></li>
+    <li><a href="#futuretask">Future&amp;Task</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>通过<code>run_forever</code>或<code>run_until_complete</code>方法可以让我们完成初始化的loop <strong>run</strong>起来。</p>
+<p>其中<code>run_until_complete</code>是将需要执行的函数&quot;Task&quot;化之后再调用<code>run_forever</code>，而<code>run_forever</code>真正将loop **<!-- raw HTML omitted -->loop<!-- raw HTML omitted -->**起来是通过</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"> <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_run_once</span><span class="p">()</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stopping</span><span class="p">:</span>
+                    <span class="k">break</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>来实现的。</p>
+<h2 id="_run_once">_run_once()</h2>
+<p>python默认实现<code>BaseEventLoop</code>的<code>_run_once()</code>实现是这样的：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span><span class="lnt">79
+</span><span class="lnt">80
+</span><span class="lnt">81
+</span><span class="lnt">82
+</span><span class="lnt">83
+</span><span class="lnt">84
+</span><span class="lnt">85
+</span><span class="lnt">86
+</span><span class="lnt">87
+</span><span class="lnt">88
+</span><span class="lnt">89
+</span><span class="lnt">90
+</span><span class="lnt">91
+</span><span class="lnt">92
+</span><span class="lnt">93
+</span><span class="lnt">94
+</span><span class="lnt">95
+</span><span class="lnt">96
+</span><span class="lnt">97
+</span><span class="lnt">98
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python">    <span class="k">def</span> <span class="nf">_run_once</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s2">&#34;&#34;&#34;Run one full iteration of the event loop.
+</span><span class="s2">
+</span><span class="s2">        This calls all currently ready callbacks, polls for I/O,
+</span><span class="s2">        schedules the resulting callbacks, and finally schedules
+</span><span class="s2">        &#39;call_later&#39; callbacks.
+</span><span class="s2">        &#34;&#34;&#34;</span>
+
+        <span class="n">sched_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_scheduled</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">sched_count</span> <span class="o">&gt;</span> <span class="n">_MIN_SCHEDULED_TIMER_HANDLES</span> <span class="ow">and</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_timer_cancelled_count</span> <span class="o">/</span> <span class="n">sched_count</span> <span class="o">&gt;</span>
+                <span class="n">_MIN_CANCELLED_TIMER_HANDLES_FRACTION</span><span class="p">):</span>
+            <span class="c1"># Remove delayed calls that were cancelled if their number</span>
+            <span class="c1"># is too high</span>
+            <span class="n">new_scheduled</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">handle</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scheduled</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">handle</span><span class="o">.</span><span class="n">_cancelled</span><span class="p">:</span>
+                    <span class="n">handle</span><span class="o">.</span><span class="n">_scheduled</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">new_scheduled</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
+
+            <span class="n">heapq</span><span class="o">.</span><span class="n">heapify</span><span class="p">(</span><span class="n">new_scheduled</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_scheduled</span> <span class="o">=</span> <span class="n">new_scheduled</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_timer_cancelled_count</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Remove delayed calls that were cancelled from head of queue.</span>
+            <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scheduled</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scheduled</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">_cancelled</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_timer_cancelled_count</span> <span class="o">-=</span> <span class="mi">1</span>
+                <span class="n">handle</span> <span class="o">=</span> <span class="n">heapq</span><span class="o">.</span><span class="n">heappop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_scheduled</span><span class="p">)</span>
+                <span class="n">handle</span><span class="o">.</span><span class="n">_scheduled</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="n">timeout</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ready</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stopping</span><span class="p">:</span>
+            <span class="n">timeout</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scheduled</span><span class="p">:</span>
+            <span class="c1"># Compute the desired timeout.</span>
+            <span class="n">when</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scheduled</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">_when</span>
+            <span class="n">timeout</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">when</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">()),</span> <span class="n">MAXIMUM_SELECT_TIMEOUT</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_debug</span> <span class="ow">and</span> <span class="n">timeout</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">t0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="n">event_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_selector</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">timeout</span><span class="p">)</span>
+            <span class="n">dt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
+            <span class="k">if</span> <span class="n">dt</span> <span class="o">&gt;=</span> <span class="mf">1.0</span><span class="p">:</span>
+                <span class="n">level</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">level</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span>
+            <span class="n">nevent</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">event_list</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">timeout</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="s1">&#39;poll took </span><span class="si">%.3f</span><span class="s1"> ms: </span><span class="si">%s</span><span class="s1"> events&#39;</span><span class="p">,</span>
+                           <span class="n">dt</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">,</span> <span class="n">nevent</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">nevent</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">level</span><span class="p">,</span>
+                           <span class="s1">&#39;poll </span><span class="si">%.3f</span><span class="s1"> ms took </span><span class="si">%.3f</span><span class="s1"> ms: </span><span class="si">%s</span><span class="s1"> events&#39;</span><span class="p">,</span>
+                           <span class="n">timeout</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">,</span> <span class="n">dt</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">,</span> <span class="n">nevent</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">dt</span> <span class="o">&gt;=</span> <span class="mf">1.0</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">level</span><span class="p">,</span>
+                           <span class="s1">&#39;poll </span><span class="si">%.3f</span><span class="s1"> ms took </span><span class="si">%.3f</span><span class="s1"> ms: timeout&#39;</span><span class="p">,</span>
+                           <span class="n">timeout</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">,</span> <span class="n">dt</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">event_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_selector</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">timeout</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_process_events</span><span class="p">(</span><span class="n">event_list</span><span class="p">)</span>
+
+        <span class="c1"># Handle &#39;later&#39; callbacks that are ready.</span>
+        <span class="n">end_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_clock_resolution</span>
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scheduled</span><span class="p">:</span>
+            <span class="n">handle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scheduled</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">handle</span><span class="o">.</span><span class="n">_when</span> <span class="o">&gt;=</span> <span class="n">end_time</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="n">handle</span> <span class="o">=</span> <span class="n">heapq</span><span class="o">.</span><span class="n">heappop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_scheduled</span><span class="p">)</span>
+            <span class="n">handle</span><span class="o">.</span><span class="n">_scheduled</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_ready</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
+
+        <span class="c1"># This is the only place where callbacks are actually *called*.</span>
+        <span class="c1"># All other places just add them to ready.</span>
+        <span class="c1"># Note: We run all currently scheduled callbacks, but not any</span>
+        <span class="c1"># callbacks scheduled by callbacks run this time around --</span>
+        <span class="c1"># they will be run the next time (after another I/O poll).</span>
+        <span class="c1"># Use an idiom that is thread-safe without using locks.</span>
+        <span class="n">ntodo</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ready</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ntodo</span><span class="p">):</span>
+            <span class="n">handle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ready</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">handle</span><span class="o">.</span><span class="n">_cancelled</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_debug</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_current_handle</span> <span class="o">=</span> <span class="n">handle</span>
+                    <span class="n">t0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                    <span class="n">handle</span><span class="o">.</span><span class="n">_run</span><span class="p">()</span>
+                    <span class="n">dt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
+                    <span class="k">if</span> <span class="n">dt</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">slow_callback_duration</span><span class="p">:</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Executing </span><span class="si">%s</span><span class="s1"> took </span><span class="si">%.3f</span><span class="s1"> seconds&#39;</span><span class="p">,</span>
+                                       <span class="n">_format_handle</span><span class="p">(</span><span class="n">handle</span><span class="p">),</span> <span class="n">dt</span><span class="p">)</span>
+                <span class="k">finally</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_current_handle</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">handle</span><span class="o">.</span><span class="n">_run</span><span class="p">()</span>
+        <span class="n">handle</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Needed to break cycles when an exception occurs.	</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>上边这段代码，可以说是asyncio的<strong>绝对核心</strong>了。</p>
+<p>大致流程可以这样理解：</p>
+<ul>
+<li><code>BaseEventLoop</code>通过<code>_scheduled</code>来保存被调度的需要在未来某个时候需要运行的<code>TimerHandle</code>数组，这些<code>TimerHandle</code>往往是通过调用<code>call_at(self, when, callback, *args)</code>方法加入队列；</li>
+<li><code>BaseEventLoop</code>通过<code>_ready</code>来保存已经准备就绪的事件，我们常用的<code>run_until_complete</code>、<code>ensure_future</code>等方法最终还是通过调用<code>call_soon(self, callback, *args)</code>方法将<code>Handle</code>实例加入队列，另外epoll获取到的就绪事件也是直接加入到<code>_ready</code>数组中；</li>
+<li>将<code>_scheduled</code>中被cancel的Handler移除，然后按照计划执行的时间排序；</li>
+<li>调用self._selector.select(timeout)获取已就绪I/O事件，此处需要注意的是，如果当前<code>_scheduled</code>和<code>_ready</code>中都空无一物，会将None传入此方法，对于epoll来说，就会无限期的在这里等待下去。</li>
+</ul>
+<p>关于这个流程有几点解释下，可能会帮助理解，我也是反反复复看了几遍源码才摸索出来的:</p>
+<h2 id="coroutine">coroutine</h2>
+<p>我们平常通过<code>iscoroutine(obj)</code>来判断一个对象是不是<code>coroutine</code>，这里的<code>coroutine</code>其实是python底层帮我们封装的生成器，关于<code>coroutine</code>的发展历程可以翻看之前的一篇记录<a href="https://rgozi.com/post/1asyncio%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F/">asyncio的前世今生</a>。</p>
+<p>源码中coroutine其实是一个装饰器，相关的主要代码如下:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">coroutine</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="s2">&#34;&#34;&#34;Decorator to mark coroutines.
+</span><span class="s2">	...
+</span><span class="s2">    if inspect.isgeneratorfunction(func):
+</span><span class="s2">        coro = func
+</span><span class="s2">    else:
+</span><span class="s2">        @functools.wraps(func)
+</span><span class="s2">        def coro(*args, **kw):
+</span><span class="s2">            res = func(*args, **kw)
+</span><span class="s2">            if (base_futures.isfuture(res) or inspect.isgenerator(res) or
+</span><span class="s2">                isinstance(res, CoroWrapper)):
+</span><span class="s2">                res = yield from res
+</span><span class="s2">            elif _AwaitableABC is not None:
+</span><span class="s2">                # If &#39;func&#39; returns an Awaitable (new in 3.5) we
+</span><span class="s2">                # want to run it.
+</span><span class="s2">                try:
+</span><span class="s2">                    await_meth = res.__await__
+</span><span class="s2">                except AttributeError:
+</span><span class="s2">                    pass
+</span><span class="s2">                else:
+</span><span class="s2">                    if isinstance(res, _AwaitableABC):
+</span><span class="s2">                        res = yield from await_meth()
+</span><span class="s2">            return res
+</span><span class="s2">
+</span><span class="s2">    ...
+</span><span class="s2">
+</span><span class="s2">    wrapper._is_coroutine = _is_coroutine  # For iscoroutinefunction().
+</span><span class="s2">    return wrapper
+</span></code></pre></td></tr></table>
+</div>
+</div><p>可以看到，我们的coroutine最终在被执行的时候，还是通过调用<code>res = yield from res</code>为协程的挂起、恢复执行做准备。</p>
+<h2 id="futuretask">Future&amp;Task</h2>
+<p><img src="http://cdn.rgozi.com/asyncio.tasks.png" alt=""></p>
+<p>我们在使用asyncio的时候，会经常用到<code>ensure_future(coro_or_future, *, loop=None)</code>、<code>BaseEventLoop.create_task(self, coro)</code>之类的方法来<!-- raw HTML omitted -->将自己的协程包裹<!-- raw HTML omitted -->到一个<strong>Task</strong>对象中，然后加入到loop的调度和执行。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">Task</span><span class="p">(</span><span class="n">futures</span><span class="o">.</span><span class="n">Future</span><span class="p">):</span>
+    <span class="s2">&#34;&#34;&#34;A coroutine wrapped in a Future.&#34;&#34;&#34;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coro</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">coroutines</span><span class="o">.</span><span class="n">iscoroutine</span><span class="p">(</span><span class="n">coro</span><span class="p">),</span> <span class="nb">repr</span><span class="p">(</span><span class="n">coro</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">loop</span><span class="o">=</span><span class="n">loop</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_source_traceback</span><span class="p">:</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_source_traceback</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_coro</span> <span class="o">=</span> <span class="n">coro</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fut_waiter</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_must_cancel</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_loop</span><span class="o">.</span><span class="n">call_soon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">_all_tasks</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="o">....</span>
+        <span class="n">coro</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coro</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fut_waiter</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">_current_tasks</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_loop</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span>
+        <span class="c1"># Call either coro.throw(exc) or coro.send(None).</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">exc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># We use the `send` method directly, because coroutines</span>
+                <span class="c1"># don&#39;t have `__iter__` and `__next__` methods.</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">coro</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">coro</span><span class="o">.</span><span class="n">throw</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">StopIteration</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_must_cancel</span><span class="p">:</span>
+                <span class="c1"># Task is cancelled right before coro stops.</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_must_cancel</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_exception</span><span class="p">(</span><span class="n">futures</span><span class="o">.</span><span class="n">CancelledError</span><span class="p">())</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_result</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">futures</span><span class="o">.</span><span class="n">CancelledError</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>  <span class="c1"># I.e., Future.cancel(self).</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_exception</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">BaseException</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_exception</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span>
+            <span class="k">raise</span>
+        <span class="k">else</span><span class="p">:</span>
+           <span class="o">....</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">_current_tasks</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_loop</span><span class="p">)</span>
+            <span class="bp">self</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Needed to break cycles when an exception occurs.</span>
+
+</code></pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">rgozi</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-07-01
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/python/">python</a>
+          <a href="/tags/asyncio/">asyncio</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/%E5%A4%8D%E5%88%B6/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">复制</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/%E6%95%B0%E6%8D%AE%E7%9A%84%E5%AD%98%E5%82%A8%E4%B8%8E%E6%A3%80%E7%B4%A2/">
+            <span class="next-text nav-default">数据的存储与检索</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="eclipse_sv@whu.edu.cn" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/iamwm" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.douban.com/people/Eclipsesss/" class="iconfont icon-douban" title="douban"></a>
+      <a href="https://space.bilibili.com/44041814/" class="iconfont icon-bilibili" title="bilibili"></a>
+  <a href="https://rgozi.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>rgozi</span>
+  </span>
+  <div class="container">
+        备案号：<a href="https://beian.miit.gov.cn/" target="_blank">鄂ICP备20003011号-1</a>
+    </div>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-173630995-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

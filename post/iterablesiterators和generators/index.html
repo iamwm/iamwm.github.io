@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Iterables,Iterators和Generators - 搬砖工的日常</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="rgozi" /><meta name="description" content="最近一段时间都在研究python里边的一些概念:iterator,iterable和generator.看到这篇文章写的十分不错,基本上讲清楚了这三个东西都是什么以及他们之间的关系.这当然值得记录一下😊. 所谓一图胜千言,这篇文章中的这个关系图让人一目了然. " /><meta name="keywords" content="搬砖工, 技术博客" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.84.1 with theme even" />
+
+
+<link rel="canonical" href="https://rgozi.com/post/iterablesiterators%E5%92%8Cgenerators/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Iterables,Iterators和Generators" />
+<meta property="og:description" content="最近一段时间都在研究python里边的一些概念:iterator,iterable和generator.看到这篇文章写的十分不错,基本上讲清楚了这三个东西都是什么以及他们之间的关系.这当然值得记录一下😊.
+所谓一图胜千言,这篇文章中的这个关系图让人一目了然.
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://rgozi.com/post/iterablesiterators%E5%92%8Cgenerators/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2017-08-10T19:23:12&#43;00:00" />
+<meta property="article:modified_time" content="2017-08-10T19:23:12&#43;00:00" />
+
+<meta itemprop="name" content="Iterables,Iterators和Generators">
+<meta itemprop="description" content="最近一段时间都在研究python里边的一些概念:iterator,iterable和generator.看到这篇文章写的十分不错,基本上讲清楚了这三个东西都是什么以及他们之间的关系.这当然值得记录一下😊.
+所谓一图胜千言,这篇文章中的这个关系图让人一目了然.
+"><meta itemprop="datePublished" content="2017-08-10T19:23:12&#43;00:00" />
+<meta itemprop="dateModified" content="2017-08-10T19:23:12&#43;00:00" />
+<meta itemprop="wordCount" content="2656">
+<meta itemprop="keywords" content="python,迭代器,生成器,可迭代对象,iterator,generator,iterable," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Iterables,Iterators和Generators"/>
+<meta name="twitter:description" content="最近一段时间都在研究python里边的一些概念:iterator,iterable和generator.看到这篇文章写的十分不错,基本上讲清楚了这三个东西都是什么以及他们之间的关系.这当然值得记录一下😊.
+所谓一图胜千言,这篇文章中的这个关系图让人一目了然.
+"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">搬砖工的日常</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">搬砖工的日常</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Iterables,Iterators和Generators</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2017-08-10 </span>
+        <div class="post-category">
+            <a href="/categories/python/"> python </a>
+            </div>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents"></nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>最近一段时间都在研究python里边的一些概念:<!-- raw HTML omitted -->iterator,iterable和generator<!-- raw HTML omitted -->.看到<a href="http://nvie.com/posts/iterators-vs-generators/">这篇文章</a>写的十分不错,基本上讲清楚了这三个东西都是什么以及他们之间的关系.这当然值得记录一下😊.
+所谓一图胜千言,这篇文章中的这个关系图让人一目了然.
+<img src="https://rgozi.com/pics/relationships.png" alt="relationships.png"></p>
+<h1 id="纠结所在">纠结所在</h1>
+<p>如果对<!-- raw HTML omitted -->iterator,iterable和generator<!-- raw HTML omitted -->的概念比较纠结,一般主要是没有区分清楚:</p>
+<ul>
+<li>container</li>
+<li>iterable</li>
+<li>iterator</li>
+<li>generator</li>
+<li>generator expression</li>
+<li>[list,set,dict] comprehension</li>
+</ul>
+<p>下面按照原文中讲解的那样,对上边几个概念逐一解释:</p>
+<h1 id="container">container</h1>
+<p>在python中container是一类用于存放各种元素(item)的容器,并且它能够判断一个item是否在container中.<!-- raw HTML omitted -->一般来说<!-- raw HTML omitted -->它会将它内部的元素都存放在内存中,并且能够逐一返回它内部的每个元素.一些比较典型的类型都是container:</p>
+<ul>
+<li>list,deque&hellip;</li>
+<li>set,fronzensets&hellip;</li>
+<li>dict,defaultdict,OrderedDict,Counter&hellip;</li>
+<li>tuple,namedtuple&hellip;</li>
+<li>str</li>
+</ul>
+<p>container相对来说比较容易理解,因为它就像是现实生活中的一些真实容器,用来存放各种东西.并且container可以很容易的判断一个item是否是它的一个元素,几个🌰:</p>
+<ul>
+<li>对于list、set、tuple</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">&gt;&gt;&gt; assert 1 in [1, 2, 3]      # lists
+&gt;&gt;&gt; assert 4 not in [1, 2, 3]
+&gt;&gt;&gt; assert 1 in {1, 2, 3}      # sets
+&gt;&gt;&gt; assert 4 not in {1, 2, 3}
+&gt;&gt;&gt; assert 1 in (1, 2, 3)      # tuples
+&gt;&gt;&gt; assert 4 not in (1, 2, 3)
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>对于dict,可以直接判断一个元素是否是它的key</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">&gt;&gt;&gt; d = {1: &#39;foo&#39;, 2: &#39;bar&#39;, 3: &#39;qux&#39;}
+&gt;&gt;&gt; assert 1 in d
+&gt;&gt;&gt; assert 4 not in d
+&gt;&gt;&gt; assert &#39;foo&#39; not in d  # &#39;foo&#39; is not a _key_ in the dict
+&gt;&gt;&gt; assert &#39;foo&#39; in d.values()
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>对于string,可以判断一个字符或者子串是否是这个string的组成部分</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">&gt;&gt;&gt; s = &#39;foobar&#39;
+&gt;&gt;&gt; assert &#39;b&#39; in s
+&gt;&gt;&gt; assert &#39;x&#39; not in s
+&gt;&gt;&gt; assert &#39;foo&#39; in s  # a string &#34;contains&#34; all its substrings
+</code></pre></td></tr></table>
+</div>
+</div><p>上边一下例子说明对于container来说,判断一个item是否是它其中的一个元素十分直接、方便.尤其对于string来说,虽然它并没有将它的所有子串都放在内存中,但也是可以通过<code>in</code>来进行子串检测.
+<!-- raw HTML omitted -->但是需要注意的是:<!-- raw HTML omitted -->上边我们关注的主要是container的<code>成员检测</code>,并且一般来说,container也都可以逐一返回它内部的每个元素,比如:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">In [16]: a = [1,2,3,[4,5]]
+
+In [17]: for item in a:
+    ...:     print item
+    ...:
+1
+2
+3
+[4,5]
+</code></pre></td></tr></table>
+</div>
+</div><p>但能逐一返回container中每个元素并不是因为它是一个container(有点绕😄),这是因为它是可迭代的(iterable).所有的container都是iterable的.正如上边图中所示的那样<code>a container typically is an iterable</code>.</p>
+<h1 id="iterable">iterable</h1>
+<p>如上所述,所有的container都是iterable的,但是除了各种类型的container以外,像file或者socket这样类型的对象也都是iterable.与container之间不同的是,container大都是包含着有限个元素的,或者说他们有着明确的长度,但是像file或者socket这样的对象他们内部可能会有不那么确定数量的数据.</p>
+<blockquote>
+<p>所以,一个iterable的对象必须是一个能够逐一返回自身包含元素的对象,而这个对象被称为iterator.</p>
+</blockquote>
+<p>iterable和iterator之间的区别可以通过下边的🌰看出:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">&gt;&gt;&gt; x = [1, 2, 3]
+&gt;&gt;&gt; y = iter(x)
+&gt;&gt;&gt; z = iter(x)
+&gt;&gt;&gt; next(y)
+1
+&gt;&gt;&gt; next(y)
+2
+&gt;&gt;&gt; next(z)
+1
+&gt;&gt;&gt; type(x)
+&lt;class &#39;list&#39;&gt;
+&gt;&gt;&gt; type(y)
+&lt;class &#39;list_iterator&#39;&gt;
+</code></pre></td></tr></table>
+</div>
+</div><p>上边的例子中,x是一个iterable(可迭代对象),y和z是两个不同的iterator(迭代器).y和z能够分别逐一返回x中的每个元素,并且这两个iterator之间不会互相影响自己的状态.</p>
+<blockquote>
+<p>通常情况下,一个iterable class会在内部实现<code>__iter__()</code>和<code>__next()__</code>方法,这个过程也可以成为实现了迭代器协议,其中<code>__iter__()</code>方法返回迭代器对象iterator,<code>__next()__</code>实现逐一返回元素的过程.</p>
+</blockquote>
+<p>所以,在使用<code>for item in iterator</code>这样的语句进行遍历的时候,其实执行过程类似于下图:
+<img src="https://rgozi.com/pics/iterable-vs-iterator.png" alt="iterable-vs-iterator.png"></p>
+<h1 id="iterator">iterator</h1>
+<p>所以说,到底iterator是个什么东西？🐍</p>
+<blockquote>
+<p>一个iterator对象可以当作是一个工厂,每次使用next()方法,都会产生一个来自iterator内部的值,并且它能够维护于此相关的内部状态.</p>
+</blockquote>
+<p>iterator内部的元素有时候是有限的,但有时候也可能包含无限个数的元素:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">&gt;&gt;&gt; from itertools import count
+&gt;&gt;&gt; counter = count(start=13)
+&gt;&gt;&gt; next(counter)
+13
+&gt;&gt;&gt; next(counter)
+14
+</code></pre></td></tr></table>
+</div>
+</div><p>利用itertools中的一些方法,可以利用有限元素的iterator变为无限元素的iterator:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">&gt;&gt;&gt; from itertools import cycle
+&gt;&gt;&gt; colors = cycle([&#39;red&#39;, &#39;white&#39;, &#39;blue&#39;])
+&gt;&gt;&gt; next(colors)
+&#39;red&#39;
+&gt;&gt;&gt; next(colors)
+&#39;white&#39;
+&gt;&gt;&gt; next(colors)
+&#39;blue&#39;
+&gt;&gt;&gt; next(colors)
+&#39;red&#39;
+</code></pre></td></tr></table>
+</div>
+</div><p>有的时候,可以在无限元素的iterator中分出一个有限元素的iterator:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">&gt;&gt;&gt; from itertools import islice
+&gt;&gt;&gt; colors = cycle([&#39;red&#39;, &#39;white&#39;, &#39;blue&#39;])  # infinite
+&gt;&gt;&gt; limited = islice(colors, 0, 4)            # finite
+&gt;&gt;&gt; for x in limited:                         # so safe to use for-loop on
+...     print(x)
+red
+white
+blue
+red
+</code></pre></td></tr></table>
+</div>
+</div><p>通过构造一个斐波那契数列来看iterator对内部状态是如何控制的:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">&gt;&gt;&gt; class fib:
+...     def __init__(self):
+...         self.prev = 0
+...         self.curr = 1
+... 
+...     def __iter__(self):
+...         return self
+... 
+...     def __next__(self):
+...         value = self.curr
+...         self.curr += self.prev
+...         self.prev = value
+...         return value
+...
+&gt;&gt;&gt; f = fib()
+&gt;&gt;&gt; list(islice(f, 0, 10))
+[1, 1, 2, 3, 5, 8, 13, 21, 34, 55]
+</code></pre></td></tr></table>
+</div>
+</div><p>可以看到class fib 实现了迭代器协议,所以f是一个iterator,并且是iterable的.通过两个内部变量<code>prev</code>和<code>curr</code>,fib能够在每次相应<code>next()</code>调用的时候返回对应的值.每次对<code>next()</code>的响应,对于iterator来说主要有两件事情要做:</p>
+<ol>
+<li>为下一次<code>next()</code>调用改变内部状态</li>
+<li>生成当前<code>next()</code>调用要返回的值</li>
+</ol>
+<blockquote>
+<p>由此可以看出,iterator可以当作是一个惰性求值的工厂,每次<code>next()</code>调用会让iterator生成所需要的值,然后在下一次<code>next()</code>调用前都保持空闲状态.🕶️</p>
+</blockquote>
+<h1 id="generator">generator</h1>
+<p>generator(生成器),可以当作一种特殊的iterator(更为优雅的一种).
+它能够用更为简洁的代码来实现上边斐波那契数列,并且避免手动实现<code>__iter()__</code>和<code>__next()__</code>.
+举个🍐:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">def fib():
+    prev,curr = 0,1
+    while True:
+        yield curr
+        prev,curr = curr,curr+prev
+
+&gt;&gt;&gt; f = fib()
+&gt;&gt;&gt; list(islice(f, 0, 10))
+[1, 1, 2, 3, 5, 8, 13, 21, 34, 55]
+</code></pre></td></tr></table>
+</div>
+</div><p>通过<code>yield</code>来构造的generator,是不是更加优雅.💍
+通常有两种方法能够构造一个generator:</p>
+<ol>
+<li>generator function</li>
+<li>generator comprehension</li>
+</ol>
+<p><code>generator function</code>很好理解,表面上和普通的函数没什么区别,只是这个函数通过关键字<code>yield</code>来返回值.
+类似于列表推导式或者set、dict,通过<code>(x for x in rang(10))</code>这样的形式返回的就是一个generator,而通过圆括号<code>()</code>进行的推导式就是<code>generator comprehension</code>.
+总的来说,generator能够非常有效的组织代码,用更少的变量和流程控制,并且使用generator会更好地减少内存或者cpu的负载.所以像我这样的代码里边遍布了各种for循环:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">def something():
+    result = []
+    for ... in ...:
+        result.append(x)
+    return result
+</code></pre></td></tr></table>
+</div>
+</div><p>还是抓紧时间好好改一改吧:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">def iter_something():
+    for ... in ...:
+        yield x
+</code></pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">rgozi</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2017-08-10
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/python/">python</a>
+          <a href="/tags/%E8%BF%AD%E4%BB%A3%E5%99%A8/">迭代器</a>
+          <a href="/tags/%E7%94%9F%E6%88%90%E5%99%A8/">生成器</a>
+          <a href="/tags/%E5%8F%AF%E8%BF%AD%E4%BB%A3%E5%AF%B9%E8%B1%A1/">可迭代对象</a>
+          <a href="/tags/iterator/">iterator</a>
+          <a href="/tags/generator/">generator</a>
+          <a href="/tags/iterable/">iterable</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/fluent_python_chapter8/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">对象引用、可变性[流畅的Python]</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/python%E7%9A%84itertools/">
+            <span class="next-text nav-default">python的itertools[读文档]</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="eclipse_sv@whu.edu.cn" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/iamwm" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.douban.com/people/Eclipsesss/" class="iconfont icon-douban" title="douban"></a>
+      <a href="https://space.bilibili.com/44041814/" class="iconfont icon-bilibili" title="bilibili"></a>
+  <a href="https://rgozi.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>rgozi</span>
+  </span>
+  <div class="container">
+        备案号：<a href="https://beian.miit.gov.cn/" target="_blank">鄂ICP备20003011号-1</a>
+    </div>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-173630995-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

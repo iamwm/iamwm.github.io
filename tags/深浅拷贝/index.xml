@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>深浅拷贝 on 搬砖工的日常</title>
+    <link>https://rgozi.com/tags/%E6%B7%B1%E6%B5%85%E6%8B%B7%E8%B4%9D/</link>
+    <description>Recent content in 深浅拷贝 on 搬砖工的日常</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 20 Aug 2017 23:23:12 +0000</lastBuildDate><atom:link href="https://rgozi.com/tags/%E6%B7%B1%E6%B5%85%E6%8B%B7%E8%B4%9D/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>对象引用、可变性[流畅的Python]</title>
+      <link>https://rgozi.com/post/fluent_python_chapter8/</link>
+      <pubDate>Sun, 20 Aug 2017 23:23:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/fluent_python_chapter8/</guid>
+      <description>&lt;p&gt;记录一下在读《流程的python》时对自己有用的知识点。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

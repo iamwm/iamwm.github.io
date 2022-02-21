@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>php on 搬砖工的日常</title>
+    <link>https://rgozi.com/tags/php/</link>
+    <description>Recent content in php on 搬砖工的日常</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 14 Aug 2015 14:25:50 +0000</lastBuildDate><atom:link href="https://rgozi.com/tags/php/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>php执行服务器端脚本</title>
+      <link>https://rgozi.com/post/php%E6%89%A7%E8%A1%8C%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E8%84%9A%E6%9C%AC/</link>
+      <pubDate>Fri, 14 Aug 2015 14:25:50 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/php%E6%89%A7%E8%A1%8C%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E8%84%9A%E6%9C%AC/</guid>
+      <description>&lt;h1 id=&#34;遇到的问题&#34;&gt;遇到的问题&lt;/h1&gt;
+&lt;p&gt;最近在做一个在客户端进行mongodb数据集选择，然后重写Nginx配置文件，最后重启Nginx的小工具。遇到最大的问题是，现在生成了Nginx配置文件，但是没法重启Nginx，使生成的配置文件即刻生效。
+于是想到了一个办法，在服务器上写一个重启Nginx的脚本，使用php来运行这个脚本，客户端通过http访问php来完成Nginx的重启。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>服务器端缓存环境配置(二)</title>
+      <link>https://rgozi.com/post/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E7%BC%93%E5%AD%98%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-%E4%BA%8C/</link>
+      <pubDate>Sun, 02 Aug 2015 19:14:56 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E7%BC%93%E5%AD%98%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-%E4%BA%8C/</guid>
+      <description>&lt;p&gt;上一篇博客讲解了整个缓存流程中数据库部分的搭建，有了最基础的部分，现在可以搭建上层的内容了。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>服务器端缓存环境配置</title>
+      <link>https://rgozi.com/post/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E7%BC%93%E5%AD%98%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/</link>
+      <pubDate>Fri, 31 Jul 2015 23:39:02 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E7%BC%93%E5%AD%98%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/</guid>
+      <description>&lt;h1 id=&#34;原材料&#34;&gt;&lt;strong&gt;原材料&lt;/strong&gt;&lt;/h1&gt;
+&lt;p&gt;正所谓“巧妇难为无米之炊”，在进行服务器端缓存搭建之前，需要将整个流程所需的元素准备好。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://nginx.org/&#34; title=&#34;作为Web服务器的存在&#34;&gt;Nginx&lt;/a&gt;作为Web服务器的存在&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.mongodb.org/&#34; title=&#34;磁盘数据库&#34;&gt;Mongodb&lt;/a&gt;磁盘数据库&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.lua.org/&#34; title=&#34;与Nginx结合，进行服务器端的逻辑控制&#34;&gt;Lua&lt;/a&gt;与Nginx结合，进行服务器端的逻辑控制&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://redis.io/&#34; title=&#34;高速缓存&#34;&gt;Redis&lt;/a&gt;内存数据库，高速缓存&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.php.net/&#34; title=&#34;返回数据库信息给客户端&#34;&gt;PHP&lt;/a&gt;读取磁盘数据库信息，返回给客户端&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

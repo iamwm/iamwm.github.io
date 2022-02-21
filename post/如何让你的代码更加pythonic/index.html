@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>如何让你的代码更加pythonic - 搬砖工的日常</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="rgozi" /><meta name="description" content="对于开发者而言，代码风格是一件很重要的事情，它往往会关系到你代码的可读性甚至是执行效率。对于python而言，经常会在招聘要求中有一条：pythonic的代码。那究竟什么是pythonic，什么样的代码才是pythonic的代码，我自己也一直有让自己的代码更加pythonic，总结平时的工作学习就有了如下这些。
+" /><meta name="keywords" content="搬砖工, 技术博客" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.84.1 with theme even" />
+
+
+<link rel="canonical" href="https://rgozi.com/post/%E5%A6%82%E4%BD%95%E8%AE%A9%E4%BD%A0%E7%9A%84%E4%BB%A3%E7%A0%81%E6%9B%B4%E5%8A%A0pythonic/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="如何让你的代码更加pythonic" />
+<meta property="og:description" content="对于开发者而言，代码风格是一件很重要的事情，它往往会关系到你代码的可读性甚至是执行效率。对于python而言，经常会在招聘要求中有一条：pythonic的代码。那究竟什么是pythonic，什么样的代码才是pythonic的代码，我自己也一直有让自己的代码更加pythonic，总结平时的工作学习就有了如下这些。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://rgozi.com/post/%E5%A6%82%E4%BD%95%E8%AE%A9%E4%BD%A0%E7%9A%84%E4%BB%A3%E7%A0%81%E6%9B%B4%E5%8A%A0pythonic/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2016-11-28T14:09:12&#43;00:00" />
+<meta property="article:modified_time" content="2016-11-28T14:09:12&#43;00:00" />
+
+<meta itemprop="name" content="如何让你的代码更加pythonic">
+<meta itemprop="description" content="对于开发者而言，代码风格是一件很重要的事情，它往往会关系到你代码的可读性甚至是执行效率。对于python而言，经常会在招聘要求中有一条：pythonic的代码。那究竟什么是pythonic，什么样的代码才是pythonic的代码，我自己也一直有让自己的代码更加pythonic，总结平时的工作学习就有了如下这些。"><meta itemprop="datePublished" content="2016-11-28T14:09:12&#43;00:00" />
+<meta itemprop="dateModified" content="2016-11-28T14:09:12&#43;00:00" />
+<meta itemprop="wordCount" content="1984">
+<meta itemprop="keywords" content="读书,pythonic," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何让你的代码更加pythonic"/>
+<meta name="twitter:description" content="对于开发者而言，代码风格是一件很重要的事情，它往往会关系到你代码的可读性甚至是执行效率。对于python而言，经常会在招聘要求中有一条：pythonic的代码。那究竟什么是pythonic，什么样的代码才是pythonic的代码，我自己也一直有让自己的代码更加pythonic，总结平时的工作学习就有了如下这些。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">搬砖工的日常</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">搬砖工的日常</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">如何让你的代码更加pythonic</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2016-11-28 </span>
+        <div class="post-category">
+            <a href="/categories/python/"> python </a>
+            </div>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#make-a-script-both-importable-and-executable">Make a script both importable and executable</a></li>
+    <li><a href="#test-for-truthy-and-falsy-values">Test for “truthy” and “falsy” values</a></li>
+    <li><a href="#use-in-where-possible">Use in where possible</a></li>
+    <li><a href="#swap-values-without-temp-variable">Swap values without temp variable</a></li>
+    <li><a href="#build-strings-using-sequence">Build strings using sequence</a></li>
+    <li><a href="#转换值类型的最佳实践">转换值类型的最佳实践</a></li>
+    <li><a href="#enumerate">Enumerate</a></li>
+    <li><a href="#build-lists-using-list-comprehensions">Build lists using list comprehensions</a></li>
+    <li><a href="#create-dict-from-keys-and-values-using-zip">Create dict from keys and values using zip</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>对于开发者而言，代码风格是一件很重要的事情，它往往会关系到你代码的可读性甚至是执行效率。对于python而言，经常会在招聘要求中有一条：<!-- raw HTML omitted -->pythonic的代码<!-- raw HTML omitted -->。那究竟什么是pythonic，什么样的代码才是pythonic的代码，我自己也一直有让自己的代码更加pythonic，总结平时的工作学习就有了如下这些。</p>
+<h1 id="为什么要让代码pythonic">为什么要让代码pythonic</h1>
+<p>在网上找到一些这方面的<a href="http://safehammad.com/downloads/python-idioms-2014-01-16.pdf">资料</a>：</p>
+<blockquote>
+</blockquote>
+<ul>
+<li>Programs must be written for people to read, and only incidentally for machines to execute.</li>
+<li>There should be one - and preferably only one - obvious way to do it.</li>
+<li>The use of commonly understood syntax or coding constructs can aid readability and clarity.
+Some idioms can be faster or use less memory than their “non-idiomatic” counterparts.
+Python&rsquo;s idioms can make your code Pythonic!</li>
+</ul>
+<p>如上所说，pythonic的代码会明显增加代码整体的可读性。并且，经过大家多年来的实际经验已经摸索出一些比较明确的规则来让代码pythonic。另外，pythonic的代码往往除了提高可读性以外会有更快的运行速度和更少的内存占用。</p>
+<h1 id="pythonic的一些实践">pythonic的一些实践</h1>
+<h2 id="make-a-script-both-importable-and-executable">Make a script both importable and executable</h2>
+<p>这里可以通过如下的示例来说明白：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># non-idiomatic
+def main():
+    print(&#34;now we&#39;re in module&#34;, __name__)
+   
+print(&#39;Excuted from the command line&#39;)
+main()
+</code></pre></td></tr></table>
+</div>
+</div><p>对于上边这小段内容，如果它仅仅是单个存在的话，直接执行是没有问题的，但是当它被当作module在别的地方被import的话，main()函数会在被引入的时候自动执行。而通过在合适的位置添加<code>if __name__ == '__main__':</code>判断，则可以更好的组织自己的代码。对于我自己来说，我可能在某个module中顺势写了一些测试方法，在被别的地方引入的时候，这些测试方法我不想让它执行，把它们放在判断语句之后会是一个不错的选择。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># pythonic
+def main():
+    print(&#34;now we&#39;re in module&#34;, __name__)
+
+if __name__ == &#39;__main__&#39;:
+    print(&#39;do some test&#39;)
+    main()
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="test-for-truthy-and-falsy-values">Test for “truthy” and “falsy” values</h2>
+<p>python中关于真假值的判断，常用的集中类型可以参考这个表：</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>TRUE</th>
+<th>FALSE</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>字符串</td>
+<td>非空的字符串</td>
+<td>空字符串</td>
+</tr>
+<tr>
+<td>数字</td>
+<td>非0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>容器</td>
+<td>len(x)!=0</td>
+<td>len(x)=0</td>
+</tr>
+</tbody>
+</table>
+<p>如何判断真假值，则有一些常用的方法：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># pythonic
+name = &#39;Safe&#39;
+pets = [&#39;Dog&#39;, &#39;Cat&#39;, &#39;Hamster&#39;]
+owners = {&#39;Safe&#39;: &#39;Cat&#39;, &#39;George&#39;: &#39;Dog&#39;}
+if name and pets and owners:
+    print(&#39;We have pets!&#39;)
+# non-idiomatic
+if name != &#39;&#39; and len(pets) &gt; 0 and owners != {}:
+    print(&#39;We have pets!&#39;)
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="use-in-where-possible">Use in where possible</h2>
+<p>尽量使用in关键字来判断一个元素是否存在于一个容器中，这个容器可以是list，dict，set，string或者是你自己实现了__contains__方法的类。比如：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># pythonic
+name = &#39;Safe Hammad&#39;
+if &#39;H&#39; in name:
+    print(&#39;This name has an H in it!&#39;)
+# non-idiomatic
+name = &#39;Safe Hammad&#39;
+if name.find(&#39;H&#39;) != -1:
+    print(&#39;This name has an H in it!&#39;)
+</code></pre></td></tr></table>
+</div>
+</div><p>或者用in配合for来遍历一个序列，它可以是list，set，dict，string或者是你自己实现了__iter__方法的类。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># pythonic
+pets = [&#39;Dog&#39;, &#39;Cat&#39;, &#39;Hamster&#39;]
+for pet in pets:
+    print(&#39;A&#39;, pet, &#39;can be very cute!&#39;)
+# non-idiomatic
+pets = [&#39;Dog&#39;, &#39;Cat&#39;, &#39;Hamster&#39;] i=0
+while i &lt; len(pets):
+    print(&#39;A&#39;, pets[i], &#39;can be very cute!&#39;)
+    i += 1
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="swap-values-without-temp-variable">Swap values without temp variable</h2>
+<p>感觉这个特性很厉害（我自己用的很少，以后要多注意），可以通过一个简单的表达式交换两个元素的值，并且不需要中间变量的参与：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># pythonic
+a, b = 5, 6
+print(a, b)
+a, b = b, a
+print(a, b)
+# 5, 6 # 6, 5
+# 5, 6
+# non-idiomatic
+a, b = 5, 6
+print(a, b)
+temp = a a = b
+b = temp print(a, b)
+# 6, 5
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="build-strings-using-sequence">Build strings using sequence</h2>
+<p>在连接字符串的时候，通过str.join()方法耗用的时间是和传递给join方法的字符串长度线性相关的；而重复的使用‘+’来拼接字符串耗用的时间与字符串长度平方关系递增。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># pythonic
+chars = [&#39;S&#39;, &#39;a&#39;, &#39;f&#39;, &#39;e&#39;]
+name = &#39;&#39;.join(chars)
+print(name)           # Safe
+# non-idiomatic
+chars = [&#39;S&#39;, &#39;a&#39;, &#39;f&#39;, &#39;e&#39;]
+name = &#39;&#39;
+for char in chars:
+    name += char
+print(name)           # Safe
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="转换值类型的最佳实践">转换值类型的最佳实践</h2>
+<p>通过一个实例可以更好的说明这条原则：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># pythonic
+d = {&#39;x&#39;: &#39;5&#39;}
+try:
+	value = int(d[&#39;x&#39;])
+except (KeyError, TypeError, ValueError):
+	value = None
+# non-idiomatic
+d = {&#39;x&#39;: &#39;5&#39;}
+if &#39;x&#39; in d and \
+   isinstance(d[&#39;x&#39;], str) and \
+   d[&#39;x&#39;].isdigit():
+    value = int(d[&#39;x&#39;])
+else:
+	value = None
+</code></pre></td></tr></table>
+</div>
+</div><p>在我自己的实际使用中，也经常会出现这种情况，通过网页抓去到的id号或者是商品的价格往往是str类型的，我想把它当作数字存在库里仅仅通过<code>value = int(strValue)</code>是很不安全的。而通过上述的方法可以以更安全的方法得到自己想要的结果。
+另外，在python中抛出异常的代价对比与java这种要小很多。</p>
+<h2 id="enumerate">Enumerate</h2>
+<p>Enumerate 从python2.3引进，它多用于for循环中得到元素在容器中所在的位置，使用Enumerate可以有效的避免大量的<code>count += 1</code>这样的代码。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># pythonic
+names = [&#39;Safe&#39;, &#39;George&#39;, &#39;Mildred&#39;]
+for i, name in enumerate(names):
+    print(i, name)   #  0 Safe, 1 George etc.
+# non-idiomatic
+names = [&#39;Safe&#39;, &#39;George&#39;, &#39;Mildred&#39;]
+count = 0
+for name in names:
+    print(i, name)   #  0 Safe, 1 George etc.
+    count += 1
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="build-lists-using-list-comprehensions">Build lists using list comprehensions</h2>
+<p>更多的使用列表推导式来构建list，在通常情况下，列表推导式会比使用container.append(x)更加简洁。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># pythonic
+data = [7, 20, 3, 15, 11]
+result = [i * 3 for i in data if i &gt; 10]
+print(result)   # [60, 45, 33]
+# non-idiomatic
+data = [7, 20, 3, 15, 11]
+result = []
+for i in data:
+    if i &gt; 10:
+        result.append(i * 3)
+print(result)   # [60, 45, 33]
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="create-dict-from-keys-and-values-using-zip">Create dict from keys and values using zip</h2>
+<p>如果想要将两个现有的list合并为键值对组合，通过zip方法会是一个不错的选择:<code>d = dict(zip(keys, values))</code>
+。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># pythonic
+keys = [&#39;Safe&#39;, &#39;Bob&#39;, &#39;Thomas&#39;]
+values = [&#39;Hammad&#39;, &#39;Builder&#39;, &#39;Engine&#39;]
+d = dict(zip(keys, values))
+print(d)  # {&#39;Bob&#39;: &#39;Builder&#39;,
+          #   &#39;Safe&#39;: &#39;Hammad&#39;,
+          #   &#39;Thomas&#39;: &#39;Engine&#39;}
+# non-idiomatic
+keys = [&#39;Safe&#39;, &#39;Bob&#39;, &#39;Thomas&#39;]
+values = [&#39;Hammad&#39;, &#39;Builder&#39;, &#39;Engine&#39;]
+d = {}
+for i, key in enumerate(keys):
+    d[keys] = values[i]
+print(d)   # {&#39;Bob&#39;: &#39;Builder&#39;,
+           #   &#39;Safe&#39;: &#39;Hammad&#39;,
+           #   &#39;Thomas&#39;: &#39;Engine&#39;}
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="路漫漫而修远">路漫漫而修远</h1>
+<p>当然，上述的这些仅仅是冰山一角，在自己写代码的过程中应当尽量遵守这些准则，努力提高自己的代码质量。</p>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">rgozi</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2016-11-28
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E8%AF%BB%E4%B9%A6/">读书</a>
+          <a href="/tags/pythonic/">pythonic</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/flask%E9%83%A8%E7%BD%B2%E6%96%B9%E5%BC%8F%E5%AE%9E%E8%B7%B5/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">flask几种部署方式实践</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/%E8%AF%BBmongodb%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97%E6%9C%89%E6%84%9F/">
+            <span class="next-text nav-default">读Mongodb权威指南有感</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="eclipse_sv@whu.edu.cn" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/iamwm" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.douban.com/people/Eclipsesss/" class="iconfont icon-douban" title="douban"></a>
+      <a href="https://space.bilibili.com/44041814/" class="iconfont icon-bilibili" title="bilibili"></a>
+  <a href="https://rgozi.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>rgozi</span>
+  </span>
+  <div class="container">
+        备案号：<a href="https://beian.miit.gov.cn/" target="_blank">鄂ICP备20003011号-1</a>
+    </div>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-173630995-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

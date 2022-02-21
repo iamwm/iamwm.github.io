@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>pip on 搬砖工的日常</title>
+    <link>https://rgozi.com/tags/pip/</link>
+    <description>Recent content in pip on 搬砖工的日常</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Thu, 01 Mar 2018 13:45:39 +0000</lastBuildDate><atom:link href="https://rgozi.com/tags/pip/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>开发常用各种源设置</title>
+      <link>https://rgozi.com/post/%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%90%84%E7%A7%8D%E6%BA%90%E8%AE%BE%E7%BD%AE/</link>
+      <pubDate>Thu, 01 Mar 2018 13:45:39 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%90%84%E7%A7%8D%E6%BA%90%E8%AE%BE%E7%BD%AE/</guid>
+      <description>&lt;p&gt;在日常开发过程中，经常会受到国内网络环境限制导致类似：apt install大半天、brew install卡条、npm install一直转圈等诸多蛋疼的事情。
+恰好我最近重装了笔记本操作系统，也记录一下我在开发过程中需要设置国内源改善开发环境的过程。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>proxy在爬虫中的使用姿势</title>
+      <link>https://rgozi.com/post/proxy%E5%9C%A8%E7%88%AC%E8%99%AB%E4%B8%AD%E7%9A%84%E4%BD%BF%E7%94%A8%E5%A7%BF%E5%8A%BF/</link>
+      <pubDate>Mon, 28 Aug 2017 13:23:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/proxy%E5%9C%A8%E7%88%AC%E8%99%AB%E4%B8%AD%E7%9A%84%E4%BD%BF%E7%94%A8%E5%A7%BF%E5%8A%BF/</guid>
+      <description>&lt;p&gt;通过爬虫获取数据会经常被服务器ban掉ip，所以有个有效的proxy pool十分必要。这几天在爬网易云音乐的用户数据，顺便搞了个&lt;a href=&#34;https://github.com/love3forever/proxyHunter&#34;&gt;proxyhunter&lt;/a&gt;，并且尝试发布成pip包：&lt;a href=&#34;https://pypi.python.org/pypi/proxyhunter/0.0.1&#34;&gt;proxyhunter&lt;/a&gt;，方便以后的使用。下面主要说下&lt;!-- raw HTML omitted --&gt;requests&lt;!-- raw HTML omitted --&gt;在进行请求的时候，proxy如何设置，以及我这个proxyhunter如何使用。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Redis on 搬砖工的日常</title>
+    <link>https://rgozi.com/tags/redis/</link>
+    <description>Recent content in Redis on 搬砖工的日常</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 05 Oct 2015 22:00:45 +0000</lastBuildDate><atom:link href="https://rgozi.com/tags/redis/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>利用redis制作页面访问计数器</title>
+      <link>https://rgozi.com/post/%E5%88%A9%E7%94%A8redis%E5%88%B6%E4%BD%9C%E9%A1%B5%E9%9D%A2%E8%AE%BF%E9%97%AE%E8%AE%A1%E6%95%B0%E5%99%A8/</link>
+      <pubDate>Mon, 05 Oct 2015 22:00:45 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/%E5%88%A9%E7%94%A8redis%E5%88%B6%E4%BD%9C%E9%A1%B5%E9%9D%A2%E8%AE%BF%E9%97%AE%E8%AE%A1%E6%95%B0%E5%99%A8/</guid>
+      <description>&lt;p&gt;以前博客的页面计数器使用的是卜算子,使用方法点击&lt;a href=&#34;http://ibruce.info/2015/04/04/busuanzi/&#34;&gt;这里&lt;/a&gt;查看,但是页面在加载的时候，并不是很快,于是自己使用Redis制作了一个简单的页面计数工具。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>redis的GEO扩展</title>
+      <link>https://rgozi.com/post/redisgeo/</link>
+      <pubDate>Tue, 11 Aug 2015 14:50:19 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/redisgeo/</guid>
+      <description>&lt;p&gt;在redis3.2版本中，增加了geohash的扩展，这下可以使用Redis来作更多有意思的事情了。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>服务器端缓存环境配置(三)</title>
+      <link>https://rgozi.com/post/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E7%BC%93%E5%AD%98%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-%E4%B8%89/</link>
+      <pubDate>Tue, 04 Aug 2015 09:14:27 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E7%BC%93%E5%AD%98%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-%E4%B8%89/</guid>
+      <description>&lt;h1 id=&#34;nginx的lua扩展&#34;&gt;&lt;strong&gt;nginx的Lua扩展&lt;/strong&gt;&lt;/h1&gt;
+&lt;p&gt;接着上两篇博客，现在开始搭建nginx的LUA和mongodb扩展，完成整个流程的最后一步配置。
+Lua是一个可以嵌入到nginx配置文件的动态脚本语言，这样就可以在nginx请求处理的各个阶段执行各种进行逻辑控制的Lua代码。
+想要在nginx里边增加lua扩展，需要的模块如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://luajit.org&#34;&gt;luajit&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/simpl/ngx_devel_kit&#34;&gt;ngx_devel_kit&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/chaoslawful/lua-nginx-module&#34;&gt;lua_nginx_module&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>服务器端缓存环境配置(二)</title>
+      <link>https://rgozi.com/post/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E7%BC%93%E5%AD%98%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-%E4%BA%8C/</link>
+      <pubDate>Sun, 02 Aug 2015 19:14:56 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E7%BC%93%E5%AD%98%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-%E4%BA%8C/</guid>
+      <description>&lt;p&gt;上一篇博客讲解了整个缓存流程中数据库部分的搭建，有了最基础的部分，现在可以搭建上层的内容了。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>服务器端缓存环境配置</title>
+      <link>https://rgozi.com/post/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E7%BC%93%E5%AD%98%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/</link>
+      <pubDate>Fri, 31 Jul 2015 23:39:02 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E7%BC%93%E5%AD%98%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/</guid>
+      <description>&lt;h1 id=&#34;原材料&#34;&gt;&lt;strong&gt;原材料&lt;/strong&gt;&lt;/h1&gt;
+&lt;p&gt;正所谓“巧妇难为无米之炊”，在进行服务器端缓存搭建之前，需要将整个流程所需的元素准备好。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://nginx.org/&#34; title=&#34;作为Web服务器的存在&#34;&gt;Nginx&lt;/a&gt;作为Web服务器的存在&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.mongodb.org/&#34; title=&#34;磁盘数据库&#34;&gt;Mongodb&lt;/a&gt;磁盘数据库&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.lua.org/&#34; title=&#34;与Nginx结合，进行服务器端的逻辑控制&#34;&gt;Lua&lt;/a&gt;与Nginx结合，进行服务器端的逻辑控制&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://redis.io/&#34; title=&#34;高速缓存&#34;&gt;Redis&lt;/a&gt;内存数据库，高速缓存&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.php.net/&#34; title=&#34;返回数据库信息给客户端&#34;&gt;PHP&lt;/a&gt;读取磁盘数据库信息，返回给客户端&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

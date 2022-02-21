@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>记另一例mongo can not add session to cache - 搬砖工的日常</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="rgozi" /><meta name="description" content="线上环境又报：mongo can not add session to cache，有了之前的经验，这次排查和解决问题算是轻车熟路了。
+" /><meta name="keywords" content="搬砖工, 技术博客" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.84.1 with theme even" />
+
+
+<link rel="canonical" href="https://rgozi.com/post/%E8%AE%B0%E5%8F%A6%E4%B8%80%E4%BE%8Bmongo-can-not-add-session-to-cache/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="记另一例mongo can not add session to cache" />
+<meta property="og:description" content="线上环境又报：mongo can not add session to cache，有了之前的经验，这次排查和解决问题算是轻车熟路了。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://rgozi.com/post/%E8%AE%B0%E5%8F%A6%E4%B8%80%E4%BE%8Bmongo-can-not-add-session-to-cache/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-08-10T21:27:12&#43;00:00" />
+<meta property="article:modified_time" content="2021-08-10T21:27:12&#43;00:00" />
+
+<meta itemprop="name" content="记另一例mongo can not add session to cache">
+<meta itemprop="description" content="线上环境又报：mongo can not add session to cache，有了之前的经验，这次排查和解决问题算是轻车熟路了。"><meta itemprop="datePublished" content="2021-08-10T21:27:12&#43;00:00" />
+<meta itemprop="dateModified" content="2021-08-10T21:27:12&#43;00:00" />
+<meta itemprop="wordCount" content="795">
+<meta itemprop="keywords" content="mongodb,can not add session to cache,线上问题," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="记另一例mongo can not add session to cache"/>
+<meta name="twitter:description" content="线上环境又报：mongo can not add session to cache，有了之前的经验，这次排查和解决问题算是轻车熟路了。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">搬砖工的日常</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">搬砖工的日常</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">记另一例mongo can not add session to cache</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-08-10 </span>
+        <div class="post-category">
+            <a href="/categories/mongodb/"> mongodb </a>
+            </div>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#日志">日志！</a></li>
+    <li><a href="#集群状态">集群状态</a></li>
+    <li><a href="#writeconcern">writeConcern</a></li>
+    <li><a href="#小结">小结</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>线上环境又报：<strong>mongo can not add session to cache</strong>，有了<a href="https://rgozi.com/post/mongo-can-not-add-session-to-cache-%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E5%92%8C%E8%A7%A3%E5%86%B3/">之前的经验</a>，这次排查和解决问题算是轻车熟路了。</p>
+<h2 id="日志">日志！</h2>
+<p>直接登录到线上环境，查看mongo集群日志，发现此次问题和之前遇到的不太一样：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">24737:2021-08-10T15:34:41.196+0800 I CONTROL  [LogicalSessionCacheRefresh] Failed to refresh
+session cache: WriteConcernFailed: waiting for replication timed out; Error details: { wtimeout:
+true } at data_set1
+</code></pre></td></tr></table>
+</div>
+</div><p>看这个样子，应该是内存中的<code>activeSessionsCount</code>无法写入<code>config.system.sessions</code>表中。</p>
+<h2 id="集群状态">集群状态</h2>
+<p>运行命令查看当前集群节点状态：<code>mongostat --discover --interactive --host 127.0.0.1:27010</code></p>
+<p><img src="http://cdn.rgozi.com/image-20210817163327633.png" alt="image-20210817163327633"></p>
+<p>果然，<code>data_set1</code>的一个副节点挂掉了。</p>
+<p>但是，主节点仍然在运行，正常情况下是可以写入数据的呀。先把这个挂掉的节点恢复再说！</p>
+<h2 id="writeconcern">writeConcern</h2>
+<p>接下来，就看一下mongo集群是怎样把<code>activeSessionsCount</code>写入数据库的，继续查看日志，果然发现了端倪：</p>
+<p><img src="http://cdn.rgozi.com/image-20210817171235537.png" alt="image-20210817171235537"></p>
+<p>正常情况下，对<code>system.sessions</code>表的写入操作有<code>writeConcern: { w: &quot;majority&quot;, wtimeout: 15000 }</code>这样的配置。</p>
+<p>那结合我们线上环境集群节点副本集的配置  <code>Primary-Secondary-Secondary (P-S-S)</code>模式，在挂掉一个节点之后，即使主节点仍然正常运行，<code>w: &quot;majority&quot;</code>有这样写入配置的操作也是无法成功的。</p>
+<p><a href="https://docs.mongodb.com/v4.0/reference/write-concern/">mongodb官方文档</a>中有描述：</p>
+<blockquote>
+<p>Requests acknowledgment that write operations have propagated to the <a href="https://docs.mongodb.com/v4.0/reference/write-concern/#calculating-majority-count">calculated majority</a> of the data-bearing voting members (i.e. primary and secondaries with <a href="https://docs.mongodb.com/v4.0/reference/replica-configuration/#rsconf.members%5Bn%5D.votes"><code>members[n\].votes</code></a> greater than <code>0</code>).</p>
+<p>For example, consider a replica set with 3 voting members, Primary-Secondary-Secondary (P-S-S). For this replica set, <a href="https://docs.mongodb.com/v4.0/reference/write-concern/#calculating-majority-count">calculated majority</a> is two, and the write must propagate to the primary and one secondary to acknowledge the write concern to the client.</p>
+</blockquote>
+<p>也就是说，对于我们线上的副本集，必须保证主、副节点都正常运行，才可能达到<code> w: &quot;majority&quot;</code>的要求。</p>
+<h2 id="小结">小结</h2>
+<p>此次问题说明一些问题：</p>
+<ol>
+<li>当前我们对线上mongo集群的监控不足，副本集副节点挂掉较长一段(activeSessionsCount高达40多万)时间直到线上服务报错后才发现；</li>
+<li>对mongodb的<code>writeConcern</code>和<code>readConcern</code>研究不深入，对当前的集群部署模式研究不够。</li>
+</ol>
+<p>后续需要继续完善对线上环境的监控和预警，深入研究mongodb本身。</p>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">rgozi</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-08-10
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/mongodb/">mongodb</a>
+          <a href="/tags/can-not-add-session-to-cache/">can not add session to cache</a>
+          <a href="/tags/%E7%BA%BF%E4%B8%8A%E9%97%AE%E9%A2%98/">线上问题</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/%E5%88%86%E5%8C%BA/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">分区</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/%E5%A4%8D%E5%88%B6/">
+            <span class="next-text nav-default">复制</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="eclipse_sv@whu.edu.cn" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/iamwm" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.douban.com/people/Eclipsesss/" class="iconfont icon-douban" title="douban"></a>
+      <a href="https://space.bilibili.com/44041814/" class="iconfont icon-bilibili" title="bilibili"></a>
+  <a href="https://rgozi.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>rgozi</span>
+  </span>
+  <div class="container">
+        备案号：<a href="https://beian.miit.gov.cn/" target="_blank">鄂ICP备20003011号-1</a>
+    </div>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-173630995-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

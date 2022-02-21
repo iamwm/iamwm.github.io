@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>cesium on 搬砖工的日常</title>
+    <link>https://rgozi.com/tags/cesium/</link>
+    <description>Recent content in cesium on 搬砖工的日常</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 23 Feb 2018 13:45:39 +0000</lastBuildDate><atom:link href="https://rgozi.com/tags/cesium/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>react&#43;cesium开发小结</title>
+      <link>https://rgozi.com/post/react&#43;cesium%E5%BC%80%E5%8F%91%E5%B0%8F%E7%BB%93/</link>
+      <pubDate>Fri, 23 Feb 2018 13:45:39 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/react&#43;cesium%E5%BC%80%E5%8F%91%E5%B0%8F%E7%BB%93/</guid>
+      <description>&lt;p&gt;从一月份开始，主要在做cesium的开发，和之前不同的是这次是在react框架的基础上进行开发的😄&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>cesium-terrain-builder在windows下的编译</title>
+      <link>https://rgozi.com/post/cesium-terrain-builder%E5%9C%A8windows%E4%B8%8B%E7%9A%84%E7%BC%96%E8%AF%91/</link>
+      <pubDate>Fri, 30 Jun 2017 17:10:30 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/cesium-terrain-builder%E5%9C%A8windows%E4%B8%8B%E7%9A%84%E7%BC%96%E8%AF%91/</guid>
+      <description>&lt;p&gt;最近在研究cesium，发现cesium 用的地形数据跟osgEarth的还不太一样，他们采用&lt;a href=&#34;https://github.com/AnalyticalGraphicsInc/quantized-mesh&#34;&gt;quantized-mesh&lt;/a&gt;这个数据格式，之前在osgEarth上用的地形瓦片在cesium上用不了，让人比较恼火。好在github上有人已经实现了从tif格式的dem数据转到.terrain格式的工具:&lt;a href=&#34;https://github.com/homme/cesium-terrain-builder&#34;&gt;cesium-terrain-builder&lt;/a&gt;，不过该项目在windows下编译让人比较难受，所以纪录一下整个过程。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

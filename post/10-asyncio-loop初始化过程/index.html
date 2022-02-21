@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>asyncio default loop 初始化流程(基于python3.6) - 搬砖工的日常</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="rgozi" /><meta name="description" content="通过简单的代码，就可以一窥asyncio event loop的初始化流程：
+1 2 3 4 5  import asyncio if __name__ == &amp;#39;__main__&amp;#39;: loop = asyncio.get_event_loop() loop.run_forever()   上边简单的几行代码，牵涉到event loop的初始化以及运行的全部过程。
+" /><meta name="keywords" content="搬砖工, 技术博客" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.84.1 with theme even" />
+
+
+<link rel="canonical" href="https://rgozi.com/post/10-asyncio-loop%E5%88%9D%E5%A7%8B%E5%8C%96%E8%BF%87%E7%A8%8B/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="asyncio default loop 初始化流程(基于python3.6)" />
+<meta property="og:description" content="通过简单的代码，就可以一窥asyncio event loop的初始化流程：
+
+
+1
+2
+3
+4
+5
+
+
+import asyncio
+
+if __name__ == &#39;__main__&#39;:
+    loop = asyncio.get_event_loop()
+    loop.run_forever()
+
+
+上边简单的几行代码，牵涉到event loop的初始化以及运行的全部过程。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://rgozi.com/post/10-asyncio-loop%E5%88%9D%E5%A7%8B%E5%8C%96%E8%BF%87%E7%A8%8B/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-01-01T09:27:12&#43;00:00" />
+<meta property="article:modified_time" content="2021-01-01T09:27:12&#43;00:00" />
+
+<meta itemprop="name" content="asyncio default loop 初始化流程(基于python3.6)">
+<meta itemprop="description" content="通过简单的代码，就可以一窥asyncio event loop的初始化流程：
+
+
+1
+2
+3
+4
+5
+
+
+import asyncio
+
+if __name__ == &#39;__main__&#39;:
+    loop = asyncio.get_event_loop()
+    loop.run_forever()
+
+
+上边简单的几行代码，牵涉到event loop的初始化以及运行的全部过程。"><meta itemprop="datePublished" content="2021-01-01T09:27:12&#43;00:00" />
+<meta itemprop="dateModified" content="2021-01-01T09:27:12&#43;00:00" />
+<meta itemprop="wordCount" content="1383">
+<meta itemprop="keywords" content="python,asyncio," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="asyncio default loop 初始化流程(基于python3.6)"/>
+<meta name="twitter:description" content="通过简单的代码，就可以一窥asyncio event loop的初始化流程：
+
+
+1
+2
+3
+4
+5
+
+
+import asyncio
+
+if __name__ == &#39;__main__&#39;:
+    loop = asyncio.get_event_loop()
+    loop.run_forever()
+
+
+上边简单的几行代码，牵涉到event loop的初始化以及运行的全部过程。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">搬砖工的日常</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">搬砖工的日常</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">asyncio default loop 初始化流程(基于python3.6)</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-01-01 </span>
+        <div class="post-category">
+            <a href="/categories/python/"> python </a>
+            </div>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#get_event_loop">get_event_loop()</a>
+      <ul>
+        <li><a href="#_unixdefaulteeventlooppolicy">_UnixDefaultEeventLoopPolicy</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>通过简单的代码，就可以一窥asyncio event loop的初始化流程：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">asyncio</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+    <span class="n">loop</span><span class="o">.</span><span class="n">run_forever</span><span class="p">()</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>上边简单的几行代码，牵涉到event loop的初始化以及运行的全部过程。</p>
+<h2 id="get_event_loop">get_event_loop()</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">get_event_loop</span><span class="p">():</span>
+    <span class="s2">&#34;&#34;&#34;Return an asyncio event loop.
+</span><span class="s2">
+</span><span class="s2">    When called from a coroutine or a callback (e.g. scheduled with call_soon
+</span><span class="s2">    or similar API), this function will always return the running event loop.
+</span><span class="s2">
+</span><span class="s2">    If there is no running event loop set, the function will return
+</span><span class="s2">    the result of `get_event_loop_policy().get_event_loop()` call.
+</span><span class="s2">    &#34;&#34;&#34;</span>
+    <span class="n">current_loop</span> <span class="o">=</span> <span class="n">_get_running_loop</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">current_loop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">current_loop</span>
+    <span class="k">return</span> <span class="n">get_event_loop_policy</span><span class="p">()</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>可以看到，这个函数的流程也非常简单：</p>
+<p>如果调用此函数，则返回当前(线程)正在运行中的event loop实例，如果返回为空，则会调用<code>get_event_loop_policy().get_event_loop()</code>创建并且返回一个新的event loop。</p>
+<p>首次调用这个函数，<code>_get_running_loop()</code>肯定返回的是None，接着会调用<code>get_event_loop_policy()</code>，初始化全局变量<code>_event_loop_policy</code>，如果没有事先通过<code>asyncio.set_event_loop_policy(policy)</code>来指定event loop policy，在linux环境中会使用**<code>DefaultEventLoopPolicy</code>**。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">_init_event_loop_policy</span><span class="p">():</span>
+    <span class="k">global</span> <span class="n">_event_loop_policy</span>
+    <span class="k">with</span> <span class="n">_lock</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">_event_loop_policy</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># pragma: no branch</span>
+            <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">DefaultEventLoopPolicy</span>
+            <span class="n">_event_loop_policy</span> <span class="o">=</span> <span class="n">DefaultEventLoopPolicy</span><span class="p">()</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>使用**<code>DefaultEventLoopPolicy</code>**每个线程可以拥有自己的event loop，默认情况下，只会给主线程自动创建一个event loop。其他的loop policy可能实现上有所不同。DefaultEventLoopPolicy通过一个TLS来确保每个线程拥有自己的独有loop。</p>
+<p>DefaultEventLoopPolicy的默认实现是<code>_UnixDefaultEventLoopPolicy</code>，而<code>_UnixDefaultEventLoopPolicy</code>默认使用<code>_UnixSelectorEventLoop</code>作为自己的**_loop_factory**。</p>
+<p>介绍完上述一些默认配置之后，我们来到了关键的一步<strong>get_event_loop()</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python">    <span class="k">def</span> <span class="nf">get_event_loop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s2">&#34;&#34;&#34;Get the event loop.
+</span><span class="s2">
+</span><span class="s2">        This may be None or an instance of EventLoop.
+</span><span class="s2">        &#34;&#34;&#34;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_local</span><span class="o">.</span><span class="n">_loop</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span>
+            <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_local</span><span class="o">.</span><span class="n">_set_called</span> <span class="ow">and</span>
+            <span class="nb">isinstance</span><span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">current_thread</span><span class="p">(),</span> <span class="n">threading</span><span class="o">.</span><span class="n">_MainThread</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_event_loop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">new_event_loop</span><span class="p">())</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_local</span><span class="o">.</span><span class="n">_loop</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;There is no current event loop in thread </span><span class="si">%r</span><span class="s1">.&#39;</span>
+                               <span class="o">%</span> <span class="n">threading</span><span class="o">.</span><span class="n">current_thread</span><span class="p">()</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_local</span><span class="o">.</span><span class="n">_loop</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>而这里的关键<code>new_event_loop</code>则用到了上边的默认配置对应的也就是我们的主角**_loop_factory**:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python">    <span class="k">def</span> <span class="nf">new_event_loop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s2">&#34;&#34;&#34;Create a new event loop.
+</span><span class="s2">
+</span><span class="s2">        You must call set_event_loop() to make this the current event
+</span><span class="s2">        loop.
+</span><span class="s2">        &#34;&#34;&#34;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loop_factory</span><span class="p">()</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="_unixdefaulteeventlooppolicy">_UnixDefaultEeventLoopPolicy</h3>
+<p><img src="http://cdn.rgozi.com/_UnixDefaultEeventLoopPolicy.png" alt=""></p>
+<p>从上图中可以看到_UnixDefaultEeventLoopPolicy的继承关系。</p>
+<p>后续对_UnixDefaultEeventLoopPolicy的实例化过程，主要内容如下：</p>
+<ol>
+<li>
+<p>默认情况下，selector为None，通过<code>selectors.DefaultSelector()</code>来自动选择当前环境下性能最好的selector。在linux环境下，会选择<code>EpollSelector</code>；</p>
+</li>
+<li>
+<p>完成selector配置之后，通过I/O多路复用就会给当前的loop提供异步处理I/O的能力；</p>
+</li>
+<li>
+<p>执行<code>self._make_self_pipe()</code>给当前loop增加处理信号的能力</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python">    <span class="k">def</span> <span class="nf">_make_self_pipe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># A self-socket, really. :-)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ssock</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_csock</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_socketpair</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ssock</span><span class="o">.</span><span class="n">setblocking</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_csock</span><span class="o">.</span><span class="n">setblocking</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_internal_fds</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_reader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ssock</span><span class="o">.</span><span class="n">fileno</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_from_self</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>``</p>
+<p>此处创建的<code>self-socket</code>对，会在主线程接收到信号以及在loop关闭掉的时候做出对应的处理:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python">    <span class="k">def</span> <span class="nf">_process_self_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;got signa:</span><span class="si">{}</span><span class="s2">&#34;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">signum</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">signum</span><span class="p">:</span>
+                <span class="c1"># ignore null bytes written by _write_to_self()</span>
+                <span class="k">continue</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_handle_signal</span><span class="p">(</span><span class="n">signum</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>``</p>
+</li>
+</ol>
+<p>经过上边这一套操作，现在主线程的event loop就完成了初始化。</p>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">rgozi</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-01-01
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/python/">python</a>
+          <a href="/tags/asyncio/">asyncio</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/%E4%BB%A3%E7%A0%81%E5%A6%82%E4%BD%95%E5%9C%A8%E7%B3%BB%E7%BB%9F%E4%B8%AD%E8%BF%90%E8%A1%8C/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">代码如何在系统中运行</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/mongo-can-not-add-session-to-cache-%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E5%92%8C%E8%A7%A3%E5%86%B3/">
+            <span class="next-text nav-default">mongo can not add session to cache问题排查和解决</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="eclipse_sv@whu.edu.cn" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/iamwm" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.douban.com/people/Eclipsesss/" class="iconfont icon-douban" title="douban"></a>
+      <a href="https://space.bilibili.com/44041814/" class="iconfont icon-bilibili" title="bilibili"></a>
+  <a href="https://rgozi.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>rgozi</span>
+  </span>
+  <div class="container">
+        备案号：<a href="https://beian.miit.gov.cn/" target="_blank">鄂ICP备20003011号-1</a>
+    </div>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-173630995-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

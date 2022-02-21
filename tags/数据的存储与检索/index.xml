@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>数据的存储与检索 on 搬砖工的日常</title>
+    <link>https://rgozi.com/tags/%E6%95%B0%E6%8D%AE%E7%9A%84%E5%AD%98%E5%82%A8%E4%B8%8E%E6%A3%80%E7%B4%A2/</link>
+    <description>Recent content in 数据的存储与检索 on 搬砖工的日常</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 05 Jun 2021 09:27:12 +0000</lastBuildDate><atom:link href="https://rgozi.com/tags/%E6%95%B0%E6%8D%AE%E7%9A%84%E5%AD%98%E5%82%A8%E4%B8%8E%E6%A3%80%E7%B4%A2/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>数据的存储与检索</title>
+      <link>https://rgozi.com/post/%E6%95%B0%E6%8D%AE%E7%9A%84%E5%AD%98%E5%82%A8%E4%B8%8E%E6%A3%80%E7%B4%A2/</link>
+      <pubDate>Sat, 05 Jun 2021 09:27:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/%E6%95%B0%E6%8D%AE%E7%9A%84%E5%AD%98%E5%82%A8%E4%B8%8E%E6%A3%80%E7%B4%A2/</guid>
+      <description>&lt;p&gt;对于一个数据库来说，它要完成最基础的两件事情：当你把数据交给数据库时，它负责将其存储起来；当你需要数据时，数据库能够将指定数据检索并返回给你，即&lt;strong&gt;数据存储与检索&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;从数据库的视角来说，上边的两件事情一般会交给底层数据库&lt;strong&gt;存储引擎&lt;/strong&gt;来完成。对于开发人员来说，选择一个合适的存储引擎能够为后续系统的建设非常重要。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

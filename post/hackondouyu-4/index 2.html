@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Hack On Douyu -- 4 - 搬砖工的日常</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="rgozi" /><meta name="description" content="原本打算使用selenium给这个小项目做自动化测试的，没成想selenium功能如此强大，那就顺势做个自动抢鱼丸的小工具吧。😊
+" /><meta name="keywords" content="搬砖工, 技术博客" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.84.1 with theme even" />
+
+
+<link rel="canonical" href="https://rgozi.com/post/hackondouyu-4/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Hack On Douyu -- 4" />
+<meta property="og:description" content="原本打算使用selenium给这个小项目做自动化测试的，没成想selenium功能如此强大，那就顺势做个自动抢鱼丸的小工具吧。😊" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://rgozi.com/post/hackondouyu-4/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2016-07-31T15:04:12&#43;00:00" />
+<meta property="article:modified_time" content="2016-07-31T15:04:12&#43;00:00" />
+
+<meta itemprop="name" content="Hack On Douyu -- 4">
+<meta itemprop="description" content="原本打算使用selenium给这个小项目做自动化测试的，没成想selenium功能如此强大，那就顺势做个自动抢鱼丸的小工具吧。😊"><meta itemprop="datePublished" content="2016-07-31T15:04:12&#43;00:00" />
+<meta itemprop="dateModified" content="2016-07-31T15:04:12&#43;00:00" />
+<meta itemprop="wordCount" content="1278">
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Hack On Douyu -- 4"/>
+<meta name="twitter:description" content="原本打算使用selenium给这个小项目做自动化测试的，没成想selenium功能如此强大，那就顺势做个自动抢鱼丸的小工具吧。😊"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">搬砖工的日常</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">搬砖工的日常</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Hack On Douyu -- 4</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2016-07-31 </span>
+        <div class="post-category">
+            <a href="/categories/coding/"> coding </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents"></nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>原本打算使用<a href="http://selenium-python.readthedocs.io/">selenium</a>给这个小项目做自动化测试的，没成想selenium功能如此强大，那就顺势做个自动抢鱼丸的小工具吧。😊</p>
+<h1 id="selenium是什么">Selenium是什么</h1>
+<p>Selenium是一款由ThoughtWorks公司开发的web自动化测试工具，它可以让测试人员编写的测试代码直接在浏览器中进行测试，并且它提供了当前绝大多数现代浏览器的驱动。同时Selenium也拥有很多开发语言版本的驱动。我使用的就是python版本的驱动。具体安装步骤可以参考<a href="http://selenium-python.readthedocs.io/">这里</a>。
+具体来说，Selenium可以模拟大多数的页面操作：填写表单、拖拽页面、页面切换、返回上一页面、前进到下一页面等。
+告诉了Selenium网址之后，它可以自动打开指定的浏览器，并且待页面完全加载之后分别通过页面元素的id、name、XPath、Link Text、tag、class或者是css选择器完成元素的选择。
+选定了页面元素之后可以按照预期完成一些列动作。</p>
+<h1 id="talk-is-cheap-show-you-my-code">Talk is cheap, Show you my code</h1>
+<p>整个项目的代码在<a href="https://github.com/wangmengcn/DouyuFan">github</a>上托管，感兴趣的同学可以前去浏览。整个抢鱼丸礼物的过程可以由这个图来说明：
+<img src="https://rgozi.com/pics/%E6%96%97%E9%B1%BC%E5%BC%B9%E5%B9%95%E7%9B%91%E5%90%AC.png" alt="自动抢鱼丸流程"></p>
+<p>具体步骤如下：</p>
+<ol>
+<li>与斗鱼弹幕服务器建立连接，监听当前最热门房间弹幕，由于火箭礼物消息会通过广播向所有直播间发送，所以只需要根据火箭消息的标识符来判定火箭消息即可；</li>
+<li>火箭消息接收之后可以将其转存到redis中，利用pub/sub完成火箭消息的广播和订阅；</li>
+<li>订阅redis火箭消息频道，获取当前可以抢鱼丸的房间完整url；</li>
+<li>利用selenium打开浏览器并访问指定直播间，自动发送弹幕消息，并且点击抢鱼丸的按钮，最终完成自动抢鱼丸礼物的整个流程。</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># 获取全频道播放的火箭信息
+def get_rocket(data):
+    try:
+        sender_id = re.search(&#39;\/sn@=(.+?)\/&#39;, data).group(1)
+        recver_id = re.search(&#39;\/dn@=(.+?)\/&#39;, data).group(1)
+        recver_room = re.search(&#39;\/drid@=(.+?)\/&#39;, data).group(1)
+        gift = re.search(&#39;\/gn@=(.+?)\/&#39;, data).group(1)
+        rocketmsg = {}
+        rocketmsg[&#34;sender_id&#34;] = sender_id
+        rocketmsg[&#34;recver_id&#34;] = recver_id
+        rocketmsg[&#34;recver_room&#34;] = recver_room
+        rocketmsg[&#34;gift&#34;] = gift
+        rocketmsg[&#34;date&#34;] = datetime.now()
+        col.insert_one(rocketmsg, bypass_document_validation=False)
+        publishvalue = {}
+        publishvalue[&#34;sender_id&#34;] = sender_id
+        publishvalue[&#34;recver_id&#34;] = recver_id
+        publishvalue[&#34;recver_room&#34;] = recver_room
+        publishvalue[&#34;gift&#34;] = gift
+        castRocket(publishvalue)
+        print sender_id, &#34;送给房间号为:&#34;, recver_room, &#34;的&#34;, recver_id, &#34;一个&#34;,\
+            gift, &#34;&lt;&#34;, datetime.now(), &#34;&gt;&#34;
+        # 在此处完成自动抢鱼丸流程
+        getGift(str(recver_room))
+    except Exception, e:
+        print &#34;error occur:&#34;, repr(data)
+    finally:
+        pass
+</code></pre></td></tr></table>
+</div>
+</div><p>在此过程中，起到关键作用的selenium主要扮演如下图所示的角色：</p>
+<p><img src="https://rgozi.com/pics/selenium%20driver.png" alt=""></p>
+<ol>
+<li>获取浏览器cookie，这样就免去了破解斗鱼帐号自动登录的麻烦；</li>
+<li>获取指定元素，比如找到弹幕发送窗口，输入弹幕信息，发送弹幕，点击抢鱼丸按钮；</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">from selenium import webdriver
+from selenium.webdriver.common.action_chains import ActionChains
+import time
+
+
+def getGift(roomid):
+	# 这里是指定firefox的cookie位置
+    fp = webdriver.FirefoxProfile(
+        r&#39;/Users/eclipse/Library/Application Support/Firefox/Profiles/tmsbsjpg.default&#39;)
+    browser = webdriver.Firefox(fp)
+    browser.implicitly_wait(15)  # seconds
+    browser.get(&#34;http://www.douyu.com/&#34; + roomid)
+    try:
+    	# 找到弹幕聊天窗口，输入聊天内容
+        indexvideo = browser.find_element_by_class_name(&#39;cs-textarea&#39;)
+        print type(indexvideo)
+        indexvideo.send_keys(&#39;2333333333333&#39;)
+        print indexvideo
+        time.sleep(7)
+        sendbut = browser.find_element_by_class_name(&#39;b-btn&#39;)
+        ActionChains(browser).move_to_element(
+            indexvideo).click(sendbut).perform()
+        gift = browser.find_element_by_class_name(&#39;peck-cdn&#39;)
+    except Exception, e:
+        print str(e)
+        browser.quit()
+
+    times = 0
+    while True:
+        try:
+        	# 点击抢鱼丸按钮，在完成之后，按钮消息，继续点击出现异常，自动关闭浏览器即可
+            ActionChains(browser).move_to_element(gift).click(gift).perform()
+            time.sleep(2)
+            print times
+            times += 1
+        except Exception, e:
+            print &#39;completed by an error&#39;
+            browser.quit()
+
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="老板来份鱼丸">老板，来份鱼丸</h1>
+<p>按照上述方法完成编码之后，我用自己的帐号测试了一下，效果是这样的：
+<img src="https://rgozi.com/pics/danmu.gif" alt=""></p>
+<p>发现斗鱼可能是做了限制，每个人大概一天只能抢到2000个左右的鱼丸(斗鱼：本来为代码写测试的，谁让你没事干抢我们鱼丸的？！，我：生无可恋.jpg)，娱乐而已，不过说句心里话，selenium可真的是个好东西。</p>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">rgozi</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2016-07-31
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/post/multiprocessing.dummy/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">最简便的爬虫效率提升方法</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/hackondouyu-3/">
+            <span class="next-text nav-default">Hack On Douyu -- 3</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="eclipse_sv@whu.edu.cn" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/iamwm" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.douban.com/people/Eclipsesss/" class="iconfont icon-douban" title="douban"></a>
+      <a href="https://space.bilibili.com/44041814/" class="iconfont icon-bilibili" title="bilibili"></a>
+  <a href="https://rgozi.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">rgozi</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-173630995-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

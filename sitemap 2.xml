@@ -1,0 +1,844 @@
+<?xml-stylesheet type="text/xsl" href="https://rgozi.com/sitemap.xsl"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <url>
+    <loc>https://rgozi.com/tags/aggregation/</loc>
+    <lastmod>2020-07-19T09:27:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/categories/</loc>
+    <lastmod>2020-07-19T09:27:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/post/mongo-can-not-add-session-to-cache-%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E5%92%8C%E8%A7%A3%E5%86%B3/</loc>
+    <lastmod>2020-07-19T09:27:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/mongodb/</loc>
+    <lastmod>2020-07-19T09:27:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/categories/mongodb/</loc>
+    <lastmod>2020-07-19T09:27:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/post/</loc>
+    <lastmod>2020-07-19T09:27:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/</loc>
+    <lastmod>2020-07-19T09:27:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/</loc>
+    <lastmod>2020-07-19T09:27:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/asyncio/</loc>
+    <lastmod>2020-07-01T09:27:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/post/1asyncio%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F/</loc>
+    <lastmod>2020-07-01T09:27:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/python/</loc>
+    <lastmod>2020-07-01T09:27:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/categories/python/</loc>
+    <lastmod>2020-07-01T09:27:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/%E7%9E%8E%E5%86%99/</loc>
+    <lastmod>2020-04-07T16:33:10+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/post/%E8%BF%91%E6%9C%9F%E7%9A%84%E6%83%B3%E6%B3%95%E5%92%8C%E8%A7%84%E5%88%92/</loc>
+    <lastmod>2020-04-07T16:33:10+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/apt/</loc>
+    <lastmod>2018-03-01T13:45:39+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/npm/</loc>
+    <lastmod>2018-03-01T13:45:39+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/pip/</loc>
+    <lastmod>2018-03-01T13:45:39+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/ubuntu/</loc>
+    <lastmod>2018-03-01T13:45:39+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/yarn/</loc>
+    <lastmod>2018-03-01T13:45:39+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/post/%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E5%90%84%E7%A7%8D%E6%BA%90%E8%AE%BE%E7%BD%AE/</loc>
+    <lastmod>2018-03-01T13:45:39+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/cesium/</loc>
+    <lastmod>2018-02-23T13:45:39+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/react/</loc>
+    <lastmod>2018-02-23T13:45:39+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/post/react&#43;cesium%E5%BC%80%E5%8F%91%E5%B0%8F%E7%BB%93/</loc>
+    <lastmod>2018-02-23T13:45:39+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/redux/</loc>
+    <lastmod>2018-02-23T13:45:39+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/post/2017%E6%8A%80%E6%9C%AF%E6%88%90%E9%95%BF%E5%B0%8F%E7%BB%93/</loc>
+    <lastmod>2018-01-09T13:45:39+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/%E6%80%BB%E7%BB%93/</loc>
+    <lastmod>2018-01-09T13:45:39+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/gitlab/</loc>
+    <lastmod>2017-11-17T22:41:24+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/jenkins/</loc>
+    <lastmod>2017-11-17T22:41:24+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/categories/%E5%89%8D%E7%AB%AF/</loc>
+    <lastmod>2017-11-17T22:41:24+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/post/%E5%89%8D%E7%AB%AF%E9%A1%B9%E7%9B%AE%E7%9A%84%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E5%92%8C%E9%83%A8%E7%BD%B2/</loc>
+    <lastmod>2017-11-17T22:41:24+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/%E8%87%AA%E5%8A%A8%E5%8C%96/</loc>
+    <lastmod>2017-11-17T22:41:24+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/docker/</loc>
+    <lastmod>2017-11-09T13:45:39+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/mac/</loc>
+    <lastmod>2017-11-09T13:45:39+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/post/%E4%BD%BF%E7%94%A8docker%E5%AE%89%E8%A3%85jenkins/</loc>
+    <lastmod>2017-11-09T13:45:39+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/pip2pi/</loc>
+    <lastmod>2017-10-24T15:27:54+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/%E7%A6%BB%E7%BA%BF%E7%8E%AF%E5%A2%83/</loc>
+    <lastmod>2017-10-24T15:27:54+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/post/%E7%A6%BB%E7%BA%BF%E7%8E%AF%E5%A2%83python%E9%A1%B9%E7%9B%AE%E7%9A%84%E9%83%A8%E7%BD%B2/</loc>
+    <lastmod>2017-10-24T15:27:54+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/shadowsock/</loc>
+    <lastmod>2017-10-13T22:41:24+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/vultr/</loc>
+    <lastmod>2017-10-13T22:41:24+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/post/%E5%9C%A8vultr%E4%B8%8A%E6%90%AD%E5%BB%BAshadowsock/</loc>
+    <lastmod>2017-10-13T22:41:24+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/categories/%E7%9E%8E%E6%90%9E/</loc>
+    <lastmod>2017-10-13T22:41:24+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/post/mongodb%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/</loc>
+    <lastmod>2017-09-18T17:03:05+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/http-proxy/</loc>
+    <lastmod>2017-08-28T13:23:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/proxyhunter/</loc>
+    <lastmod>2017-08-28T13:23:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/post/proxy%E5%9C%A8%E7%88%AC%E8%99%AB%E4%B8%AD%E7%9A%84%E4%BD%BF%E7%94%A8%E5%A7%BF%E5%8A%BF/</loc>
+    <lastmod>2017-08-28T13:23:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/requests/</loc>
+    <lastmod>2017-08-28T13:23:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/oop/</loc>
+    <lastmod>2017-08-22T09:23:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/post/python%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95%E6%8C%87%E5%8D%97/</loc>
+    <lastmod>2017-08-22T09:23:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95/</loc>
+    <lastmod>2017-08-22T09:23:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/%E5%8F%AF%E5%8F%98%E7%B1%BB%E5%9E%8B/</loc>
+    <lastmod>2017-08-20T23:23:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/post/fluent_python_chapter8/</loc>
+    <lastmod>2017-08-20T23:23:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/%E6%B7%B1%E6%B5%85%E6%8B%B7%E8%B4%9D/</loc>
+    <lastmod>2017-08-20T23:23:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/%E8%AF%BB%E4%B9%A6/</loc>
+    <lastmod>2017-08-20T23:23:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/generator/</loc>
+    <lastmod>2017-08-10T19:23:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/iterable/</loc>
+    <lastmod>2017-08-10T19:23:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/post/iterablesiterators%E5%92%8Cgenerators/</loc>
+    <lastmod>2017-08-10T19:23:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/iterator/</loc>
+    <lastmod>2017-08-10T19:23:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/%E5%8F%AF%E8%BF%AD%E4%BB%A3%E5%AF%B9%E8%B1%A1/</loc>
+    <lastmod>2017-08-10T19:23:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/%E7%94%9F%E6%88%90%E5%99%A8/</loc>
+    <lastmod>2017-08-10T19:23:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/%E8%BF%AD%E4%BB%A3%E5%99%A8/</loc>
+    <lastmod>2017-08-10T19:23:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/itertools/</loc>
+    <lastmod>2017-08-09T19:23:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/post/python%E7%9A%84itertools/</loc>
+    <lastmod>2017-08-09T19:23:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/%E6%96%87%E6%A1%A3/</loc>
+    <lastmod>2017-08-09T19:23:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/%E6%A0%87%E5%87%86%E5%BA%93/</loc>
+    <lastmod>2017-08-09T19:23:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/classmethod/</loc>
+    <lastmod>2017-08-03T11:31:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/post/%E5%85%B3%E4%BA%8Epython%E7%9A%84classmethod%E5%92%8Cstaticmethod%E7%9A%84%E7%90%86%E8%A7%A3/</loc>
+    <lastmod>2017-08-03T11:31:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/staticmethod/</loc>
+    <lastmod>2017-08-03T11:31:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/celery/</loc>
+    <lastmod>2017-07-19T14:05:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/post/celery%E5%92%8Cfabric%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/</loc>
+    <lastmod>2017-07-19T14:05:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/fabric/</loc>
+    <lastmod>2017-07-19T14:05:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/post/%E6%9C%80%E8%BF%91%E5%85%B3%E4%BA%8Epython%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%BB%E7%BB%93/</loc>
+    <lastmod>2017-07-09T12:38:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/c&#43;&#43;/</loc>
+    <lastmod>2017-06-30T17:10:30+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/post/cesium-terrain-builder%E5%9C%A8windows%E4%B8%8B%E7%9A%84%E7%BC%96%E8%AF%91/</loc>
+    <lastmod>2017-06-30T17:10:30+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/gdal/</loc>
+    <lastmod>2017-06-30T17:10:30+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/vs2017/</loc>
+    <lastmod>2017-06-30T17:10:30+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/zlib/</loc>
+    <lastmod>2017-06-30T17:10:30+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/post/requests%E5%BA%93error/</loc>
+    <lastmod>2017-01-29T11:11:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/%E7%88%AC%E8%99%AB/</loc>
+    <lastmod>2017-01-29T11:11:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/auth/</loc>
+    <lastmod>2017-01-17T11:11:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/post/mongodb%E5%B8%A6%E5%AF%86%E7%A0%81%E9%AA%8C%E8%AF%81%E4%BD%BF%E7%94%A8/</loc>
+    <lastmod>2017-01-17T11:11:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/flask/</loc>
+    <lastmod>2016-12-28T16:11:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/post/flask-socketio%E7%9A%84%E4%B8%80%E6%AC%A1%E4%BD%BF%E7%94%A8%E7%BB%8F%E5%8E%86/</loc>
+    <lastmod>2016-12-28T16:11:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/socketio/</loc>
+    <lastmod>2016-12-28T16:11:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/post/flask%E9%83%A8%E7%BD%B2%E6%96%B9%E5%BC%8F%E5%AE%9E%E8%B7%B5/</loc>
+    <lastmod>2016-12-12T15:32:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/pythonic/</loc>
+    <lastmod>2016-11-28T14:09:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/post/%E5%A6%82%E4%BD%95%E8%AE%A9%E4%BD%A0%E7%9A%84%E4%BB%A3%E7%A0%81%E6%9B%B4%E5%8A%A0pythonic/</loc>
+    <lastmod>2016-11-28T14:09:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/post/%E8%AF%BBmongodb%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97%E6%9C%89%E6%84%9F/</loc>
+    <lastmod>2016-11-25T10:50:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/post/mongodb_aggregation/</loc>
+    <lastmod>2016-11-23T09:27:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/github/</loc>
+    <lastmod>2016-11-06T18:33:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/hexo/</loc>
+    <lastmod>2016-11-06T18:33:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/categories/hexo/</loc>
+    <lastmod>2016-11-06T18:33:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/post/hexo&#43;github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</loc>
+    <lastmod>2016-11-06T18:33:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/categories/java/</loc>
+    <lastmod>2016-09-21T08:26:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/post/%E8%8F%9C%E9%B8%9F%E5%9C%A8springboot%E4%BD%BF%E7%94%A8%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%92%8C%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/</loc>
+    <lastmod>2016-09-21T08:26:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/categories/%E5%BF%83%E6%83%85%E6%96%87%E5%AD%97/</loc>
+    <lastmod>2016-08-26T11:43:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/post/%E6%83%B3%E8%A6%81%E8%B5%B0%E5%87%BA%E8%88%92%E9%80%82%E5%8C%BA/</loc>
+    <lastmod>2016-08-26T11:43:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/post/springboot/</loc>
+    <lastmod>2016-08-25T14:32:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/categories/coding/</loc>
+    <lastmod>2016-08-02T09:40:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/post/multiprocessing.dummy/</loc>
+    <lastmod>2016-08-02T09:40:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/post/hackondouyu-4/</loc>
+    <lastmod>2016-07-31T15:04:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/post/hackondouyu-3/</loc>
+    <lastmod>2016-07-27T08:07:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/post/hackondouyu-2/</loc>
+    <lastmod>2016-07-23T22:18:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/post/hackondouyu-1/</loc>
+    <lastmod>2016-07-20T21:52:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/node.js/</loc>
+    <lastmod>2015-10-05T22:00:45+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/redis/</loc>
+    <lastmod>2015-10-05T22:00:45+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/post/%E5%88%A9%E7%94%A8redis%E5%88%B6%E4%BD%9C%E9%A1%B5%E9%9D%A2%E8%AE%BF%E9%97%AE%E8%AE%A1%E6%95%B0%E5%99%A8/</loc>
+    <lastmod>2015-10-05T22:00:45+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/post/mongodb%E5%89%AF%E6%9C%AC%E9%9B%86%E5%9C%A8nginx-gridfs%E4%B8%AD%E7%9A%84%E4%BD%BF%E7%94%A8/</loc>
+    <lastmod>2015-08-17T22:41:24+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/nginx/</loc>
+    <lastmod>2015-08-17T22:41:24+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/php/</loc>
+    <lastmod>2015-08-14T14:25:50+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/post/php%E6%89%A7%E8%A1%8C%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E8%84%9A%E6%9C%AC/</loc>
+    <lastmod>2015-08-14T14:25:50+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/categories/redis/</loc>
+    <lastmod>2015-08-11T14:50:19+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/post/redisgeo/</loc>
+    <lastmod>2015-08-11T14:50:19+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/categories/linux/</loc>
+    <lastmod>2015-08-07T14:50:19+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/post/linux%E4%B8%8B%E7%A8%8B%E5%BA%8F%E5%BC%80%E6%9C%BA%E8%87%AA%E5%90%AF%E5%8A%A8/</loc>
+    <lastmod>2015-08-07T14:50:19+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/linux%E5%91%BD%E4%BB%A4/</loc>
+    <lastmod>2015-08-07T14:50:19+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/tags/lua/</loc>
+    <lastmod>2015-08-04T09:14:27+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/</loc>
+    <lastmod>2015-08-04T09:14:27+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/post/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E7%BC%93%E5%AD%98%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-%E4%B8%89/</loc>
+    <lastmod>2015-08-04T09:14:27+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/post/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E7%BC%93%E5%AD%98%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-%E4%BA%8C/</loc>
+    <lastmod>2015-08-02T19:14:56+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://rgozi.com/post/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E7%BC%93%E5%AD%98%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/</loc>
+    <lastmod>2015-07-31T23:39:02+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+</urlset>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>asyncio on 搬砖工的日常</title>
+    <link>https://rgozi.com/tags/asyncio/</link>
+    <description>Recent content in asyncio on 搬砖工的日常</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Wed, 01 Jul 2020 09:27:12 +0000</lastBuildDate><atom:link href="https://rgozi.com/tags/asyncio/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>asyncio的前世今生</title>
+      <link>https://rgozi.com/post/1asyncio%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F/</link>
+      <pubDate>Wed, 01 Jul 2020 09:27:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/1asyncio%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F/</guid>
+      <description>&lt;p&gt;在提到python的asyncio的时候，我们会联想到async/await，event loop，coroutine，selector，Task，Future等等相关的内容，那么asyncio到底是谁(asyncio本身)，它从哪里来的(为什么需要asyncio)，要到哪里去(它能够解决什么问题)呢？&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

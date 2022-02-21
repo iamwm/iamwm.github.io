@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>mongodb使用总结 - 搬砖工的日常</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="rgozi" /><meta name="description" content="本想上周末写好这篇总结的，无奈一起开黑的时间总是过得很快，就偷了个懒，并且还学了个新菜：西红柿牛腩.jpg。所以就把总结的事情放到今天来了。 初次接触mongodb还是在研一刚入学的时候，那时候接触的东西少，很多概念都不清楚，到现在差不多已经有三年了，所以总结一下我用mongodb做了哪些事情还是比较有意义的。
+" /><meta name="keywords" content="搬砖工, 技术博客" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.84.1 with theme even" />
+
+
+<link rel="canonical" href="https://rgozi.com/post/mongodb%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="mongodb使用总结" />
+<meta property="og:description" content="本想上周末写好这篇总结的，无奈一起开黑的时间总是过得很快，就偷了个懒，并且还学了个新菜：西红柿牛腩.jpg。所以就把总结的事情放到今天来了。
+初次接触mongodb还是在研一刚入学的时候，那时候接触的东西少，很多概念都不清楚，到现在差不多已经有三年了，所以总结一下我用mongodb做了哪些事情还是比较有意义的。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://rgozi.com/post/mongodb%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2017-09-18T17:03:05&#43;00:00" />
+<meta property="article:modified_time" content="2017-09-18T17:03:05&#43;00:00" />
+
+<meta itemprop="name" content="mongodb使用总结">
+<meta itemprop="description" content="本想上周末写好这篇总结的，无奈一起开黑的时间总是过得很快，就偷了个懒，并且还学了个新菜：西红柿牛腩.jpg。所以就把总结的事情放到今天来了。
+初次接触mongodb还是在研一刚入学的时候，那时候接触的东西少，很多概念都不清楚，到现在差不多已经有三年了，所以总结一下我用mongodb做了哪些事情还是比较有意义的。"><meta itemprop="datePublished" content="2017-09-18T17:03:05&#43;00:00" />
+<meta itemprop="dateModified" content="2017-09-18T17:03:05&#43;00:00" />
+<meta itemprop="wordCount" content="4069">
+<meta itemprop="keywords" content="mongodb,总结," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="mongodb使用总结"/>
+<meta name="twitter:description" content="本想上周末写好这篇总结的，无奈一起开黑的时间总是过得很快，就偷了个懒，并且还学了个新菜：西红柿牛腩.jpg。所以就把总结的事情放到今天来了。
+初次接触mongodb还是在研一刚入学的时候，那时候接触的东西少，很多概念都不清楚，到现在差不多已经有三年了，所以总结一下我用mongodb做了哪些事情还是比较有意义的。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">搬砖工的日常</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">搬砖工的日常</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">mongodb使用总结</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2017-09-18 </span>
+        
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#我的使用场景">我的使用场景</a></li>
+    <li><a href="#海量瓦片数据存储管理">海量瓦片数据存储管理</a></li>
+    <li><a href="#矢量数据存储和管理">矢量数据存储和管理</a></li>
+    <li><a href="#一般性json格式数据存储管理">一般性json格式数据存储管理</a>
+      <ul>
+        <li><a href="#aggregation">aggregation</a></li>
+        <li><a href="#ttl索引和explain">ttl索引和explain()</a></li>
+        <li><a href="#数据备份和还原">数据备份和还原</a></li>
+        <li><a href="#pymongo的使用">pymongo的使用</a></li>
+      </ul>
+    </li>
+    <li><a href="#未用到的特性">未用到的特性</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>本想上周末写好这篇总结的，无奈一起开黑的时间总是过得很快，就偷了个懒，并且还学了个新菜：西红柿牛腩.jpg。所以就把总结的事情放到今天来了。
+初次接触mongodb还是在研一刚入学的时候，那时候接触的东西少，很多概念都不清楚，到现在差不多已经有三年了，所以总结一下我用mongodb做了哪些事情还是比较有意义的。</p>
+<h2 id="我的使用场景">我的使用场景</h2>
+<p>关于mongodb的介绍，我在这里就不赘述了。mongodb在我这里主要的用途有以下几点：
+1. 海量瓦片数据存储管理
+2. 矢量数据存储管理
+3. 一般性json数据存储管理</p>
+<p>下面会分别根据使用场景总结在使用过程中使用到的mongodb特性。</p>
+<h2 id="海量瓦片数据存储管理">海量瓦片数据存储管理</h2>
+<p>这里说的海量瓦片数据，可以把它当作是大量小文件。具体的应用可以看<a href="https://eclipsesv.com/2015/07/31/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E7%BC%93%E5%AD%98%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">服务器端缓存环境配置</a>和<a href="https://eclipsesv.com/2015/08/17/Mongodb%E5%89%AF%E6%9C%AC%E9%9B%86%E5%9C%A8nginx-gridfs%E4%B8%AD%E7%9A%84%E4%BD%BF%E7%94%A8/">Mongodb副本集在nginx-gridfs中的使用</a>相关的几篇博客。通过<a href="http://nginx.org/">nginx</a>+<a href="https://github.com/mdirolf/nginx-gridfs">nginx-gridfs</a>的简单配置和非常简单的lua逻辑控制脚本，就可以直接根据请求url来获取mongodb gridfs中对应的文件。
+由于那时候才刚接触这些东西，有很多现在看来比较简单的问题，都绕了不少弯子，比如说：不知道mongodb如何备份数据(所以更别提还原备份了)，每次迁移数据库都是直接拷贝db文件夹(不同数据库版本和不同的操作系统经常会导致失败)；不知道数据库索引是什么用，在数据量较大的时候经常查询超时；不懂操作系统，在服务器上必须有图形界面才可以操作&hellip;
+在用惯了这套组合之后，后边还在nginx和mongodb中间加了redis作为缓存，以提升数据索引效率、在一个全景地图项目中，使用gridfs来管理大量的全景图片、现在工作的项目中，也尝试使用mongodb来管理瓦片数据。</p>
+<h2 id="矢量数据存储和管理">矢量数据存储和管理</h2>
+<p>这里说的矢量数据指的是ESRI公司开发的shapefile。在之前的使用过程中，使用mongodb管理矢量数据，主要是想要管理矢量数据中包含的空间和属性信息，所以将shapefile转为geojson之后再由mongodb管理是一个不错的选择。通常可以使用gdal来完成shapefile&ndash;&gt;geojson这一步的转换工作。完成数据转换之后，mongodb可以很方便的存储和组织geojson数据。在进行空间数据的索引的时候，mongodb的2d和2dsphere索引提供的一系列操作能够完成很多任务：
+<!-- raw HTML omitted -->2dsphere<!-- raw HTML omitted -->索引仅支持球面查询，<!-- raw HTML omitted -->2d<!-- raw HTML omitted -->索引支持平面查询和部分球面查询。这两个索引支持的操作主要有以下这些：</p>
+<ol>
+<li>$near
+定义：在一次空间查询中，指定一个点，按照离指定点距离由近到远的顺序返回查询结果。这个指定点可以是一个geopoint或者是一个传统的坐标点。
+在使用$near进行查询的时候，根据指定点类型的不同需要不同的空间索引，如果指定点是一个geopoint则需要查询的字段建立2dsphere索引，如果是一个传统的坐标点，则需要建立2d索引。
+进行$near查询的时候，使用语法如下：
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">{
+   &lt;location field&gt;: {
+     $near: {
+       $geometry: {
+          type: &#34;Point&#34; ,
+          coordinates: [ &lt;longitude&gt; , &lt;latitude&gt; ]
+       },
+       $maxDistance: &lt;distance in meters&gt;,
+       $minDistance: &lt;distance in meters&gt;
+     }
+   }
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>⚠️
+这里需要注意的是，如果指定点是geopoint，可以在查询的时候指定minDistance；如果指定点是传统坐标点的时候，minDistance不可用，并且maxDistance以弧度为单位。
+在分了片的数据库中，$near是不可用的，可以使用geoNear命令或者$geoNear进行聚合操作。</p>
+</li>
+<li>$nearSphere
+此方法和$near功能一致。</li>
+<li>$geoWithin
+定义：将处于指定区域内的所有元素返回。指定区域可以是geojson格式的<code>Polygon</code>或者<code>MultiPolygon</code>或者是传统坐标对序列。
+使用语法:
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">{
+   &lt;location field&gt;: {
+      $geoWithin: {
+         $geometry: {
+            type: &lt;&#34;Polygon&#34; or &#34;MultiPolygon&#34;&gt; ,
+            coordinates: [ &lt;coordinates&gt; ]
+         }
+      }
+   }
+}或者是
+{
+   &lt;location field&gt;: {
+      $geoWithin: { &lt;shape operator&gt;: &lt;coordinates&gt; }
+   }
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>根据指定区域构造的方式不同，使用不同的方法，如果指定区域是geojson格式的就用<code>$geometry</code>操作符，如果指定区域是传统坐标对，可用的操作符就有：<code>$box</code>、<code>$polygon</code>、<code>$center</code>和<code>$centerSphere</code>。
+⚠️
+$geoWithin不需要专门创建空间所以，但是有空间索引可以提高检索效率，并且<code>2dsphere</code>和<code>2d</code>索引均支持<code>$geoWithin</code>。
+$geoWithin返回的结果是无序的，所以它的查询通常要比<code>$near</code>或者是<code>$geoNear</code>快。
+如果指定区域过大(超过半球面)的时候，需要指定mongodb的空间参考：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">db.places.find(
+   {
+     loc: {
+       $geoWithin: {
+          $geometry: {
+             type : &#34;Polygon&#34; ,
+             coordinates: [
+               [
+                 [ -100, 60 ], [ -100, 0 ], [ -100, -60 ], [ 100, -60 ], [ 100, 60 ], [ -100, 60 ]
+               ]
+             ],
+             crs: {
+                type: &#34;name&#34;,
+                properties: { name: &#34;urn:x-mongodb:crs:strictwinding:EPSG:4326&#34; }
+             }
+          }
+       }
+     }
+   }
+)
+</code></pre></td></tr></table>
+</div>
+</div><p>在使用<code>$box</code>操作符的时候：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">{
+  &lt;location field&gt;: {
+     $geoWithin: {
+        $box: [
+          [ &lt;bottom left coordinates&gt; ],
+          [ &lt;upper right coordinates&gt; ]
+        ]
+     }
+  }
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>在使用<code>$polygon</code>操作符的时候：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">{
+   &lt;location field&gt;: {
+      $geoWithin: {
+         $polygon: [ [ &lt;x1&gt; , &lt;y1&gt; ], [ &lt;x2&gt; , &lt;y2&gt; ], [ &lt;x3&gt; , &lt;y3&gt; ], ... ]
+      }
+   }
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>在使用<code>$center</code>的时候：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">{
+   &lt;location field&gt;: {
+      $geoWithin: { $center: [ [ &lt;x&gt;, &lt;y&gt; ] , &lt;radius&gt; ] }
+   }
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>在使用<code>$centerSphere</code>的时候：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">{
+   &lt;location field&gt;: {
+      $geoWithin: { $centerSphere: [ [ &lt;x&gt;, &lt;y&gt; ], &lt;radius&gt; ] }
+   }
+}
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>$geoIntersects
+定义：返回和指定区域相交的元素，指定区域通常是一个geojson格式的<code>Polygon</code>。
+使用语法：
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">{
+  &lt;location field&gt;: {
+     $geoIntersects: {
+        $geometry: {
+           type: &#34;&lt;GeoJSON object type&gt;&#34; ,
+           coordinates: [ &lt;coordinates&gt; ]
+        }
+     }
+  }
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>⚠️
+和<code>$geoWithin</code>一样，<code>$geoIntersects</code>不需要专门创建空间索引，但是空间索引能够提升检索效率，但是它仅支持<code>2dsphere</code>索引。
+在进行超过半球面的检索时，同样需要指定空间参考：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">db.places.find(
+   {
+     loc: {
+       $geoIntersects: {
+          $geometry: {
+             type : &#34;Polygon&#34;,
+             coordinates: [
+               [
+                 [ -100, 60 ], [ -100, 0 ], [ -100, -60 ], [ 100, -60 ], [ 100, 60 ], [ -100, 60 ]
+               ]
+             ],
+             crs: {
+                type: &#34;name&#34;,
+                properties: { name: &#34;urn:x-mongodb:crs:strictwinding:EPSG:4326&#34; }
+             }
+          }
+       }
+     }
+   }
+)
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+<p>通过上述的几个方法，能过满足空间数据的常规索引需求。
+上述两种场景主要是为了应对和空间信息相关的数据，在实际的使用中，更多的是普通的json格式数据。</p>
+<h2 id="一般性json格式数据存储管理">一般性json格式数据存储管理</h2>
+<p>在更多的时候，使用mongodb主要是用来给web服务提供数据。现在前后端分离的开发方式，前后端之间的交互转变为数据的交互，我的套路就是vue+flask-restful+mongodb。
+由于mongodb对json格式的数据存储有先天的优势，所以在写代码的时候会剩很多事，合理的使用mongodb的一些特性会有更大的便利。</p>
+<h3 id="aggregation">aggregation</h3>
+<p>之前记录过mongodb的aggreagtion相关的内容:<a href="https://eclipsesv.com/2016/11/23/mongodb_Aggregation/">Mongodb Aggregation Pipleline</a>和<a href="https://eclipsesv.com/2017/07/25/mongodb%E6%9C%80%E8%BF%91%E9%A2%91%E7%B9%81%E9%9C%80%E8%A6%81%E7%9C%8B%E7%9A%84%E6%96%87%E6%A1%A3/">mongodb最近频繁看的文档</a>。
+由于mongodb对跨表查询支持的不是很好，所以在数据存储的时候经常会尽可能的将所需要的数据都放在同一个document里边。但是在实际进行数据请求的时候，可能需要对获取到的数据进行对应的处理，这个时候mongodb的aggregation就能起到作用。直接利用数据库的能力完成数据处理，通常会比拿到数据之后再通过自己的代码完成数据处理要好得多。</p>
+<h3 id="ttl索引和explain">ttl索引和explain()</h3>
+<p>这两个点在之前的一个博客里边提到过：<a href="https://eclipsesv.com/2016/11/25/%E8%AF%BBMongodb%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97%E6%9C%89%E6%84%9F/">读Mongodb权威指南有感</a>。
+ttl索引可用的面还是挺广的，用以记录缓存过期、验证码或者各类时效性的数据。
+explain()方法在进行数据库性能调优的过程中也会有很好的效果。</p>
+<h3 id="数据备份和还原">数据备份和还原</h3>
+<p>整库的还原和备份，可以直接通过mongodb自带的工具<code>mongodump</code>和<code>mongorestore</code>来完成：
+通过<code>mongodump -d database_name -o /path/to/dump_dir --gzip</code>来完成备份，<code>mongorestore -d database_name --dir /path/to/dump_dir --gzip</code>来完成还原。
+当然，如果两个数据库实例在同一个局域网内，也可以直接在mongo中执行命令来完成database或者是collection的迁移：
+使用cloneCollection命令或者db.cloneCollection()来完成collection的数据迁移：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">db.runCommand( { cloneCollection: &#34;users.profiles&#34;,
+                 from: &#34;mongodb.example.net:27017&#34;,
+                 query: { &#39;active&#39; : true }
+               } )
+
+db.cloneCollection(&#39;mongodb.example.net:27017&#39;, &#39;users.profile&#39;,
+                    { &#39;active&#39; : true } )
+</code></pre></td></tr></table>
+</div>
+</div><p>⚠️
+mongos不支持上述两种方法，并且如果目标服务器的mongodb实例开启<code>authorization</code>这两个方法也是不可以用的。
+类似的，使用下边两个方法来完成整个库的拷贝。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">use importdb
+db.cloneDatabase(&#34;hostname&#34;)
+
+{ clone: &#34;db1.example.net:27017&#34; }
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="pymongo的使用">pymongo的使用</h3>
+<p>使用flask-restful提供数据服务，用到mongodb的地方我都是直接使用pymongo来操作数据库。在使用的过程中有几点，可以记下：</p>
+<ol>
+<li>在使用flask的jsonify的时候，不能直接把mongodb返回的一整条数据jsonify，这是因为ObjectId不能直接转为json，通常我在查询数据的时候不返回ObjectId</li>
+<li>在进行排序或者建立索引的时候，会用到<code>ASCENDING</code>和<code>DESCENDING</code>，升序和降序。需要<code>from pymongo import DESCENDING, ASCENDING</code>，当然还有其他一些索引类型，也都需要从pymongo中直接import</li>
+<li>在数据量很大的时候，将整个数据集返回，然后逐条操作。整个过程可能会耗费较长的时间，这个时候需要设置<code>no_cursor_timeout</code>，就像这样：
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">def gen_playlists():
+    playlists = col.find({}, {&#39;_id&#39;: 0}, no_cursor_timeout=True)
+    for playlist in playlists:
+        yield playlist
+    playlists.close()
+</code></pre></td></tr></table>
+</div>
+</div><p><code>no_cursor_timeout</code>默认设置为<code>False</code>，如果<code>find()</code>返回的结果集中的某个<code>cursor</code>在十分钟以内没有被操作，这个查询结果就会被关闭。在将<code>no_cursor_timeout</code>设置为<code>True</code>的时候，需要在数据操作完成之后手动关闭查询结果。</p>
+</li>
+<li>给mongodb设置用户名密码是保证数据安全的一个常用方法，这篇<a href="https://eclipsesv.com/2017/01/17/mongodb%E5%B8%A6%E5%AF%86%E7%A0%81%E9%AA%8C%E8%AF%81%E4%BD%BF%E7%94%A8/">mongodb带密码验证使用</a>博客里边有详细的说明。</li>
+</ol>
+<h2 id="未用到的特性">未用到的特性</h2>
+<p>虽说是前前后后差不多已经用了三年的mongodb，但总体说来也就达到了会用的程度。mongodb的分片到现在也没有实际的应用经验，很多有用的索引类型也都没用过，并且也没有实实在在优化数据库性能的经验，所以还有很多要学的。大致从一下几点努力：</p>
+<ol>
+<li>仔细阅读官方文档</li>
+<li>在以后的小项目中尽量使用更多的数据库新特性</li>
+<li>除了pymongo以外，其他的driver也接触使用</li>
+<li>尝试学习mongodb内部实现细节，比如geohash算法的实现</li>
+</ol>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">rgozi</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2017-09-18
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/mongodb/">mongodb</a>
+          <a href="/tags/%E6%80%BB%E7%BB%93/">总结</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/%E5%9C%A8vultr%E4%B8%8A%E6%90%AD%E5%BB%BAshadowsock/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">在vultr上搭建shadowsocks</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/proxy%E5%9C%A8%E7%88%AC%E8%99%AB%E4%B8%AD%E7%9A%84%E4%BD%BF%E7%94%A8%E5%A7%BF%E5%8A%BF/">
+            <span class="next-text nav-default">proxy在爬虫中的使用姿势</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="eclipse_sv@whu.edu.cn" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/iamwm" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.douban.com/people/Eclipsesss/" class="iconfont icon-douban" title="douban"></a>
+      <a href="https://space.bilibili.com/44041814/" class="iconfont icon-bilibili" title="bilibili"></a>
+  <a href="https://rgozi.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>rgozi</span>
+  </span>
+  <div class="container">
+        备案号：<a href="https://beian.miit.gov.cn/" target="_blank">鄂ICP备20003011号-1</a>
+    </div>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-173630995-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

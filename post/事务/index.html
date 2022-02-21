@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>事务 - 搬砖工的日常</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="rgozi" /><meta name="description" content="在系统运行过程中，可能随时随地都会发生意外中断：
+ 数据库软件或硬件故障 应用程序崩溃 网络连接断开 数据库并发读写 应用程序竞态条件  为了实现可靠性，整个系统必须处理这些故障，但是实现相对完备的容错机制工作量巨大。**事务（transaction）**一直是简化问题的首选机制。
+" /><meta name="keywords" content="搬砖工, 技术博客" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.84.1 with theme even" />
+
+
+<link rel="canonical" href="https://rgozi.com/post/%E4%BA%8B%E5%8A%A1/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="事务" />
+<meta property="og:description" content="在系统运行过程中，可能随时随地都会发生意外中断：
+
+数据库软件或硬件故障
+应用程序崩溃
+网络连接断开
+数据库并发读写
+应用程序竞态条件
+
+为了实现可靠性，整个系统必须处理这些故障，但是实现相对完备的容错机制工作量巨大。**事务（transaction）**一直是简化问题的首选机制。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://rgozi.com/post/%E4%BA%8B%E5%8A%A1/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-02-13T09:27:12&#43;00:00" />
+<meta property="article:modified_time" content="2022-02-13T09:27:12&#43;00:00" />
+
+<meta itemprop="name" content="事务">
+<meta itemprop="description" content="在系统运行过程中，可能随时随地都会发生意外中断：
+
+数据库软件或硬件故障
+应用程序崩溃
+网络连接断开
+数据库并发读写
+应用程序竞态条件
+
+为了实现可靠性，整个系统必须处理这些故障，但是实现相对完备的容错机制工作量巨大。**事务（transaction）**一直是简化问题的首选机制。"><meta itemprop="datePublished" content="2022-02-13T09:27:12&#43;00:00" />
+<meta itemprop="dateModified" content="2022-02-13T09:27:12&#43;00:00" />
+<meta itemprop="wordCount" content="11589">
+<meta itemprop="keywords" content="数据密集型系统设计,DDIA,读书笔记,事务,2PL,ACID," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="事务"/>
+<meta name="twitter:description" content="在系统运行过程中，可能随时随地都会发生意外中断：
+
+数据库软件或硬件故障
+应用程序崩溃
+网络连接断开
+数据库并发读写
+应用程序竞态条件
+
+为了实现可靠性，整个系统必须处理这些故障，但是实现相对完备的容错机制工作量巨大。**事务（transaction）**一直是简化问题的首选机制。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">搬砖工的日常</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">搬砖工的日常</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">事务</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-02-13 </span>
+        <div class="post-category">
+            <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"> 读书笔记 </a>
+            </div>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#acid">ACID</a>
+      <ul>
+        <li><a href="#原子性">原子性</a></li>
+        <li><a href="#一致性">一致性</a></li>
+        <li><a href="#隔离性">隔离性</a></li>
+        <li><a href="#持久性">持久性</a></li>
+      </ul>
+    </li>
+    <li><a href="#单对象和多对象操作">单对象和多对象操作</a>
+      <ul>
+        <li><a href="#单对象写入">单对象写入</a></li>
+        <li><a href="#多对象事务">多对象事务</a></li>
+        <li><a href="#错误处理和终止">错误处理和终止</a></li>
+      </ul>
+    </li>
+    <li><a href="#弱隔离级别">弱隔离级别</a>
+      <ul>
+        <li><a href="#读已提交">读已提交</a></li>
+        <li><a href="#快照隔离和可重复读">快照隔离和可重复读</a></li>
+        <li><a href="#防止更新丢失">防止更新丢失</a></li>
+        <li><a href="#写入偏斜与幻读">写入偏斜与幻读</a></li>
+      </ul>
+    </li>
+    <li><a href="#可串行化">可串行化</a>
+      <ul>
+        <li><a href="#真正的串行执行">真正的串行执行</a></li>
+        <li><a href="#两阶段锁定">两阶段锁定</a></li>
+        <li><a href="#可串行化快照隔离">可串行化快照隔离</a></li>
+      </ul>
+    </li>
+    <li><a href="#小结">小结</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>在系统运行过程中，可能随时随地都会发生意外中断：</p>
+<ul>
+<li>数据库软件或硬件故障</li>
+<li>应用程序崩溃</li>
+<li>网络连接断开</li>
+<li>数据库并发读写</li>
+<li>应用程序竞态条件</li>
+</ul>
+<p>为了实现可靠性，整个系统必须处理这些故障，但是实现相对完备的容错机制工作量巨大。**事务（transaction）**一直是简化问题的首选机制。</p>
+<p>事务是应用程序将多个读写操作组合成的一个逻辑单元的一种方式。理论上，事务中的所有读写操作被视为单个操作来执行，整个事务要么全部成功完成提交，要么失败终止。如果失败，允许应用程序安全地重试。如此一来，应用程序的错误处理会大大简化，它不必考虑整个事务中部分成功部分失败的问题。</p>
+<p>但是事务并不是与生俱来的，它只是为了简化应用程序的编码，让数据库为我们提供一定的安全保证。</p>
+<p>当然也并不是我们所有对于数据库的操作都必须通过事务来完成，事务在为我们提供安全保证的同时，必然也会带来一定的额外性能开销。所以深入了解事务本身，事务到底能为我们提供什么？它是通过怎样的机制来提供安全保证？它又会带来哪些额外开销？对我们应用程序开发会大有裨益。</p>
+<h2 id="acid">ACID</h2>
+<p>在谈到事务的时候，不可避免的会想到ACID。**ACID代表原子性（Atomicity）、一致性（Consistency）、隔离性（Isolation）和持久性（Durabilty）。**深入了解ACID，对我们理解事务的思想很有帮助。</p>
+<h3 id="原子性">原子性</h3>
+<p>一般来说，原子指的是不可再继续拆分的单元。ACID的原子性并不是关于并发的，它描述了我们想要进行多次读写操作，在一些写入操作完成后出现故障时，如果这个写入操作被包含在一个事务中，那么这个事务就会因为错误而不能完成提交，并且数据库还会丢弃或撤销当前事务已经对数据库做出的任何写入。<strong>即原子性指的是能够在错误时中止事务，丢弃该事务中已经写入的变更。</strong></p>
+<p>对于我们应用开发人员来说，依赖原子性能够让我们在事务未能提交后，简单的尝试重试操作而不必关心之前未能完成的事务中到底哪些写入成功哪些失败。</p>
+<h3 id="一致性">一致性</h3>
+<p>在之前的内容中也经常会看到<em>一致性</em>，它可能代表的是复制中的<strong>副本节点一致性</strong>；也可能是分区中的<strong>一致性哈希</strong>；也可能是CAP理论中的<strong>线性一致性</strong>。在事务中，一致性指的是数据库对于应用程序来说处于正常运行状态，它是对某些数据的一组特定约束（constraint）。</p>
+<p>但是在真实的业务场景中，一致性更多的是通过应用程序来约束的。数据库本身只能够通过一些特定的约束进行数据库检查，但是数据库本身难以理解业务逻辑，无法判断哪些写入是有效的，哪些是无效的。</p>
+<h3 id="隔离性">隔离性</h3>
+<p>一般的数据库大都会同时被访问。在不同的客户端同时访问同一数据的时候，可能会遇到并发问题。ACID中的隔离性指的是：同事执行的事务是相互隔离的，它们之间不能互相影响。数据库确保多个事务同时被提交时，结果与它们串行运行的结果是一样的，尽管它们可能被并发地执行。</p>
+<h3 id="持久性">持久性</h3>
+<p>数据库的一个重要作用是提供一个安全地地方保存数据，对于应用程序开发人员来说不需要担心数据丢失。<strong>持久性</strong>是数据库的一个保证：一旦事务成功执行，即使发生硬件故障，已经写入的数据不会丢失。（当然，真实世界中，完美的持久性是不存在的，没有任何一种技术可以提供绝对保证）</p>
+<h2 id="单对象和多对象操作">单对象和多对象操作</h2>
+<p>对于数据库来说，客户端在同一事务中执行多次写入时原子性和隔离性的体现如下：</p>
+<ul>
+<li>原子性：如果在一系列写入操作中途发生错误，则应中止事务，并丢弃已写入的内容，数据库代替应用程序开发人员完成部分程序错误处理；</li>
+<li>隔离性：同时运行的事务之间不应该互相干扰。如果一个事务进行多次读写，另外一个事务要么看到全部写入结果，要么完全看不到，不应该看到事务执行一般的中间状态。</li>
+</ul>
+<p>如果一个事务读取另外一个未被提交的事务中间状态，则称为*”脏读“*。</p>
+<p>假设程序员想要同时修改多个对象（行记录、文档），通常需要多对象事务来保持多块数据的同步。多对象事务通过某种方式来确定哪些读写操作来自同一个事务。在关系型数据库中，通常基于客户端与数据库之间的TCP连接上<code>BEGIN TRANSACTION</code>和<code>COMMIT</code>语句之间的所有内容被认为是同一事务的一部分。而许多非关系型数据库并没有将这些操作组合在一起的方法。</p>
+<h3 id="单对象写入">单对象写入</h3>
+<p>当单个对象发生变更时，原子性和隔离性往往也是适用的。通常存储引擎都有一个普遍的目标：对单节点上的单个对象上提供原子性和隔离性。<em>原子性可以通过使用日志来实现崩溃恢复，并且可以通过锁机制来实现隔离</em>。</p>
+<h3 id="多对象事务">多对象事务</h3>
+<p>许多分布式系统已经放弃了多对象事务，因为多对象事务很难实现跨分区实现，并且对性能会有明显的影响。而对多对象事务的需求，往往可以通过应用层的设计来避免使用：</p>
+<ul>
+<li>关系型数据模型中，行数据的外键引用需要额外关注，外键必须是正确和最新的；</li>
+<li>文档数据模型中，非规范化的表结构更新操作时，同时需要关注多个相关外部文档；</li>
+<li>拥有次级索引的数据库中，每次更改都需要考虑更新相关索引。</li>
+</ul>
+<p>在数据库无法提供多对象事务时，应用程序开发人员需要考虑更多的设计内容：没有原子性，需要更复杂的错误处理逻辑；缺少隔离性，可能会导致并发问题。</p>
+<h3 id="错误处理和终止">错误处理和终止</h3>
+<p>事务能够提供的关键特征是，如果事务执行失败，它可以中止执行并安全地重试。事务中止的错误返回给应用程序开发人员后，单纯地重试并不一定能解决所有问题，我们在编写应用代码的时候需要额外考虑：</p>
+<ul>
+<li>如果事务实际上成功执行了，但是客户端与服务器之间发生网络故障，那么重试会导致事务被执行两次。这就要求我们有一个额外的应用层重试机制；</li>
+<li>如果事务执行失败是由于数据库负载过高导致的，无限制的重试只会增加服务器负载；</li>
+<li>仅在临时性（死锁、异常情况、临时网络故障或故障切换）错误后才值得重试，发生永久性（违反约束）错误的时候重试是没有意义的；</li>
+<li>如果事务的执行之外有副作用（side effect），那就需要应用程序开发人员仔细考虑如何设计重试的业务逻辑；</li>
+<li>另外如果在重试的过程中，应用程序崩溃会导致所有想要写入的数据丢失。</li>
+</ul>
+<p>上述的多种情况并不能完全枚举所有意外情况，对于应用程序开发人员来说，明白事务本身的机制以及利用事务我们能得到什么对于业务代码的编写非常有帮助。</p>
+<h2 id="弱隔离级别">弱隔离级别</h2>
+<p>如果两个事务要操作的数据毫不相干，那么它们可以安全地并行执行。但是当一个事务读取由另一个事务同事修改的数据时，或者多个事务同事要修改相同的数据时，并发问题（竞态条件）就会出现。</p>
+<p>数据库一直试图通过提供<strong>事务隔离</strong>来向应用程序隐藏数据库的并发读写问题。理论上，隔离可以假装并发并没有发生：可串行的隔离等级意味着同一时间只有一个事务串行运行。</p>
+<p>但是，隔离并不好实现，可串行的隔离会影响数据库性能。通常数据库实现常常使用较弱的隔离级别来防止一部分并发问题。即使是号称提供<strong>ACID</strong>保障的数据库通常也不一定能防止所有并发问题的出现。</p>
+<p>了解可能出现的并发问题并知道如何防止这些问题出现能够帮助我们应用程序开发人员编写很好的业务代码。</p>
+<p>常见的弱隔离级别实现有以下这些：</p>
+<h3 id="读已提交">读已提交</h3>
+<p>最基本的事务隔离级别是<strong>读已提交（read commited）</strong>，它能够提供两个保证：</p>
+<ol>
+<li>从数据库读时，只能看到已经提交的数据，没有脏读；</li>
+<li>没数据库写时，只会覆盖已经写入的数据，没有脏写。</li>
+</ol>
+<h4 id="没有脏读">没有脏读</h4>
+<p>如果一个事务为完全执行完成，它写入了部分数据，如果这部分已经做出的修改能够被其他的事务看到，这样的情况就被称为<strong>脏读（dirty reads）</strong>。</p>
+<p>在读已提交的隔离级别运行的事务必须防止脏读。事务的任何写入只有在事务被提交后才能被其他人看到。防止脏读的原因如下：</p>
+<ul>
+<li>如果事务需要更新多个对象，脏读意味着另一个事务可能会只看到了一部分更新；</li>
+<li>如果事务中止，所有的写入操作都要回滚，如果允许脏读，可能读取到的内容是稍候需要被回滚的内容，即使最终数据可能未被提交到数据库。</li>
+</ul>
+<h4 id="没有脏写">没有脏写</h4>
+<p>如果多个事务尝试同事更新数据库中的对象，我们并不知道具体的写入顺序是怎样的。如果先前的写入只是一个事务的一部分尚未提交的内容，却被另外一个事务写入覆盖了一个尚未提交的值，这种情况被称为<strong>脏写（dirty writes）</strong>。在读已提交的隔离级别上运行的事务必须防止脏写，通常是延迟时间上靠后执行的写入，知道前边的写入事务提交或者中止为止。通过防止脏写，可以避免一些并发问题：</p>
+<ul>
+<li>如果事务更新多个对象，脏写会导致不好的结果，它可能会覆盖已提交的事务内容；</li>
+<li>但是读已提交不能防止类似计数器增量的安全操作。</li>
+</ul>
+<h4 id="读已提交的实现">读已提交的实现</h4>
+<p>读已提交是非常常见的数据库实现：诸如PostgreSQL、SQL Server2012等。</p>
+<p>数据库通过使用<strong>行锁（row level lock）防止脏写</strong>，当事务想要修改特定对象时，它必须先获取该对象的锁，直到该事务被提交或中止。一次只有一个事务可持有任何给定对象的锁，如果另一个事务想要写入同一个对象，则必须等待第一个事务提交或中止后，才能获取锁并继续执行。这种锁定是读已提交隔离级别数据库自动完成的。</p>
+<p><strong>防止脏读的方法是使用同样的行锁</strong>，并要求任何想要读取对象的事务获取锁，<strong>并在完成读取后立即释放该锁</strong>，这能确保在读取进行时，对象不会有脏的、未提交的修改。但是这样的方式来避免脏读可能效果不好，因为这样的读取需要等待其他的事务完成写入，而这个写入时间是无法保证的，这样可能会损失读取性能，并且可能会带来连锁效应。出于这个原因，大多数数据库通过以下方式来实现防止脏读：对于写入的对象，数据库记住旧的已提交的值，和由当前持有写入锁的事务设置的新值，在写入事务执行的时候，任何其他读取对象的事务都可以拿到旧值，只有在写入事务提交后，读取事务才会读取到写入的新值。</p>
+<h3 id="快照隔离和可重复读">快照隔离和可重复读</h3>
+<p>读已提交的特性已经能够提供很好的隔离效果，但是仍然在数据读取的过程会产生一些偏差。如下图所示：</p>
+<p><img src="https://cdn.rgozi.com/image-20220208140615195.png" alt="image-20220208140615195"></p>
+<blockquote>
+<p>爱丽丝在银行有1000美元的储蓄，分为两个账户，每个500美元。现在一笔事务从她的一个账户转移了100美元到另一个账户。如果她在事务处理的同时查看其账户余额列表，她可能会碰巧在收款到达前看到收款账户的余额仍然是500美元，而在付款产生后看到付款账户的余额已经是400美元。对爱丽丝来说，现在她的账户似乎总共只有900美元——看起来有100美元已经凭空消失了。</p>
+<p><a href="https://ddia.vonng.com/#/ch7">原文链接</a></p>
+</blockquote>
+<p>这种异常被称为<strong>不可重复读（nonrepeatable read）<strong>或者</strong>读取偏差（read skew）</strong>。在读已提交的隔离级别，不可重复读的问题是可以被接受的（并且通常情况下应用程序可以接收类似的问题，因为这样的问题不是一个长期持续的问题）。</p>
+<p>但是在一些场景下，上述的问题是不能被容忍的：</p>
+<ul>
+<li>数据备份：在进行备份的时候，需要用到整个数据库，备份运行过程中可能数据库仍然可以接收读写操作，因此备份可能会包含一些旧的内容和一些新的内容，如果从这样的备份中还原数据，上述的偏差就会持续性地存在；</li>
+<li>分析查询和完整性检查：在运行大批量数据分析的过程中，如果查询在不同时间点读取到的数据库内容不同的部分，可能返回错误的结果。</li>
+</ul>
+<p>**快照隔离（snapshot isolation）<strong>是上述问题的常见解决方案：每个事务都从数据库的</strong>一致快照（consistent snapshot）**中读取——事务可以看到事务开始时在数据库中的所有数据，即使这些数据随后被其他事务更改，每个事务也只能看到特定时间点的旧数据。</p>
+<p>快照隔离对长时间运行的只读查询非常有用。如果查询的数据在查询执行期间发生变更，返回结果可靠性就很难得以保证。我们这里所说的一致快照可以看做是数据库在某个特定时间点冻结时的一个备份。</p>
+<h4 id="快照隔离的实现">快照隔离的实现</h4>
+<p>与读已提交隔离的实现类似，快照隔离也通过写锁来防止脏写——进行写入的事务会阻止其他事务对同一个对象的修改。但是与读已提交不同的是：快照隔离的读取不需要任何锁定。快照隔离的关键原则是：<strong>写不阻塞读，读不阻塞写</strong>。<!-- raw HTML omitted -->这允许数据库处理需要长时间执行的查询的同时可以正常处理写入操作。<!-- raw HTML omitted --></p>
+<p>为了实现快照隔离，数据库必须可能保留一个对象的多个不同的提交版本，因为各种正在进行的事务可能需要看到数据库不同时间点的状态。这种技术被称为<strong>多版本并发控制（multi-version concurrency control，MVCC）</strong>。它可以看做是防止脏读机制的一般化。在读已提交隔离级别，通常只需要保存对象的两个版本即可：以提交的最新版本和被覆盖但尚未被提交的版本。因此，支持快照隔离的存储引擎通常也可以使用MVCC来实现读已提交——读已提交为每个查询使用单独的快照，而快照隔离对整个事务使用相同的快照。</p>
+<h4 id="一致快照的可见性规则">一致快照的可见性规则</h4>
+<p>当一个事务开始时，它被赋予一个唯一的事务ID，每当事务向数据库写入任何内容时，它所写入的数据都会被比较上写入事务的ID。</p>
+<p>当一个事务从数据库读取时，事务ID用于决定它可以看到哪些对象，看不见哪些对象。数据可见性规则梳理后如下：</p>
+<ol>
+<li>每次事务开始时，数据库列出当时所有其他尚未完成提交或尚未被中止的事务清单，即使这些事务提交之后，它们执行的任何写入也都会被忽略；</li>
+<li>被中止的事务所执行的任何写入都会被忽略；</li>
+<li>由较晚事务ID的事务所做的任何写入都会被忽略，不管这些事务的执行结果如何；</li>
+<li>所有其他写入，对本次事务来说都是可见的。</li>
+</ol>
+<p>仍然沿用上述爱丽丝存款的例子，在使用快照隔离之后，问题得以解决。</p>
+<p><img src="https://cdn.rgozi.com/image-20220208142732959.png" alt="image-20220208142732959"></p>
+<p>上述过程在快照隔离下，txid=12的事务读取账户2的余额时，她只能看到当前余额为500，因为500的余额删除记录是被事务13执行的，而且余额为400的写入记录是由事务13执行得到的结果，对于读取事务12来说是不可见的。</p>
+<p>在快照隔离下，如果能够看到一个对象需要同时满足两个条件：</p>
+<ol>
+<li>读事务开始时，创建该对象的事务已经完成提交；</li>
+<li>对象未被标记为删除，或者如果被标记为删除，请求删除的事务在读取事务开始时尚未完成提交。</li>
+</ol>
+<p>对于需要长时间运行的事务来说，它会长时间的用到快照，并读取在其他事务看来早已过时的记录，但是这样得出的查询结果至少相对来说是”一致的“。</p>
+<p>对于数据库实现来说，这种快照隔离不需要在事务提交之后立即修改对象，而是在每次值变更后创建一个新的版本，数据库可以以较小的开销提供一致性快照。</p>
+<h4 id="索引与快照隔离">索引与快照隔离</h4>
+<p>上述过程都说的是对于数据对象本身在多版本并发控制中的实现，那么索引是如何工作的呢？一种常见的选择是索引直接指向对象的所有版本，并且索引根据查询事务过滤到当前查询不可见的任何对象版本。当垃圾收集删除所有事务都不可见的旧对象版本时，相应的索引条目也被删除。</p>
+<h3 id="防止更新丢失">防止更新丢失</h3>
+<p>上述讨论的读已提交和快照隔离，主要保证了<strong>只读事务在并发写入时可以看到什么</strong>，但是他们难以解决诸如<strong>丢失更新（lost upadte）<strong>的问题：如果应用程序从数据库中读取一些值，修改它并将修改后的值写入数据库，那么可能会发生丢失更新的问题。这种问题主要出现在</strong>读取-修改-写入</strong>的操作序列中。通常有以下一些方案解决问题：</p>
+<h4 id="原子写">原子写</h4>
+<p>许多数据库提供了原子更新操作，从而消除了应用程序执行读取-修改-写入的序列的需求。例如通过</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-SQL" data-lang="SQL"><span class="k">UPDATE</span><span class="w"> </span><span class="n">counters</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;target&#39;</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><p>这样的指令，这些指令在关系型数据库中一般是并发安全地。</p>
+<p>像mongodb这样的文档数据库也提供对文档的一部分进行本地修改的原子操作。</p>
+<p>原子操作通常通过在读取对象时，获取对象的排他锁来实现，避免在完成操作之前其他事务对它的读写。另外一种选择是简单地强制所有原子操作在单一线程上串行执行。</p>
+<p>虽然很多数据库提供了原子写的特性，但是应用程序开发时，我们常用的ORM框架很容易意外地执行不安全的读取-修改-写入序列。这需要我们应用程序开发人员提高警惕。</p>
+<h4 id="显式锁定">显式锁定</h4>
+<p>针对于更新丢失，其实主要是在<strong>读取-修改-写入</strong>操作序列时发生。除了数据库本身提供的<strong>原子写</strong>功能，应用程序开发人员也可以考虑通过锁的机制来避免更新丢失。应用程序代码中加入锁操作可以解决一部分问题，但是锁可能会带来潜在的竞态条件，这是需要完备考虑的。</p>
+<h4 id="自动检测丢失的更新">自动检测丢失的更新</h4>
+<p>原子写和显示锁定是强制并发进行的读取-修改-写入按顺序串行发生，来防止更新丢失。另外一种方法是允许它们并行执行，如果事务管理器检测到更新丢失后，则中止事务并强制它们重试其读取-修改-写入序列。</p>
+<p>这种方法的优势在于数据库可以结合快照隔离高效地执行写入操作并完成更新丢失的检测。</p>
+<h4 id="比较并设置">比较并设置</h4>
+<p>在不提供事务的数据库中，有时会支持一种原子操作：比较并设置（compare and set，CAS）。此操作的目的是避免丢失更新：只有当前值从上次读取时一直未改变才允许更新发生，如果当前值与先前读取值不一致，则不作更新操作，且必须重试读取-修改-写入序列。</p>
+<h4 id="复制的丢失更新">复制的丢失更新</h4>
+<p>上述的方案中，锁和CAS操作都假定只有一个最新的数据副本，但是多主或者无主复制的数据库通常允许多个写入并发执行，并异步复制到副本上，因此无法保证只有一个最新数据的副本。因此，锁和CAS方案不适用与这种情况。</p>
+<p>复制数据库中一种常见方法是允许并发的写入并创建多个冲突版本值，并使用应用代码或者特殊的数据结构在冲突发生之后解决和合并这些版本。</p>
+<p>原子操作可以很好的在复制的上下文中工作，尤其当这些操作具有可交换性时。</p>
+<p>真正的实现方案中，最后写入者胜利（LWW）——丢弃并发写入，是最容易的冲突解决方案，并且被很多复制数据库采用作为默认方案。</p>
+<h3 id="写入偏斜与幻读">写入偏斜与幻读</h3>
+<p>通过上述的多种隔离级别可以一定程度地防止类似脏写和丢失更新的问题：当不同的事务尝试并发地写入相同对象时，会出现竞态条件。在这种情况下，既可以由数据库自动完成检测中止也可以通过锁和原子写操作等通过应用程序代码进行控制。</p>
+<p>出了上述的问题，并发写入可能还会有其他问题：<strong>写偏差</strong>。</p>
+<h4 id="写偏差的特征">写偏差的特征</h4>
+<p>写偏差既不是脏写也不是丢失更新，最主要的特征就是写偏差发生在并发地更新多个不同对象的时候。例如两个不同的事务都需要在更新不同对象之前依赖另一个读操作，根据读取到的内容再分别对不同对象进行更新。</p>
+<p>我们可以将写偏差看作是更新丢失的一般化：如果两个事务读取相同的对象，然后更新其中一些对象，就可能发生写偏差；在多个事务更新同一个对象的情况下，就会发生脏写或者更新丢失。</p>
+<p>而之前我们针对更新丢失的方法，在解决写偏差的时候往往很难奏效：</p>
+<ul>
+<li>写偏差往往同时涉及多个对象，针对于单对象的原子操作不起作用；</li>
+<li>在一些数据库实现的快照隔离实现中，自动检测更新丢失对于写偏差也没有帮助：自动防止写入偏差需要真正的可串行化隔离；</li>
+<li>有些数据库虽然拥有一些配置约束（constraint），但为了防止写偏差需要仔细考虑如何设计约束，并且约束往往需要同时设计多个对象；</li>
+<li>如果无法实现可串行化隔离，通过应用程序代码显式锁定事务相关的行数据有可能起到帮助；</li>
+<li>写偏差其实会在很多场景下出现，在业务逻辑梳理过程中，需要认真对待。</li>
+</ul>
+<h4 id="导致写偏差的幻读">导致写偏差的幻读</h4>
+<p>一个事务的写入操作影响到其他事务的查询结果，被称为幻读。快照隔离避免了只读查询中的幻读，但是写偏差出现在查询结果之后。</p>
+<h4 id="物化冲突">物化冲突</h4>
+<p>上述的幻读，其实可以理解为在读取写入过程中，读取内容难以加锁。结合实际业务逻辑，通过将可能引起幻读的读取内容转换为具体的数据库表，通过在锁定新增表中的内容来避免幻读，这个过程称为<strong>物化冲突</strong>。物化冲突可以一定程度地解决幻读问题，但是需要仔细梳理业务逻辑，考虑边界条件，通过应用程序代码进行控制，有较高的定制程度。</p>
+<h2 id="可串行化">可串行化</h2>
+<p>并发读写能够提高数据库系统的吞吐量，同时，它可能会带来各种竞态条件。上边描述的多个问题：脏读、脏写、写偏差和幻读这些问题都出现在并发读写事务过程中。通过读已提交、快照隔离这些弱隔离级别能够<em>一定程度地</em>规避这些问题。**可串行化（serializablity）**隔离通常被认为是最强的隔离级别，它能够保证即使事务并行执行，最终的结果也是一样的，对于应用程序开发人员来说，可串行化隔离级别下，他们提交的并发读写事务就像串行执行一样，数据库实现避免了各种可能的竞态条件。</p>
+<p>目前大多数提供可串行化隔离级别的数据库大都在使用一下几种技术实现：</p>
+<ol>
+<li>字面意义的<strong>串行</strong>，直接串行执行事务，避免并发；</li>
+<li><strong>两阶段锁定（two-phase locking， 2PL）</strong></li>
+<li>乐观并发控制，例如<strong>可串行化快照隔离（serializable snapshot isolation）</strong></li>
+</ol>
+<h3 id="真正的串行执行">真正的串行执行</h3>
+<p>避免并发的竞态条件最简单的办法就是<strong>避免并发</strong>。在单个线程上按顺序一次只执行一个事务。很容易想到，串行执行事务不可避免的会带来性能损失，但是在现在，串行执行事务变为可能是由于：</p>
+<ol>
+<li>内存越来越便宜，很多应用都可以直接把全量数据集直接放到内存中，当事务需要访问的数据都在内存中时，单个事务执行的效率要比从磁盘读取数据快得多；</li>
+<li>常见的OLTP系统中，与长时间运行数据分析的只读查询相比，通常只进行少量的读写操作。这就为安排它们串行执行变为可能。</li>
+</ol>
+<p>真实的数据库实现，采用串行执行事务的数据库一般都是内存数据库，例如redis，voltdb等。但是为了能够充分利用单一线程，在事务的是线上与传统数据库会有所不同：</p>
+<h4 id="在存储过程中封装事务">在存储过程中封装事务</h4>
+<p>传统的数据库事务有可能会在事务执行中间等待来自用户的输入，对于串行执行的事务来说，这是不可接受的。取而代之的是，应用程序必须提前将整个事务代码作为存储过程提交给数据库。</p>
+<p>需要串行执行事务的数据库实现，存储过程一般的实现也都与传统数据库不同。例如voltdb使用java或者groovy，redis使用lua，而不是传统的PL/SQL。</p>
+<p>存储过程与内存存储，使得在单个线程上执行所有事务变得可行。由于不需要等待I/O，且避免了并发控制的开销，它们在真实的应用场景往往也会有很好的吞吐量。</p>
+<h4 id="串行执行与分区">串行执行与分区</h4>
+<p>串行执行事务使得并发控制变得简单，但数据库的事务吞吐量被单机单核速度限制。只读事务可以使用快照隔离在其他地方执行，但是对于写入量较高的应用，单线程事务处理可能会编程系统瓶颈。对于需要访问多个分区的任何事务，数据库必须协调多个分区相关的事务，存储过程需要跨越所有分区锁定执行，以确保整个系统的可串行性。而由于跨区事务需要额外的系统开销，它们会比单分区事务慢得多。</p>
+<h3 id="两阶段锁定">两阶段锁定</h3>
+<p>锁通常用于防止脏写：如果两个事务尝试写入同一个对象，锁可以确保第二个写入必须等到前一个写入完成（提交或者中止）后才可以继续写入。</p>
+<p>两阶段锁定的锁要求的会更多：只要没有写入，就允许多个事务读取同一个对象，但对象写入必须独占访问对象。即：</p>
+<ul>
+<li>如果事务A读取一个对象，并且事务B想要写入该对象，则必须等到A完成后才能继续，确保B不能在A事务执行过程中意外地修改对象；</li>
+<li>如果事务A写入一个对象，并且B想要读取对象，则B必须等待A完成后才能继续。</li>
+</ul>
+<p>因此两阶段锁定写入同时会影响读和写，读不影响其他读但是影响写入。上边说到的快照隔离读不阻塞写、写也不阻塞读，这是两阶段锁定与快照隔离的关键区别。</p>
+<h4 id="两阶段锁定实现">两阶段锁定实现</h4>
+<p>2PL用于Mysql（InnoDB）和SQL Server的可串行化隔离级别。</p>
+<p>读与写的阻塞是数据库通过锁来实现的。锁可以处于共享模式（shared mode）或者独占模式（exclusive mode）。具体的使用方式如下：</p>
+<ul>
+<li>如果事务要读取对象，则必须以共享模式获取锁。允许多个事务同时拥有共享锁，但是如果一个事务在对象上拥有独占模式锁，其他锁必须等待；</li>
+<li>如果事务要写入一个对象，则必须以独占模式获取锁，独占模式锁不能同时被多个事务获取，并且如果对象上有其他任何类型的锁，当前写入事务必须等待；</li>
+<li>如果事务先进行读取再进行写入，它应该会先获取共享锁然后再将共享锁升级为独占锁；</li>
+<li>事务获得锁之后，必须持续的持有锁，直到事务完成（提交或者终止）。这也就是两阶段锁定名称的来源：第一阶段在事务执行请见获取锁，第二阶段在事务完成后释放锁。</li>
+</ul>
+<p>由于大量使用了锁，很可能会出现<strong>死锁（deadlock）</strong>。通常数据库会自动检测事务之间的死锁，并中止其中一个，以便另一个继续执行。被中止的事务需要由应用程序重试。</p>
+<h4 id="两阶段锁定的性能">两阶段锁定的性能</h4>
+<p>锁的获取和释放，以及等待获取锁必然会带来性能损失，降低数据库吞吐量。一个缓慢的事务会影响到其他事务，造成排队；当事务由于死锁被中止并重试时，它需要从头执行，如果死锁很频繁会带来大量的不必要开销。</p>
+<h4 id="谓词锁">谓词锁</h4>
+<p>上述内容只是介绍了2PL的基本特性，我们想要用它来解决读已提交和快照隔离不能完美解决的问题：多对象读写事务过程带来的幻读问题——可串行化隔离级别的数据库必须防止幻读。</p>
+<p>通过谓词锁数据库可以阻止所有形式的写入偏差和其他竞态条件，从而实现事务可串行化：</p>
+<ul>
+<li>如果事务A想要读取匹配某些条件的对象，它必须获取指定查询条件上的共享谓词锁，如果事务B此时拥有任何满足该查询条件的对象的独享锁，那么事务A必须要等待事务B释放该独享锁之后才能允许其完成查询；</li>
+<li>如果事务A想要修改对象，则必须先检查旧值或者新值是否与现有任何的其他谓词锁匹配，如果事务B持有此谓词锁，则事务A需要等待事务B完成。</li>
+</ul>
+<h4 id="索引范围锁">索引范围锁</h4>
+<p>可以想到，谓词锁覆盖面很大，会带来较弱的性能：如果事务并发量很大，则会有很多活跃中的事务持有很多锁，检查匹配耗时随之增长。所以大多数使用2PL的数据库实际上采用的<strong>索引范围锁（index-range locking）</strong>，它可以看做是谓词锁的一个简化版本。</p>
+<p>索引范围锁扩大了谓词锁需要锁定的对象范围：假设某个事务使用索引A查找指定对象（这个查询可能是通过值匹配或者范围查询），那么数据库可以简单地将共享锁加载这些索引项上，表明这些对象已被事务占用。</p>
+<p>索引范围锁不会像谓词锁那样精确，但是相对来说它们的开销较低。如果事务没有可以挂载的索引范围锁，数据库可以退化到对整个表上的共享锁。</p>
+<h3 id="可串行化快照隔离">可串行化快照隔离</h3>
+<p>上述内容中，串行执行的可串行化事务伸缩性不够好（单线程内存数据库），两阶段锁定性能不好。较弱的隔离级别则容易出现竞态条件导致丢失更新、写入偏差等问题。</p>
+<p>**可串行化快照隔离（serializable snapshot isolation，SSI）**这个年轻的算法既可用于单点数据库也可用于分布式数据库中。</p>
+<h4 id="与两阶段提交的比较">与两阶段提交的比较</h4>
+<p>两阶段提交是一种<strong>悲观并发控制机制</strong>。如果有事情可能出现问题，那么最好等到情况安全后再执行。相比之下，可串行快照隔离是一种<strong>乐观的并发控制机制</strong>：如果存在潜在的问题，不会阻止事务继续执行，但是当事务要提交的时候，数据库会完成检测：隔离是否被违反；如果隔离被违反，则中止当前事务，并且重试；只有可串行化的事务才能被顺利提交。</p>
+<p>乐观并发控制可能会带来很多事务的重试，如果系统负载已经较高，这些额外的重试可能会带来更坏的影响。但是如果系统负载不高，这些重试就没有那么大影响了。</p>
+<p>可串行化快照隔离是基于数据库一致性快照的，在快照隔离的基础之上，可串行化快照隔离通过算法来检测写入之间的串行化冲突并确定要中止哪些事务。</p>
+<p>相较于快照隔离，可串行化的快照隔离主要是为了解决快照隔离难以解决的问题：写偏斜。</p>
+<h4 id="检测旧mvcc读取">检测旧MVCC读取</h4>
+<p>快照隔离是通过多版本并发控制技术（MVCC）来实现的。当一个事务从MVCC读取数据时，它会忽略未完成的事务的写入。但是影响到多个对象的读取时，此时读取到的内容很有可能已经被其他事务修改。</p>
+<p>为了防止这种情况出现，数据库需要跟踪一个事务由于MVCC可见性规则而忽略的其他事务的写入，在事务提交时，数据库检查如果当前的事务有忽略其他事务写入的内容，则会中止该事务；当然，如果没有忽略其他事务的写入内容则继续正常提交即可，避免了过多的中止。</p>
+<p>对于可串行化的快照隔离，它拥有快照隔离从一致快照中长时间读取数据的能力，并且避免了部分的写偏斜。</p>
+<h4 id="检测影响之前读取的写入">检测影响之前读取的写入</h4>
+<p>另外一种情况是，在可串行化的快照隔离下，检测一个事务何时修改另一个事务的读取。</p>
+<p>在两阶段锁定中，索引范围锁允许数据库锁定与某个搜索匹配的所有数据行的<strong>所有权</strong>。可串行化的快照隔离有类似的机制，但是它并<em>不会阻塞</em>其他事务。</p>
+<p>在事务写入数据库时，它必须在索引中查找最近曾读取受影响数据的其他事务，并告诉这些事务他们曾经读取的数据可能不是最新内容。数据库会中止这些受影响事务提交的写入。</p>
+<h4 id="可串行化事务的性能">可串行化事务的性能</h4>
+<p>基本的机制了解后，如何实现会对算法的实际性能有较大影响。</p>
+<p>与两阶段锁定技术相比，可串行化快照隔离最大的有点在于：一个事务不需要阻塞其他事务，就像在快照隔离级别一样，写不会阻塞读，读不会阻塞写，他们只是在最终需要提交的时候由数据库来判断是否要中止该事务。这种设计使得查询延时更可预测，并且只读操作可以运行在一致性快照之上，不需要任何锁定。</p>
+<p>与串行化执行相比，可串行化的快照隔离并不局限于单个CPU的吞吐量。即使数据可能跨多个机器进行分区，事务也可以保证在可串行化快照隔离等级的同时读写多个分区的数据。</p>
+<p>可串行化快照隔离会比两阶段锁定和串行执行在较多长时间执行的事务中性能损失会更小。</p>
+<h2 id="小结">小结</h2>
+<p>在平常应用代码开发过程中，仅仅是知道数据库有事务这个概念，它更像是一个黑盒子。我们只管写代码，ACID由数据库来保障。</p>
+<p>但是详细的了解事务：它是为了解决哪些问题？解决问题的方式有哪些？不同类型的解决方案又有哪些缺陷？如何才能更好的和业务场景匹配？这些问题值得我们深入了解和思考。</p>
+<blockquote>
+<p>原文地址：<a href="https://ddia.vonng.com/#/ch7">https://ddia.vonng.com/#/ch7</a></p>
+</blockquote>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">rgozi</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2022-02-13
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E6%95%B0%E6%8D%AE%E5%AF%86%E9%9B%86%E5%9E%8B%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/">数据密集型系统设计</a>
+          <a href="/tags/ddia/">DDIA</a>
+          <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a>
+          <a href="/tags/%E4%BA%8B%E5%8A%A1/">事务</a>
+          <a href="/tags/2pl/">2PL</a>
+          <a href="/tags/acid/">ACID</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/%E5%88%86%E5%8C%BA/">
+            <span class="next-text nav-default">分区</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="eclipse_sv@whu.edu.cn" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/iamwm" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.douban.com/people/Eclipsesss/" class="iconfont icon-douban" title="douban"></a>
+      <a href="https://space.bilibili.com/44041814/" class="iconfont icon-bilibili" title="bilibili"></a>
+  <a href="https://rgozi.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>rgozi</span>
+  </span>
+  <div class="container">
+        备案号：<a href="https://beian.miit.gov.cn/" target="_blank">鄂ICP备20003011号-1</a>
+    </div>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-173630995-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

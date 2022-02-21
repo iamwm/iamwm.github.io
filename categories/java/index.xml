@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Java on 搬砖工的日常</title>
+    <link>https://rgozi.com/categories/java/</link>
+    <description>Recent content in Java on 搬砖工的日常</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Wed, 21 Sep 2016 08:26:12 +0000</lastBuildDate><atom:link href="https://rgozi.com/categories/java/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>菜鸟在springboot使用中遇到的问题和解决方法</title>
+      <link>https://rgozi.com/post/%E8%8F%9C%E9%B8%9F%E5%9C%A8springboot%E4%BD%BF%E7%94%A8%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%92%8C%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/</link>
+      <pubDate>Wed, 21 Sep 2016 08:26:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/%E8%8F%9C%E9%B8%9F%E5%9C%A8springboot%E4%BD%BF%E7%94%A8%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%92%8C%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/</guid>
+      <description>&lt;ul&gt;
+&lt;li&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;人的惰性真是可怕啊！
+差不多从中秋以来，都一直处于偷懒的状态，基本上没学习什么新东西，这都要归功于暴雪家的魔兽世界和守望先锋了。玩了这么久，是该总结下这段时间遇到的问题和已经找到的解决方法了，省的以后再遇到这些问题。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用IDEA和maven快速搭建SpringBoot项目</title>
+      <link>https://rgozi.com/post/springboot/</link>
+      <pubDate>Thu, 25 Aug 2016 14:32:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/springboot/</guid>
+      <description>&lt;p&gt;由于单位项目使用java开发，框架用的spring，之前一直觉得java特别麻烦，所以一直避免和java接触，这下跑不掉了。所以近两周一直在学习java。在此记录一下学习过程，和下一步学习计划。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

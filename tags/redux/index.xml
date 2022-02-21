@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>redux on 搬砖工的日常</title>
+    <link>https://rgozi.com/tags/redux/</link>
+    <description>Recent content in redux on 搬砖工的日常</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 23 Feb 2018 13:45:39 +0000</lastBuildDate><atom:link href="https://rgozi.com/tags/redux/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>react&#43;cesium开发小结</title>
+      <link>https://rgozi.com/post/react&#43;cesium%E5%BC%80%E5%8F%91%E5%B0%8F%E7%BB%93/</link>
+      <pubDate>Fri, 23 Feb 2018 13:45:39 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/react&#43;cesium%E5%BC%80%E5%8F%91%E5%B0%8F%E7%BB%93/</guid>
+      <description>&lt;p&gt;从一月份开始，主要在做cesium的开发，和之前不同的是这次是在react框架的基础上进行开发的😄&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>分区 - 搬砖工的日常</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="rgozi" /><meta name="description" content="对于非常大的数据集，或者非常高的吞吐量，仅仅通过复制是无法满足需求的。我们需要对数据进行分区（partion）。
+在MongoDB，Elasticsearch和Solr Cloud中被称为分片（shard），在HBase中称之为区域（Region），Bigtable中则是表块（tablet），Cassandra和Riak中是虚节点（vnode)，Couchbase中叫做虚桶（vBucket）。但是分区（partitioning） 是最约定俗成的叫法。
+分区主要是为了系统的可伸缩性。
+分区常常与复制结合使用，使得每个分区的数据存储在多个副本节点中。在保证系统可伸缩的同时，保证系统的高可用。我们在设计系统分区的时候通常需要同时考虑如何将系统的整体读写负载按照预期分配到各个分区。
+" /><meta name="keywords" content="搬砖工, 技术博客" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.84.1 with theme even" />
+
+
+<link rel="canonical" href="https://rgozi.com/post/%E5%88%86%E5%8C%BA/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="分区" />
+<meta property="og:description" content="对于非常大的数据集，或者非常高的吞吐量，仅仅通过复制是无法满足需求的。我们需要对数据进行分区（partion）。
+在MongoDB，Elasticsearch和Solr Cloud中被称为分片（shard），在HBase中称之为区域（Region），Bigtable中则是表块（tablet），Cassandra和Riak中是虚节点（vnode)，Couchbase中叫做虚桶（vBucket）。但是分区（partitioning） 是最约定俗成的叫法。
+分区主要是为了系统的可伸缩性。
+分区常常与复制结合使用，使得每个分区的数据存储在多个副本节点中。在保证系统可伸缩的同时，保证系统的高可用。我们在设计系统分区的时候通常需要同时考虑如何将系统的整体读写负载按照预期分配到各个分区。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://rgozi.com/post/%E5%88%86%E5%8C%BA/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-09-11T09:27:12&#43;00:00" />
+<meta property="article:modified_time" content="2021-09-11T09:27:12&#43;00:00" />
+
+<meta itemprop="name" content="分区">
+<meta itemprop="description" content="对于非常大的数据集，或者非常高的吞吐量，仅仅通过复制是无法满足需求的。我们需要对数据进行分区（partion）。
+在MongoDB，Elasticsearch和Solr Cloud中被称为分片（shard），在HBase中称之为区域（Region），Bigtable中则是表块（tablet），Cassandra和Riak中是虚节点（vnode)，Couchbase中叫做虚桶（vBucket）。但是分区（partitioning） 是最约定俗成的叫法。
+分区主要是为了系统的可伸缩性。
+分区常常与复制结合使用，使得每个分区的数据存储在多个副本节点中。在保证系统可伸缩的同时，保证系统的高可用。我们在设计系统分区的时候通常需要同时考虑如何将系统的整体读写负载按照预期分配到各个分区。"><meta itemprop="datePublished" content="2021-09-11T09:27:12&#43;00:00" />
+<meta itemprop="dateModified" content="2021-09-11T09:27:12&#43;00:00" />
+<meta itemprop="wordCount" content="3524">
+<meta itemprop="keywords" content="数据密集型系统设计,DDIA,读书笔记,分片,分布式系统,sharding," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="分区"/>
+<meta name="twitter:description" content="对于非常大的数据集，或者非常高的吞吐量，仅仅通过复制是无法满足需求的。我们需要对数据进行分区（partion）。
+在MongoDB，Elasticsearch和Solr Cloud中被称为分片（shard），在HBase中称之为区域（Region），Bigtable中则是表块（tablet），Cassandra和Riak中是虚节点（vnode)，Couchbase中叫做虚桶（vBucket）。但是分区（partitioning） 是最约定俗成的叫法。
+分区主要是为了系统的可伸缩性。
+分区常常与复制结合使用，使得每个分区的数据存储在多个副本节点中。在保证系统可伸缩的同时，保证系统的高可用。我们在设计系统分区的时候通常需要同时考虑如何将系统的整体读写负载按照预期分配到各个分区。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">搬砖工的日常</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">搬砖工的日常</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">分区</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-09-11 </span>
+        <div class="post-category">
+            <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"> 读书笔记 </a>
+            </div>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#键值数据分区">键值数据分区</a>
+      <ul>
+        <li><a href="#根据键的范围分区">根据键的范围分区</a></li>
+        <li><a href="#根据键的散列分区">根据键的散列分区</a></li>
+        <li><a href="#负载偏斜或热点消除">负载偏斜或热点消除</a></li>
+      </ul>
+    </li>
+    <li><a href="#分区与次级索引">分区与次级索引</a>
+      <ul>
+        <li><a href="#基于文档的次级索引分区">基于文档的次级索引分区</a></li>
+        <li><a href="#基于关键词的次级索引分区">基于关键词的次级索引分区</a></li>
+      </ul>
+    </li>
+    <li><a href="#分区再平衡">分区再平衡</a>
+      <ul>
+        <li><a href="#再平衡策略">再平衡策略</a></li>
+      </ul>
+    </li>
+    <li><a href="#请求路由">请求路由</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>对于非常大的数据集，或者非常高的吞吐量，仅仅通过复制是无法满足需求的。我们需要对数据进行分区（partion）。</p>
+<p>在MongoDB，Elasticsearch和Solr Cloud中被称为<strong>分片（shard）</strong>，在HBase中称之为区域（Region），Bigtable中则是<strong>表块（tablet）</strong>，Cassandra和Riak中是<strong>虚节点（vnode)</strong>，Couchbase中叫做<strong>虚桶（vBucket）</strong>。但是<strong>分区（partitioning）</strong> 是最约定俗成的叫法。</p>
+<p>分区主要是为了系统的<strong>可伸缩性</strong>。</p>
+<p>分区常常与复制结合使用，使得每个分区的数据存储在多个副本节点中。在保证系统可伸缩的同时，保证系统的高可用。我们在设计系统分区的时候通常需要同时考虑如何将系统的整体<strong>读写负载</strong>按照预期分配到各个分区。</p>
+<h2 id="键值数据分区">键值数据分区</h2>
+<p>对于由简单的键值模型数据构成的大数据集，如何能够将其读写压力均分到不同的分片，是分片期望实现的主要目标。</p>
+<h3 id="根据键的范围分区">根据键的范围分区</h3>
+<p>一种分区方法是为每个分区指定一块连续的键范围，如果知道范围的边界，那么就可以轻松确定哪个分区包含哪些值。相应地，我们的读写请求也都能够被正确路由到指定分片。</p>
+<p>但是真实的情况是：键的范围不一定均匀分布。对于这种情况来说，手动确定分区边界是一个解决方案。</p>
+<p>另外，根据键的范围进行分区，很可能会造成热点数据（例如以时间戳作为分区依据，可能对近期的数据访问频率明显高于历史数据）。</p>
+<h3 id="根据键的散列分区">根据键的散列分区</h3>
+<p>由于访问压力偏斜或者热点数据的风险，很多分布式数据存储使用<strong>散列函数</strong>给指定的键进行分区。通过散列函数进行分区，往往能够更好地进行分区，但是丧失了高效执行范围查询的能力。</p>
+<h4 id="一致性哈希">一致性哈希</h4>
+<p>我们经常会听到一致性哈希的叫法，它是一种能够均匀负载的方法。它<strong>使用随机选择的分区边界</strong>来<em>避免中央控制</em>或者<em>分布式共识</em>的需要。</p>
+<h3 id="负载偏斜或热点消除">负载偏斜或热点消除</h3>
+<p>散列分区能够帮助减少热点，但是无法避免它。这是因为应用层的具体业务和底层的数据存储之间并没有明确的对应关系。所以，对于应用程序开发人员来说，需要仔细的分析业务场景和流程，尽量在应用层就避免负载偏斜和热点数据。</p>
+<h2 id="分区与次级索引">分区与次级索引</h2>
+<p>上边讨论的内容都基于键值数据模型。如果只通过主键访问记录，我们可以通过键即可确定数据所在的分区，并完成后续的读写操作。但是真实的业务场景中，往往会需要依据次级索引进行读写操作。但是次级索引并不能够将查询内容整齐地映射到对应的分区。常见的有两种次级索引对数据库进行分区的方法：<strong>基于文档的分区</strong>和<strong>基于关键词的分区</strong>。</p>
+<h3 id="基于文档的次级索引分区">基于文档的次级索引分区</h3>
+<p>假设已经存储入库的数据已经按照某一个键进行分片，如果这时我们想要通过其他的键进行数据检索，这时应该如何处理呢？</p>
+<p>每个分片可以保存想要查询的字段和用于分片的片键之间的关系。这种索引方法中，每个分片是完全独立的，每个分片维护自己的次级索引，并且不需要关心其他分片的存储情况。后续对于数据库的增删改查只需要将目标操作转化为基于片键的操作即可。出于上述的过程和原因，<strong>基于文档的分区索引</strong>也被称为<strong>本地索引</strong>。</p>
+<p>由于各个分片独自维护属于自己的一部分数据集，因此在查询经由各个分区处理之后，需要将获取到的结果合并并返回。这个过程被称为<strong>分散-聚集（scatter-gather）</strong>。这种读取查询开销会比较大，但是这种方案被广泛应用于mongodb、riak等等。</p>
+<h3 id="基于关键词的次级索引分区">基于关键词的次级索引分区</h3>
+<p>不同于上述的<strong>本地索引</strong>， 我们可以构建一个覆盖所有分区的<strong>全局索引</strong>，但是这个全局索引同样的需要进行分区，避免它成为系统瓶颈。并且这里的全局索引可以采用与主键不同的分区方式。</p>
+<p>我们可以通过关键词本身或者它的散列值进行索引分区。这取决于我们后续的主要查询方式：如果范围查询更多，就可以采用针对关键词本身进行分区；如果想要均衡查询压力，则可以考虑基于关键词的散列进行分区。</p>
+<p>关键词分区相较于基于文档的分区优势在于：它可以使读取更有效率：不需要<strong>分散-聚集</strong>所有分区。但是它的缺点在于写入速度较慢且过程复杂，因为单个文档的写入会影响到多个分区的索引。</p>
+<h2 id="分区再平衡">分区再平衡</h2>
+<p>再次说明分区是为了我们预设的主要目标：均衡写入或者读取压力。</p>
+<p>但是数据库会因为各种各样的原因变得不平衡——读写压力。常见的原因如下：</p>
+<ul>
+<li>查询吞吐量增加，需要更多的分片来均衡负载；</li>
+<li>数据集大小增加，需要更多的磁盘或者内存来存储；</li>
+<li>分片集群机器出现故障，需要其他机器来接手。</li>
+</ul>
+<p>上述的情况都需要将负载从一个节点向另一个节点移动，这个过程被称为<strong>再平衡（rebalancing）</strong>。</p>
+<p>再平衡过程需要满足的一些最低要求：</p>
+<ul>
+<li>再平衡之后，负载应该在集群中的节点之间均衡；</li>
+<li>再平衡过程中，数据库能够正常提供读写服务；</li>
+<li>节点再平衡过程应该尽量少的传输数据，避免造成过多的磁盘或者网络I/O压力。</li>
+</ul>
+<h3 id="再平衡策略">再平衡策略</h3>
+<p>对于再平衡过程，我们的预期目标是只移动必须移动的数据。常见的有几种分区再平衡策略：</p>
+<h4 id="反面案例hash-mod-n">反面案例：hash mod N</h4>
+<p>分区都是根据指定的规则进行的，通过取模进行分区的问题是：如果分区节点数据发生变动，大多数键将需要从一个节点移动到另一个节点。这种频繁的操作使得再平衡开销过大。</p>
+<h4 id="固定数量的分区">固定数量的分区</h4>
+<p>一个相当简单的解决方案即可实现我们的预期目标：创建比分区节点数更多的分区，并为每个节点分配多个分区。例如在有10个节点的集群上，从一开始就创建1000个分区，这样每个节点会被分配大概100个分区。</p>
+<p>这样的话，在增加或者减少分区节点的时候，节点分配到的分区会发生变更。并且与之相关的数据也会较少。通常这个变更过程不是即时生效的——需要移动的分区数据在节点之间通过网络传输，原有的分区仍然需要继续提供读写服务。</p>
+<p>通常情况下，分区的数量通常在数据库第一次创建的时候就会确定下来，分区的数量是一个指的考虑的问题。因为每个分区也都需要额外管理开销，分区的数据量包含了总数据量的固定比率的数据，每个分区的大小与集群中的数据总量按比例增长。如果每个分区中包含的数据过多，在重平衡过程中需要较大的开销；如果每个分区分配数据过少，则会产生过多的管理开销。</p>
+<h4 id="动态分区">动态分区</h4>
+<p>对于使用键范围进行分区的数据库，具有固定边界的固定数量的分区非常不便：如果出现边界错误，可能会导致一个分区中所有数据或其他分区中的所有数据位空。并且手动重新配置分区边界较为繁琐。</p>
+<p>按键的范围进行分区的数据库通常会动态创建分区。当分区增长到超过配置大小时，会被自动切分，每个分区约占原有数据的一般，相应地，如果分区数据量不断减少，则可以和相邻分区合并。<strong>这个过程类似于B树顶层发生的过程</strong>。</p>
+<p>动态分区的一个优点是分区数量适应总数据量。如果只有少数数据，少量的分区即可满足需求，相应地分区管理开销也会较小。如果有大量的数据，每个分区的大小会被限制在一个可配置的最大值。</p>
+<p>为了避免数据库在最开始的时候只有一个分区处理数据读写，有些数据库实现会允许在空的数据库上配置一组初始分区。</p>
+<p>动态分区不仅适用于数据的范围分区，也适用于散列分区。（mongodb的分区策略和再平衡过程可以仔细研究）</p>
+<h4 id="按节点比例分区">按节点比例分区</h4>
+<p>每个节点具有固定数量的分区，每个分区的大小和总体数据集大小成比例增长，而节点数量不变。</p>
+<p>在一个新节点加入集群时，它随机选择固定数量的现有分区进行拆分，拆分分区变为原有分区的一半大小，另外一半数据转移至新的节点中。</p>
+<h2 id="请求路由">请求路由</h2>
+<p>上述内容主要说明了为什么要进行分区，在分区负载不均衡时如何通过再平衡重新达到预期目标。那么对于分片集群来说，我们应用程序发出的读写请求是如何落在具体的分片上的呢？常见的几种方案如下：</p>
+<ul>
+<li>允许客户端连接任何节点，如果节点恰好拥有请求的分区，则它可以直接处理请求，否则它会将请求转发到适当的节点，接收并回复返回内容给客户端；(redis cluster)</li>
+<li>增加<strong>路由层</strong>，所有客户端的请求均直接发送至路由，由路由层决定处理转发至对应节点。路由层只负责分区的负载均衡，不处理任何请求；（mongos）</li>
+<li>提前要求客户端知道分区和节点的分配，客户端在发起请求时，直接发送到对应节点。</li>
+</ul>
+<p>上述的集中方案的关键内容，都需要明确分区与节点之间的对应关系。无论是直接请求还是经由路由层，无非是分区与节点之间的关系在对应的地方需要被告知。</p>
+<p>常见的，分布式系统中需要一个独立的协调服务来管理分片与节点之间的对应关系。例如Kafka、HBase等依赖于ZooKeeper（最新版本的Kafka不再继续使用Zookeeper），mongodb拥有自己的配置服务器（config server）和自己的路由管理器（mongos）。</p>
+<p>上述的内容都只关注与写入单个键的简单查询和基于文档分区的次级索引下的分散-聚合查询。然而通常用于分析的大规模并行处理关系型数据库产品在其支持的查询类型上会复杂的多。后续会专门继续深入了解。</p>
+<blockquote>
+<p>原文地址：<a href="https://ddia.vonng.com/#/ch6">https://ddia.vonng.com/#/ch6</a></p>
+</blockquote>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">rgozi</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-09-11
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E6%95%B0%E6%8D%AE%E5%AF%86%E9%9B%86%E5%9E%8B%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/">数据密集型系统设计</a>
+          <a href="/tags/ddia/">DDIA</a>
+          <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a>
+          <a href="/tags/%E5%88%86%E7%89%87/">分片</a>
+          <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/">分布式系统</a>
+          <a href="/tags/sharding/">sharding</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/%E4%BA%8B%E5%8A%A1/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">事务</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/%E8%AE%B0%E5%8F%A6%E4%B8%80%E4%BE%8Bmongo-can-not-add-session-to-cache/">
+            <span class="next-text nav-default">记另一例mongo can not add session to cache</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="eclipse_sv@whu.edu.cn" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/iamwm" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.douban.com/people/Eclipsesss/" class="iconfont icon-douban" title="douban"></a>
+      <a href="https://space.bilibili.com/44041814/" class="iconfont icon-bilibili" title="bilibili"></a>
+  <a href="https://rgozi.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>rgozi</span>
+  </span>
+  <div class="container">
+        备案号：<a href="https://beian.miit.gov.cn/" target="_blank">鄂ICP备20003011号-1</a>
+    </div>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-173630995-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

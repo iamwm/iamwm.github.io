@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>mongodb on 搬砖工的日常</title>
+    <link>https://rgozi.com/categories/mongodb/</link>
+    <description>Recent content in mongodb on 搬砖工的日常</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 19 Jul 2020 09:27:12 +0000</lastBuildDate><atom:link href="https://rgozi.com/categories/mongodb/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>mongo can not add session to cache问题排查和解决</title>
+      <link>https://rgozi.com/post/mongo-can-not-add-session-to-cache-%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E5%92%8C%E8%A7%A3%E5%86%B3/</link>
+      <pubDate>Sun, 19 Jul 2020 09:27:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/mongo-can-not-add-session-to-cache-%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E5%92%8C%E8%A7%A3%E5%86%B3/</guid>
+      <description>最近我们的线上mongo集群发生了一次事故，主要原因是后台应用在进行mongo读写的时候报错，错误描述是pymongo.errors.Ope</description>
+    </item>
+    
+    <item>
+      <title>读Mongodb权威指南有感</title>
+      <link>https://rgozi.com/post/%E8%AF%BBmongodb%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97%E6%9C%89%E6%84%9F/</link>
+      <pubDate>Fri, 25 Nov 2016 10:50:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/%E8%AF%BBmongodb%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97%E6%9C%89%E6%84%9F/</guid>
+      <description>&lt;p&gt;由于之前从图书馆借的书已经到期了，前天下午趁着好天气去图书馆了一趟，顺便借回来两本&lt;a href=&#34;https://book.douban.com/subject/25798102/&#34;&gt;《Mongodb权威指南》&lt;/a&gt;和&lt;a href=&#34;https://book.douban.com/subject/25856314/&#34;&gt;《Web性能权威指南》&lt;/a&gt;。没想到两天时间就把前边那本看完了。总体感觉还不错，这本书写的比较细致，很适合入门学习，同时在看书的过程中，我发现了之前没有主要到的一些知识点，并且改变了我之前的一些错误认识，所以还是很有必要记录一下的。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Mongodb Aggregation Pipleline</title>
+      <link>https://rgozi.com/post/mongodb_aggregation/</link>
+      <pubDate>Wed, 23 Nov 2016 09:27:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/mongodb_aggregation/</guid>
+      <description>&lt;p&gt;Mongodb作为目前最流行的nosql数据库之一，它给我们提供了海量数据的管理能力。而现在正处于大数据最为火热的时代，如何将海量的数据转化为可用的信息，这一步至关重要，面向应用而设计的mongodb在基础的数据分析上提供了aggregation这一功能，足以满足很多日常需求。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Mongodb副本集在nginx-gridfs中的使用</title>
+      <link>https://rgozi.com/post/mongodb%E5%89%AF%E6%9C%AC%E9%9B%86%E5%9C%A8nginx-gridfs%E4%B8%AD%E7%9A%84%E4%BD%BF%E7%94%A8/</link>
+      <pubDate>Mon, 17 Aug 2015 22:41:24 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/mongodb%E5%89%AF%E6%9C%AC%E9%9B%86%E5%9C%A8nginx-gridfs%E4%B8%AD%E7%9A%84%E4%BD%BF%E7%94%A8/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://www.mongodb.org/&#34;&gt;Mongodb&lt;/a&gt;作为一款非常流行的NOSQL数据库，应用范围非常广泛，它和&lt;a href=&#34;https://github.com/mdirolf/nginx-gridfs&#34;&gt;Nginx-gridfs&lt;/a&gt;组合可以构建性能非常出色的应用。下边简单介绍一下如何搭建这套应用。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

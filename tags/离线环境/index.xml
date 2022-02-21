@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>离线环境 on 搬砖工的日常</title>
+    <link>https://rgozi.com/tags/%E7%A6%BB%E7%BA%BF%E7%8E%AF%E5%A2%83/</link>
+    <description>Recent content in 离线环境 on 搬砖工的日常</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 24 Oct 2017 15:27:54 +0000</lastBuildDate><atom:link href="https://rgozi.com/tags/%E7%A6%BB%E7%BA%BF%E7%8E%AF%E5%A2%83/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>离线环境python项目的部署</title>
+      <link>https://rgozi.com/post/%E7%A6%BB%E7%BA%BF%E7%8E%AF%E5%A2%83python%E9%A1%B9%E7%9B%AE%E7%9A%84%E9%83%A8%E7%BD%B2/</link>
+      <pubDate>Tue, 24 Oct 2017 15:27:54 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/%E7%A6%BB%E7%BA%BF%E7%8E%AF%E5%A2%83python%E9%A1%B9%E7%9B%AE%E7%9A%84%E9%83%A8%E7%BD%B2/</guid>
+      <description>&lt;p&gt;最近自己参与的一个项目接近尾声，需要把代码部署到甲方提供的服务器。本来想着没有什么困难，谁知道甲方提供的服务器需要连接到vpn堡垒机之后才能连接，并且服务器是不能与外网直接连接的。知道真相的我眼泪掉下来。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

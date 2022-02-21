@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>python的itertools[读文档] - 搬砖工的日常</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="rgozi" /><meta name="description" content="python的itertools库受到了来自APL, Haskell和SML的灵感，并且用最适合python语言特性的形式重构。它差不多可以说是定义了一套高效、节省内存的方法使用纯python来构建开发者所需要的各种不同迭代器。
+" /><meta name="keywords" content="搬砖工, 技术博客" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.84.1 with theme even" />
+
+
+<link rel="canonical" href="https://rgozi.com/post/python%E7%9A%84itertools/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="python的itertools[读文档]" />
+<meta property="og:description" content="python的itertools库受到了来自APL, Haskell和SML的灵感，并且用最适合python语言特性的形式重构。它差不多可以说是定义了一套高效、节省内存的方法使用纯python来构建开发者所需要的各种不同迭代器。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://rgozi.com/post/python%E7%9A%84itertools/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2017-08-09T19:23:12&#43;00:00" />
+<meta property="article:modified_time" content="2017-08-09T19:23:12&#43;00:00" />
+
+<meta itemprop="name" content="python的itertools[读文档]">
+<meta itemprop="description" content="python的itertools库受到了来自APL, Haskell和SML的灵感，并且用最适合python语言特性的形式重构。它差不多可以说是定义了一套高效、节省内存的方法使用纯python来构建开发者所需要的各种不同迭代器。"><meta itemprop="datePublished" content="2017-08-09T19:23:12&#43;00:00" />
+<meta itemprop="dateModified" content="2017-08-09T19:23:12&#43;00:00" />
+<meta itemprop="wordCount" content="2221">
+<meta itemprop="keywords" content="python,标准库,文档,itertools,迭代器," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="python的itertools[读文档]"/>
+<meta name="twitter:description" content="python的itertools库受到了来自APL, Haskell和SML的灵感，并且用最适合python语言特性的形式重构。它差不多可以说是定义了一套高效、节省内存的方法使用纯python来构建开发者所需要的各种不同迭代器。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">搬砖工的日常</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">搬砖工的日常</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">python的itertools[读文档]</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2017-08-09 </span>
+        <div class="post-category">
+            <a href="/categories/python/"> python </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents"></nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>python的itertools库受到了来自APL, Haskell和SML的灵感，并且用最适合python语言特性的形式重构。它差不多可以说是定义了一套高效、节省内存的方法使用纯python来构建开发者所需要的各种不同迭代器。</p>
+<h1 id="概览">概览</h1>
+<p>根据itertools中方法的返回类型不同，可以将这些方法分为三类：
+<!-- raw HTML omitted -->无穷迭代∞<!-- raw HTML omitted --></p>
+<table>
+<thead>
+<tr>
+<th>迭代器</th>
+<th>参数</th>
+<th>返回值</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>count()</td>
+<td>start,[step]</td>
+<td>start,start+step,start+2*step,&hellip;</td>
+<td>count(10) &ndash;&gt; 10,11,12,13,14,&hellip;</td>
+</tr>
+<tr>
+<td>cycle()</td>
+<td>p</td>
+<td>p0,p1,p2,&hellip;,plast,p0,p1,p2&hellip;.</td>
+<td>cycle([1,2,3,4]) &ndash;&gt; 1,2,3,4,1,2,3,4,&hellip;</td>
+</tr>
+<tr>
+<td>repeat()</td>
+<td>p,[n]</td>
+<td>p,p,p,&hellip;,p 或者重复n次p</td>
+<td>repeat(10,2) &ndash;&gt; 10,10</td>
+</tr>
+</tbody>
+</table>
+<p><!-- raw HTML omitted -->处理输入迭代器⌨️<!-- raw HTML omitted --></p>
+<table>
+<thead>
+<tr>
+<th>迭代器</th>
+<th>参数</th>
+<th>返回值</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>chain()</td>
+<td>p,q,..</td>
+<td>p0,p1,..,plast,q0,q1,&hellip;,qlast,&hellip;.</td>
+<td>chain(&lsquo;abc&rsquo;,[1,2,3]) &ndash;&gt; a b c 1 2 3</td>
+</tr>
+<tr>
+<td>compress()</td>
+<td>data,selectors</td>
+<td>(d[0] if s[0]),(d[1] if s[1])&hellip;</td>
+<td>compress(&lsquo;abcd&rsquo;,[0,1,0,0]) &ndash;&gt; b</td>
+</tr>
+<tr>
+<td>dropwhile()</td>
+<td>pred,seq</td>
+<td>seq[n],seq[n+1]&hellip; while pred(seq[n-1]) == False</td>
+<td>dropwhile(lambda x:x&lt;3,[1,2,4,0,1]) &ndash;&gt; 4,0,1</td>
+</tr>
+<tr>
+<td>groupby()</td>
+<td>iterable,[keyfunc]</td>
+<td>根据keyfunc(iterable item)值返回的迭代器</td>
+<td></td>
+</tr>
+<tr>
+<td>ifilter()</td>
+<td>pred,seq</td>
+<td>返回seq中pred(seq[n])为真值的一部分元素</td>
+<td>ifilter(lambda x:x&gt;3,[1,2,3,4,5,6]) &ndash;&gt; 4,5,6</td>
+</tr>
+<tr>
+<td>ifilterfalse()</td>
+<td>pred,seq</td>
+<td>返回seq中pred(seq[n])为假的一部分元素</td>
+<td>ifilterfalse(lambda x:x&gt;3,[1,2,3,4,5,6]) &ndash;&gt; 1,2,3</td>
+</tr>
+<tr>
+<td>islice()</td>
+<td>seq, [start,] stop [, step]</td>
+<td>返回seq[start:stop:step]的切片</td>
+<td>islice(count(10),1,3) -&gt; 11,12</td>
+</tr>
+<tr>
+<td>imap()</td>
+<td>func, p, q, &hellip;</td>
+<td>func(p0, q0), func(p1, q1), &hellip;</td>
+<td>imap(lambda x,y:x+y,count(0),count(10)) &ndash;&gt; 10,11,12,&hellip;</td>
+</tr>
+<tr>
+<td>starmap()</td>
+<td>func, seq</td>
+<td>func(*seq[0]), func(*seq[1]), &hellip;</td>
+<td>starmap(pow, [(2,5), (3,2), (10,3)]) &ndash;&gt; 32 9 1000</td>
+</tr>
+<tr>
+<td>tee()</td>
+<td>it, n</td>
+<td>it1, it2, &hellip; itn splits one iterator into n</td>
+<td></td>
+</tr>
+<tr>
+<td>takewhile()</td>
+<td>pred,seq</td>
+<td>seq[0], seq[1], until pred fails</td>
+<td>takewhile(lambda x: x&lt;5, [1,4,6,4,1]) &ndash;&gt; 1 4</td>
+</tr>
+<tr>
+<td>izip()</td>
+<td>p, q, &hellip;</td>
+<td>(p[0], q[0]), (p[1], q[1]), &hellip; 返回迭代器的长度和参数中长度最短迭代器相同</td>
+<td>izip(&lsquo;ABCD&rsquo;, &lsquo;xy&rsquo;) &ndash;&gt; Ax By</td>
+</tr>
+<tr>
+<td>izip_longest()</td>
+<td>p, q, &hellip;</td>
+<td>(p[0], q[0]), (p[1], q[1]), &hellip;</td>
+<td>izip_longest(&lsquo;ABCD&rsquo;, &lsquo;xy&rsquo;, fillvalue='-') &ndash;&gt; Ax By C- D-</td>
+</tr>
+</tbody>
+</table>
+<p><!-- raw HTML omitted -->组合生成器🎈<!-- raw HTML omitted --></p>
+<table>
+<thead>
+<tr>
+<th>迭代器</th>
+<th>参数</th>
+<th>返回值</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>product()</td>
+<td>p, q, &hellip; [repeat=1]</td>
+<td>返回输入参数的笛卡尔积</td>
+<td></td>
+</tr>
+<tr>
+<td>permutations()</td>
+<td>p[, r]</td>
+<td>返回由长度为r的p中元素的组合，<!-- raw HTML omitted -->每个元素不会重复出现</td>
+<td>permutations([1,2],2) &ndash;&gt;<!-- raw HTML omitted --> (1, 2), (2, 1)</td>
+</tr>
+<tr>
+<td>combinations()</td>
+<td>p, r</td>
+<td>按照p中元素的顺序来进行排列组合,<!-- raw HTML omitted -->每个元素不会重复出现</td>
+<td>combinations([2,1],1) &ndash;&gt;<!-- raw HTML omitted --> (2,), (1,)</td>
+</tr>
+<tr>
+<td>combinations_with_replacement()</td>
+<td>p, r</td>
+<td>按照p中元素的顺序来进行排列组合，<!-- raw HTML omitted -->每个元素可以重复出现</td>
+<td>combinations_with_<!-- raw HTML omitted -->replacement([1,2],2)<!-- raw HTML omitted -->&ndash;&gt; (1, 1), (1, 2), (2, 2)</td>
+</tr>
+</tbody>
+</table>
+<h1 id="详解">详解</h1>
+<p>如下的一些方法都是用来创建或者返回迭代器的，其中一些会返回无限长度的迭代器，如果要将他们用在另外的函数或者循环中的时候需要进行切片操作。</p>
+<ul>
+<li><code>itertools.chain(*iterables)</code>
+输入参数是一个或者多个迭代器对象，返回的内容是将这些迭代器中的所有元素拼接成为一个大的迭代器，需要注意的是，当作参数输入的若干个迭代器可以是不同的类型(区别于同种类型的序列相加的操作，如两个list相加或者两个string相加).
+<code>itertools.chain(*iterables)</code>类似于：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">def chain(*iterables):
+    # chain(&#39;ABC&#39;, &#39;DEF&#39;) --&gt; A B C D E F       
+    for iterable in iterables:
+        for element in iterable:
+            yield element
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>classmethod chain.from_iterable(iterable)</code>
+将输入参数iterable中的每个可迭代对象中的元素合并成为一个大的迭代器，类似于以下代码：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">def from_iterable(iterable):
+    # chain.from_iterable([&#39;ABC&#39;, &#39;DEF&#39;]) --&gt; A B C D E F
+    for item in iterable:
+        for element in item:
+            yield element
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>itertools.combinations(iterable, r)</code> 😢
+返回一个由r个iterable元素组合而成的迭代器，如果iterable中的元素是经过排序的，那么返回的每个对象也都是经过排序的。iterbale中的每个元素都是按照它在iterable中所在的位置进行处理。<code>itertools.combinations(iterable, r)</code>类似于如下代码过程：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">def combinations(iterable, r):
+    # combinations(&#39;ABCD&#39;, 2) --&gt; AB AC AD BC BD CD
+    # combinations(range(4), 3) --&gt; 012 013 023 123
+    pool = tuple(iterable)
+    n = len(pool)
+    if r &gt; n:
+        return
+    indices = range(r)
+    yield tuple(pool[i] for i in indices)
+    while True:
+        for i in reversed(range(r)):
+            if indices[i] != i + n - r:
+                break
+        else:
+            return
+        indices[i] += 1
+        for j in range(i+1, r):
+            indices[j] = indices[j-1] + 1
+        yield tuple(pool[i] for i in indices)
+</code></pre></td></tr></table>
+</div>
+</div><p>或者</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">def combinations(iterable, r):
+    pool = tuple(iterable)
+    n = len(pool)
+    for indices in permutations(range(n), r):
+        if sorted(indices) == list(indices):
+            yield tuple(pool[i] for i in indices)
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>itertools.compress(data, selectors)</code>
+输入参数data和selectors均为迭代器对象，如果selector中某一元素返回真值，则返回对应位置data中的元素。类似于代码：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">def compress(data,selectors):
+    # compress(&#39;ABCDEF&#39;, [1,0,1,0,1,1]) --&gt; A C E F
+    return (d for d,s in izip(data,selectors) if s)
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>itertools.count(start=0, step=1)</code>
+用于返回一个数值连续的迭代器，常作为<code>imap()</code>或者<code>izip()</code>的参数。等价于代码：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">def count(start=0,step=1):
+    # count(10) --&gt; 10 11 12 13 14 ...
+    # count(2.5, 0.5) -&gt; 2.5 3.0 3.5 ...
+    n = start
+    while True:
+        yield n
+        n += step
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>itertools.cycle(iterable)</code>
+逐个返回iterable中的元素，并将每个元素备份，在iterable中元素耗尽的时候，重复的返回iterable对象的备份。等价于：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">def cycle(iterable):
+    container = []
+    for item in iterable:
+        yield item
+        container.append(item)
+    while container:
+        for element in container:
+            yield element
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>itertools.dropwhile(predicate, iterable)</code>
+如果predicate返回值为True,就将iterable中的元素抛弃，直到predicate返回False,返回iterable中剩下的元素。类似于代码实现：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">def dropwhile(pred,iteration):
+    iterable = iter(iteration)
+    for x in iterable:
+        if not pred(x):
+            yield x
+            break
+    for x in iterable:
+        yield x
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>itertools.ifilter(predicate, iterable)</code>
+如果iterable中的元素element，在执行predicate(element)返回True,则将这个element返回。如果predicate为None,则返回iterable中的真值。类似于：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">def ifilter(pred,iterable):
+    if pred is None:
+        pred = bool
+    for item in iterable:
+        if pred(item):
+            yield item
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>itertools.ifilterfalse(predicate, iterable)</code>
+和<code>itertools.ifilter</code>相反，类似于代码：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">def ifileterfalse(pred,iterable):
+    if pred is None:
+        pred = bool
+    for item in iterable:
+        if not pred(item):
+            yield item
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>itertools.imap(function, *iterables)</code>
+将来自于iterables中多个迭代器中的每次各选取一个元素作为function的参数，返回function执行后的结果.如果function为空，缺省值为tuple。区别于map，imap中的迭代器可以是无穷序列,并且imap中当最短的迭代器中没有元素的时候会结束，而不是使用None来代替。执行代码类似于：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">def imap(func,*iterables):
+    its = map(iter,iterables)
+    if func is None:
+        func = tuple
+    while True:
+        args = [next(it) for it in its]
+        yield func(*args)
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>itertools.islice(iterable, stop) itertools.islice(iterable, start, stop[, step])</code>
+与普通的slice方法不同，islice的参数start,stop或者step不能为负值，类似于代码:</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">def islice(iterable, *args):
+    # islice(&#39;ABCDEFG&#39;, 2) --&gt; A B
+    # islice(&#39;ABCDEFG&#39;, 2, 4) --&gt; C D
+    # islice(&#39;ABCDEFG&#39;, 2, None) --&gt; C D E F G
+    # islice(&#39;ABCDEFG&#39;, 0, None, 2) --&gt; A C E G
+    s = slice(*args)
+    it = iter(xrange(s.start or 0, s.stop or sys.maxint, s.step or 1))
+    nexti = next(it)
+    for i, element in enumerate(iterable):
+        if i == nexti:
+            yield element
+            nexti = next(it)
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>itertools.izip(*iterables)</code>
+与zip不同，izip的返回值是一个迭代器而不是list对象。运行代码类似于：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">def izip(*iterables):
+    iters = map(iter,iterables)
+    while iters:
+        yield tuple(map(next,iters))
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>itertools.repeat(object[, times])</code>
+生成一个重复出现object times次的迭代器，类似代码：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">def repeat(object,times):
+    if times is None:
+        while True:
+            yield object
+    else:
+        for x in rang(times):
+            yield object
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>itertools.starmap(function, iterable)</code>
+实现类似代码：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">def starmap(func,iterable):
+    for item in iterable:
+        yield func(*item)
+</code></pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">rgozi</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2017-08-09
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/python/">python</a>
+          <a href="/tags/%E6%A0%87%E5%87%86%E5%BA%93/">标准库</a>
+          <a href="/tags/%E6%96%87%E6%A1%A3/">文档</a>
+          <a href="/tags/itertools/">itertools</a>
+          <a href="/tags/%E8%BF%AD%E4%BB%A3%E5%99%A8/">迭代器</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/iterablesiterators%E5%92%8Cgenerators/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Iterables,Iterators和Generators</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/%E5%85%B3%E4%BA%8Epython%E7%9A%84classmethod%E5%92%8Cstaticmethod%E7%9A%84%E7%90%86%E8%A7%A3/">
+            <span class="next-text nav-default">python中@classmethod和@staticmethod的理解</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="eclipse_sv@whu.edu.cn" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/iamwm" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.douban.com/people/Eclipsesss/" class="iconfont icon-douban" title="douban"></a>
+      <a href="https://space.bilibili.com/44041814/" class="iconfont icon-bilibili" title="bilibili"></a>
+  <a href="https://rgozi.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">rgozi</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-173630995-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

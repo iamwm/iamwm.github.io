@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>aggregation on 搬砖工的日常</title>
+    <link>https://rgozi.com/tags/aggregation/</link>
+    <description>Recent content in aggregation on 搬砖工的日常</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 19 Jul 2020 09:27:12 +0000</lastBuildDate><atom:link href="https://rgozi.com/tags/aggregation/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>mongo can not add session to cache问题排查和解决</title>
+      <link>https://rgozi.com/post/mongo-can-not-add-session-to-cache-%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E5%92%8C%E8%A7%A3%E5%86%B3/</link>
+      <pubDate>Sun, 19 Jul 2020 09:27:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/mongo-can-not-add-session-to-cache-%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E5%92%8C%E8%A7%A3%E5%86%B3/</guid>
+      <description>最近我们的线上mongo集群发生了一次事故，主要原因是后台应用在进行mongo读写的时候报错，错误描述是pymongo.errors.Ope</description>
+    </item>
+    
+    <item>
+      <title>Mongodb Aggregation Pipleline</title>
+      <link>https://rgozi.com/post/mongodb_aggregation/</link>
+      <pubDate>Wed, 23 Nov 2016 09:27:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/mongodb_aggregation/</guid>
+      <description>&lt;p&gt;Mongodb作为目前最流行的nosql数据库之一，它给我们提供了海量数据的管理能力。而现在正处于大数据最为火热的时代，如何将海量的数据转化为可用的信息，这一步至关重要，面向应用而设计的mongodb在基础的数据分析上提供了aggregation这一功能，足以满足很多日常需求。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

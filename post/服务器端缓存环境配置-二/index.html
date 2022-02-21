@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>服务器端缓存环境配置(二) - 搬砖工的日常</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="rgozi" /><meta name="description" content="上一篇博客讲解了整个缓存流程中数据库部分的搭建，有了最基础的部分，现在可以搭建上层的内容了。
+" /><meta name="keywords" content="搬砖工, 技术博客" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.84.1 with theme even" />
+
+
+<link rel="canonical" href="https://rgozi.com/post/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E7%BC%93%E5%AD%98%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-%E4%BA%8C/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="服务器端缓存环境配置(二)" />
+<meta property="og:description" content="上一篇博客讲解了整个缓存流程中数据库部分的搭建，有了最基础的部分，现在可以搭建上层的内容了。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://rgozi.com/post/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E7%BC%93%E5%AD%98%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-%E4%BA%8C/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2015-08-02T19:14:56&#43;00:00" />
+<meta property="article:modified_time" content="2015-08-02T19:14:56&#43;00:00" />
+
+<meta itemprop="name" content="服务器端缓存环境配置(二)">
+<meta itemprop="description" content="上一篇博客讲解了整个缓存流程中数据库部分的搭建，有了最基础的部分，现在可以搭建上层的内容了。"><meta itemprop="datePublished" content="2015-08-02T19:14:56&#43;00:00" />
+<meta itemprop="dateModified" content="2015-08-02T19:14:56&#43;00:00" />
+<meta itemprop="wordCount" content="1865">
+<meta itemprop="keywords" content="Nginx,Mongodb,Redis,PHP,Lua," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="服务器端缓存环境配置(二)"/>
+<meta name="twitter:description" content="上一篇博客讲解了整个缓存流程中数据库部分的搭建，有了最基础的部分，现在可以搭建上层的内容了。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">搬砖工的日常</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">搬砖工的日常</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">服务器端缓存环境配置(二)</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2015-08-02 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/"> 服务器 </a>
+            </div>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#ngxin打包安装">Ngxin打包安装</a></li>
+    <li><a href="#nginx源码编译">Nginx源码编译</a>
+      <ul>
+        <li><a href="#pcre安装">pcre安装</a></li>
+        <li><a href="#zlib安装">zlib安装</a></li>
+        <li><a href="#nginx源码编译安装">Nginx源码编译安装</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>上一篇博客讲解了整个缓存流程中数据库部分的搭建，有了最基础的部分，现在可以搭建上层的内容了。</p>
+<h1 id="web服务器"><strong>Web服务器</strong></h1>
+<p>整个缓存流程中，客户端都是以HTTP请求的方式获取服务器上数据库中的数据。我们选择了Nginx作为HTTP请求解析和负载均衡的工具。
+Nginx作为一个高性能的HTTP和反向代理服务器，也是一个IMAP/POP3/SMTP 代理服务器。它以稳定性、丰富的功能和第系统资源消耗而闻名。下面开始介绍Nginx的安装和配置：
+以往的安装方式都是直接编译源码，这次来点新的。</p>
+<h2 id="ngxin打包安装">Ngxin打包安装</h2>
+<p>按照<a href="http://nginx.org/en/linux_packages.html">nginx官网</a>上的方法来进行操作。
+首先打开终端，进入/usr/local目录，下载rpm文件：</p>
+<pre><code>[wangmeg@localhost ~]$ cd /usr/local
+[root@localhost local]# wget http://nginx.org/packages/centos/7/noarch/RPMS/nginx-	release-centos-7-0.el7.ngx.noarch.rpm
+</code></pre>
+<p>之后安装rpm文件，并使用yum 命令进行Nginx的自动安装：</p>
+<pre><code>[root@localhost local]# rpm -i nginx-release-centos-7-0.el7.ngx.noarch.rpm 
+[root@localhost local]# yum install nginx
+</code></pre>
+<p>稍等片刻，终端出现</p>
+<pre><code>----------------------------------------------------------------------
+
+Thanks for using nginx!
+
+Please find the official documentation for nginx here:
+* http://nginx.org/en/docs/
+
+Commercial subscriptions for nginx are available on:
+* http://nginx.com/products/
+
+----------------------------------------------------------------------
+  Verifying  : 1:nginx-1.8.0-1.el7.ngx.x86_64                               1/1 
+
+Installed:
+  nginx.x86_64 1:1.8.0-1.el7.ngx                                                
+
+Complete!
+</code></pre>
+<p>表示Nginx安装完毕。现在，在终端键入命令nginx启动nginx，在浏览器中输入http:127.0.0.1之后出现
+<img src="http://7xkswi.com1.z0.glb.clouddn.com/eclipsesv_jpgScreenshot%20from%202015-08-02%2020%3A29%3A42.png" alt="">
+这样，Nginx就算安装完毕了。
+可以在终端键入命令： nginx -V 来查看这样默认安装的相关配置。</p>
+<pre><code>[root@localhost local]# nginx -V
+nginx version: nginx/1.8.0
+built by gcc 4.8.2 20140120 (Red Hat 4.8.2-16) (GCC) 
+built with OpenSSL 1.0.1e-fips 11 Feb 2013
+TLS SNI support enabled
+configure arguments: --prefix=/etc/nginx --sbin-path=/usr/sbin/nginx --conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --pid-path=/var/run/nginx.pid --lock-path=/var/run/nginx.lock --http-client-body-temp-path=/var/cache/nginx/client_temp --http-proxy-temp-path=/var/cache/nginx/proxy_temp --http-fastcgi-temp-path=/var/cache/nginx/fastcgi_temp --http-uwsgi-temp-path=/var/cache/nginx/uwsgi_temp --http-scgi-temp-path=/var/cache/nginx/scgi_temp --user=nginx --group=nginx --with-http_ssl_module --with-http_realip_module --with-http_addition_module --with-http_sub_module --with-http_dav_module --with-http_flv_module --with-http_mp4_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_random_index_module --with-http_secure_link_module --with-http_stub_status_module --with-http_auth_request_module --with-mail --with-mail_ssl_module --with-file-aio --with-ipv6 --with-http_spdy_module --with-cc-opt='-O2 -g -pipe -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=4 -m64 -mtune=generic'
+</code></pre>
+<h2 id="nginx源码编译">Nginx源码编译</h2>
+<p>相对于上述使用yum安装nginx，我更习惯编译源码安装。
+在进行安装以前，需要安装pcre和zlib。</p>
+<h3 id="pcre安装">pcre安装</h3>
+<pre><code>[root@localhost etc]# cd /usr/local
+[root@localhost local]# wget ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.37.tar.gz
+[root@localhost local]# tar -zxvf pcre-8.37.tar.gz 
+[root@localhost pcre-8.37]# cd pcre-8.37/
+[root@localhost pcre-8.37]# ./configure 
+[root@localhost pcre-8.37]# make 
+[root@localhost pcre-8.37]# make install
+</code></pre>
+<p>这样，pcre就算安装完成。</p>
+<h3 id="zlib安装">zlib安装</h3>
+<pre><code>[root@localhost local]# wget http://zlib.net/zlib-1.2.8.tar.gz
+[root@localhost local]# tar -zxvcf zlib-1.2.8.tar.gz 
+[root@localhost local]# cd zlib-1.2.8/
+[root@localhost zlib-1.2.8]# make &amp;&amp; make install
+</code></pre>
+<p>OK，zlib也安装完毕。</p>
+<h3 id="nginx源码编译安装">Nginx源码编译安装</h3>
+<p>接下来下载nginx源码，完成后续的安装和配置。</p>
+<p>[root@localhost pcre-8.37]# cd /usr/local
+[root@localhost local]# wget <a href="http://nginx.org/download/nginx-1.8.0.tar.gz">http://nginx.org/download/nginx-1.8.0.tar.gz</a>
+[root@localhost local]# tar -zxvf nginx-1.8.0.tar.gz
+[root@localhost local]# cd ./nginx-1.8.0/
+[root@localhost nginx-1.8.0]# ./configure &ndash;prefix=/usr/local/nginx
+[root@localhost nginx-1.8.0]# make &amp;&amp; make install</p>
+<p>如果没有错误提示，则表示nginx编译安装完成。
+现在键入命令/usr/local/nginx/sbin/nginx就可以启动nginx了。
+另外，终止nginx的命令使用：/usr/local/nginx/sbin/nginx -s stop；进行nginx平滑重启使用命令/usr/local/nginx/sbin/nginx -s reload。</p>
+<h1 id="php"><strong>PHP</strong></h1>
+<p>上边的操作，算是完成了nginx的初步安装，接下来开始进行PHP的安装。
+首先，需要下载PHP，可以从官网上进行下载，我选择的是5.4.43版本。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">[root@localhost Desktop]# cd /usr/local
+[root@localhost local]# wget http://php.net/distributions/php-5.4.43.tar.gz
+</code></pre></td></tr></table>
+</div>
+</div><p>完成解压</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">[root@localhost local]# tar -zxvf php-5.4.43.tar.gz
+</code></pre></td></tr></table>
+</div>
+</div><p>进行安装</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">[root@localhost local]# cd php-5.4.43/
+[root@localhost php-5.4.43]# ./configure --prefix=/usr/local/php --enable-fpm
+</code></pre></td></tr></table>
+</div>
+</div><p>检查配置的过程，我的机器上出现了错误：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">checking for xml2-config path... 
+configure: error: xml2-config not found. Please check your libxml2 installation.
+</code></pre></td></tr></table>
+</div>
+</div><p>表示缺少libxml2，不用担心，使用yum 安装便是。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">[root@localhost php-5.4.43]# yum install libxml2 
+[root@localhost php-5.4.43]# yum install libxml2-devel -y
+</code></pre></td></tr></table>
+</div>
+</div><p>再次进行配置检查，出现下面这些则可进行下一步操作。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">Thank you for using PHP.
+
+config.status: creating php5.spec
+config.status: creating main/build-defs.h
+config.status: creating scripts/phpize
+config.status: creating scripts/man1/phpize.1
+config.status: creating scripts/php-config
+config.status: creating scripts/man1/php-config.1
+config.status: creating sapi/cli/php.1
+config.status: creating sapi/fpm/php-fpm.conf
+config.status: creating sapi/fpm/init.d.php-fpm
+config.status: creating sapi/fpm/php-fpm.service
+config.status: creating sapi/fpm/php-fpm.8
+config.status: creating sapi/fpm/status.html
+config.status: creating sapi/cgi/php-cgi.1
+config.status: creating ext/phar/phar.1
+config.status: creating ext/phar/phar.phar.1
+config.status: creating main/php_config.h
+config.status: executing default commands
+</code></pre></td></tr></table>
+</div>
+</div><p>配置环境没问题，就可以进行make &amp;&amp; make install，完成安装了。
+安装完成之后，不要忘记将PHP配置文件放到指定位置。
+<code>[root@localhost php-5.4.43]# cp ./php.ini-development /usr/local/php/etc/php.ini</code>
+完成PHP安装之后，咱们来给它加点料，前边说了，整个流程，需要使用PHP来获取Mongodb中的数据集信息，咱们顺势把mongodb的扩展也装上把。</p>
+<p>先从github上将<a href="https://github.com/mongodb/mongo-php-driver">php的mongodb扩展</a>下载。按照网页中的方法进行安装配置。
+需要说明的一点是。phpize的默认安装位置是/usr/local/php/bin/phpize；php-config默认位置是/usr/local/php/bin/php-config。
+这样。PHP的安装和需要的扩展已经安装完毕。</p>
+<h1 id="nginxphp的配置">Nginx+php的配置</h1>
+<p>现在nginx和php都已经分别安装完成，现在可以检验一下他们在一起能否正常运行。</p>
+<ol>
+<li>修改nginx配置文件</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">[root@localhost ~]# gedit /usr/local/nginx/conf/nginx.conf
+</code></pre></td></tr></table>
+</div>
+</div><ol start="2">
+<li>找到这一段，取消前边的注释“#”,修改其中内容</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">location ~ \.php$ {
+            root           html;
+            fastcgi_pass   127.0.0.1:9000;
+            fastcgi_index  index.php;
+            fastcgi_param  SCRIPT_FILENAME  /usr/local/nginx/html/$fastcgi_script_name;
+            include        fastcgi_params;
+        }
+</code></pre></td></tr></table>
+</div>
+</div><ol start="3">
+<li>在/usr/lcoal/nginx/html/文件夹下创建文件info.php，写入内容</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">&lt;?php
+   echo phpinfo();
+?&gt;
+</code></pre></td></tr></table>
+</div>
+</div><ol start="4">
+<li>启动nginx和php-fpm</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">[root@localhost ~]# /usr/local/nginx/sbin/nginx 
+[root@localhost ~]# /usr/local/php/sbin/php-fpm -c /usr/local/php/etc/php.ini -y /usr/local/php/etc/php-fpm.conf 
+</code></pre></td></tr></table>
+</div>
+</div><ol start="5">
+<li>
+<p>启动firefox,地址栏中输入&quot;127.0.0.1/info.php&quot;，出现如下结果则表明运行正常。
+<img src="http://7xkswi.com1.z0.glb.clouddn.com/eclipsesv_jpgScreenshot%20from%202015-08-04%2001%3A11%3A35.png" alt=""></p>
+</li>
+<li>
+<p>这个网页往下，可以看到这样的结果，表示mongodb的扩展也安装成功。
+<img src="http://7xkswi.com1.z0.glb.clouddn.com/eclipsesv_jpgScreenshot%20from%202015-08-04%2001%3A12%3A07.png" alt=""></p>
+</li>
+</ol>
+<h1 id="未完待续"><strong>未完待续</strong></h1>
+<p>整个流程内容较多，下一篇博客，经会介绍如何安装配置nginx的Lua扩展，完成整个流程的搭建。
+最后，以一张美图来结束这篇博客。
+<img src="http://7xkswi.com1.z0.glb.clouddn.com/eclipsesv_jpgIMG_1858.JPG" alt="雨后初晴的武汉"></p>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">rgozi</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2015-08-02
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/nginx/">Nginx</a>
+          <a href="/tags/mongodb/">Mongodb</a>
+          <a href="/tags/redis/">Redis</a>
+          <a href="/tags/php/">PHP</a>
+          <a href="/tags/lua/">Lua</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E7%BC%93%E5%AD%98%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-%E4%B8%89/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">服务器端缓存环境配置(三)</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E7%BC%93%E5%AD%98%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">
+            <span class="next-text nav-default">服务器端缓存环境配置</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="eclipse_sv@whu.edu.cn" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/iamwm" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.douban.com/people/Eclipsesss/" class="iconfont icon-douban" title="douban"></a>
+      <a href="https://space.bilibili.com/44041814/" class="iconfont icon-bilibili" title="bilibili"></a>
+  <a href="https://rgozi.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>rgozi</span>
+  </span>
+  <div class="container">
+        备案号：<a href="https://beian.miit.gov.cn/" target="_blank">鄂ICP备20003011号-1</a>
+    </div>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-173630995-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

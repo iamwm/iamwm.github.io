@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>搬砖工的日常</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="rgozi" /><meta name="description" content="搬砖路上有你有我." /><meta name="keywords" content="搬砖工, 技术博客" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.84.1 with theme even" />
+
+
+<link rel="canonical" href="https://rgozi.com/" />
+  <link href="https://rgozi.com/index.xml" rel="alternate" type="application/rss+xml" title="搬砖工的日常" />
+  <link href="https://rgozi.com/index.xml" rel="feed" type="application/rss+xml" title="搬砖工的日常" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="搬砖工的日常" />
+<meta property="og:description" content="搬砖路上有你有我." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://rgozi.com/" />
+
+<meta itemprop="name" content="搬砖工的日常">
+<meta itemprop="description" content="搬砖路上有你有我."><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="搬砖工的日常"/>
+<meta name="twitter:description" content="搬砖路上有你有我."/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">搬砖工的日常</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">搬砖工的日常</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <section id="posts" class="posts">
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/requests%E5%BA%93error/">requests库的Failed to establish a new connection</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2017-01-29 </span>
+      <div class="post-category">
+          <a href="/categories/python/"> python </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>使用python做爬虫的过程中，经常会在较短的时间内构建大量的连接向服务器请求数据，遇到了这样的问题：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">requests.exceptions.ConnectionError: HTTPConnectionPool(host=&#39;xxx&#39;, port=80):
+Max retries exceeded with url: /document/record/_search?pretty=true (Caused by NewConnectionError
+(&#39;&lt;requests.packages.urllib3.connection.HTTPConnection object at 0x7f544af9a5d0&gt;: Failed to establish a new connection: [Errno -3] Temporary failure in name resolution&#39;,))
+</code></pre></td></tr></table>
+</div>
+</div>
+    </div>
+    <div class="read-more">
+      <a href="/post/requests%E5%BA%93error/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/mongodb%E5%B8%A6%E5%AF%86%E7%A0%81%E9%AA%8C%E8%AF%81%E4%BD%BF%E7%94%A8/">mongodb用户名密码登录</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2017-01-17 </span>
+      <div class="post-category">
+          <a href="/categories/python/"> python </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>写这篇博客是为了纪念最近闹的沸沸扬扬的大规模mongodb库被黑的事件，我自己也不幸中招，索性被黑的数据都是自己做试验的一些数据，并不是很重要。</p>
+    </div>
+    <div class="read-more">
+      <a href="/post/mongodb%E5%B8%A6%E5%AF%86%E7%A0%81%E9%AA%8C%E8%AF%81%E4%BD%BF%E7%94%A8/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/flask-socketio%E7%9A%84%E4%B8%80%E6%AC%A1%E4%BD%BF%E7%94%A8%E7%BB%8F%E5%8E%86/">flask-socketio的一次使用记录</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2016-12-28 </span>
+      <div class="post-category">
+          <a href="/categories/python/"> python </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>最近在做一个小项目，其中一部分即时通信的功能我是通过flask-socketio来完成的后端代码编写。在尝试过程中遇到了一些问题，特在此记录，以备后用。</p>
+    </div>
+    <div class="read-more">
+      <a href="/post/flask-socketio%E7%9A%84%E4%B8%80%E6%AC%A1%E4%BD%BF%E7%94%A8%E7%BB%8F%E5%8E%86/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/flask%E9%83%A8%E7%BD%B2%E6%96%B9%E5%BC%8F%E5%AE%9E%E8%B7%B5/">flask几种部署方式实践</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2016-12-12 </span>
+      <div class="post-category">
+          <a href="/categories/python/"> python </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>flask作为一款轻量级web框架，具有诸多优点。我喜欢它的原因是它具有高度的可扩展性，广泛的各类插件，丰富的开发文档。在开发调试过程中，我们往往会简单的使用flask自带的web服务器。但是在实际的生产环境中，flask自带的web服务器很难满足需求。</p>
+    </div>
+    <div class="read-more">
+      <a href="/post/flask%E9%83%A8%E7%BD%B2%E6%96%B9%E5%BC%8F%E5%AE%9E%E8%B7%B5/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/%E5%A6%82%E4%BD%95%E8%AE%A9%E4%BD%A0%E7%9A%84%E4%BB%A3%E7%A0%81%E6%9B%B4%E5%8A%A0pythonic/">如何让你的代码更加pythonic</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2016-11-28 </span>
+      <div class="post-category">
+          <a href="/categories/python/"> python </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>对于开发者而言，代码风格是一件很重要的事情，它往往会关系到你代码的可读性甚至是执行效率。对于python而言，经常会在招聘要求中有一条：<!-- raw HTML omitted -->pythonic的代码<!-- raw HTML omitted -->。那究竟什么是pythonic，什么样的代码才是pythonic的代码，我自己也一直有让自己的代码更加pythonic，总结平时的工作学习就有了如下这些。</p>
+    </div>
+    <div class="read-more">
+      <a href="/post/%E5%A6%82%E4%BD%95%E8%AE%A9%E4%BD%A0%E7%9A%84%E4%BB%A3%E7%A0%81%E6%9B%B4%E5%8A%A0pythonic/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/%E8%AF%BBmongodb%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97%E6%9C%89%E6%84%9F/">读Mongodb权威指南有感</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2016-11-25 </span>
+      <div class="post-category">
+          <a href="/categories/mongodb/"> Mongodb </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>由于之前从图书馆借的书已经到期了，前天下午趁着好天气去图书馆了一趟，顺便借回来两本<a href="https://book.douban.com/subject/25798102/">《Mongodb权威指南》</a>和<a href="https://book.douban.com/subject/25856314/">《Web性能权威指南》</a>。没想到两天时间就把前边那本看完了。总体感觉还不错，这本书写的比较细致，很适合入门学习，同时在看书的过程中，我发现了之前没有主要到的一些知识点，并且改变了我之前的一些错误认识，所以还是很有必要记录一下的。</p>
+    </div>
+    <div class="read-more">
+      <a href="/post/%E8%AF%BBmongodb%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97%E6%9C%89%E6%84%9F/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/mongodb_aggregation/">Mongodb Aggregation Pipleline</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2016-11-23 </span>
+      <div class="post-category">
+          <a href="/categories/mongodb/"> mongodb </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>Mongodb作为目前最流行的nosql数据库之一，它给我们提供了海量数据的管理能力。而现在正处于大数据最为火热的时代，如何将海量的数据转化为可用的信息，这一步至关重要，面向应用而设计的mongodb在基础的数据分析上提供了aggregation这一功能，足以满足很多日常需求。</p>
+    </div>
+    <div class="read-more">
+      <a href="/post/mongodb_aggregation/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/hexo&#43;github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/">windows下hexo&#43;github搭建个人博客</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2016-11-06 </span>
+      <div class="post-category">
+          <a href="/categories/hexo/"> hexo </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>之前自己的博客也是托管在github上，但是访问速度有时候欠佳，并且缺少个人定制的感觉，所以就放在了自己的云主机上，周末恰巧有个机会让我重新温习一下hexo在github上托管的过程。</p>
+    </div>
+    <div class="read-more">
+      <a href="/post/hexo&#43;github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/%E8%8F%9C%E9%B8%9F%E5%9C%A8springboot%E4%BD%BF%E7%94%A8%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%92%8C%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/">菜鸟在springboot使用中遇到的问题和解决方法</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2016-09-21 </span>
+      <div class="post-category">
+          <a href="/categories/java/"> Java </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <ul>
+<li></li>
+</ul>
+<p>人的惰性真是可怕啊！
+差不多从中秋以来，都一直处于偷懒的状态，基本上没学习什么新东西，这都要归功于暴雪家的魔兽世界和守望先锋了。玩了这么久，是该总结下这段时间遇到的问题和已经找到的解决方法了，省的以后再遇到这些问题。</p>
+    </div>
+    <div class="read-more">
+      <a href="/post/%E8%8F%9C%E9%B8%9F%E5%9C%A8springboot%E4%BD%BF%E7%94%A8%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%92%8C%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/%E6%83%B3%E8%A6%81%E8%B5%B0%E5%87%BA%E8%88%92%E9%80%82%E5%8C%BA/">想要走出舒适区</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2016-08-26 </span>
+      <div class="post-category">
+          <a href="/categories/%E5%BF%83%E6%83%85%E6%96%87%E5%AD%97/"> 心情文字 </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <h1 id="工作一个月的感受">工作一个月的感受</h1>
+<p>到今天为止，已经入职一个月了，没想到时间过的这么快，想想这个月的生活，我好像已经快要适应现在的生活节奏了。</p>
+    </div>
+    <div class="read-more">
+      <a href="/post/%E6%83%B3%E8%A6%81%E8%B5%B0%E5%87%BA%E8%88%92%E9%80%82%E5%8C%BA/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    </section>
+  
+  <nav class="pagination">
+    <a class="prev" href="/page/2/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text">上一页</span>
+      </a>
+    <a class="next" href="/page/4/">
+        <span class="next-text">下一页</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+  </nav>
+        </div>
+        
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="eclipse_sv@whu.edu.cn" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/iamwm" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.douban.com/people/Eclipsesss/" class="iconfont icon-douban" title="douban"></a>
+      <a href="https://space.bilibili.com/44041814/" class="iconfont icon-bilibili" title="bilibili"></a>
+  <a href="https://rgozi.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">rgozi</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-173630995-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

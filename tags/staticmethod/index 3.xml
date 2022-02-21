@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>staticmethod on 搬砖工的日常</title>
+    <link>https://rgozi.com/tags/staticmethod/</link>
+    <description>Recent content in staticmethod on 搬砖工的日常</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Thu, 03 Aug 2017 11:31:12 +0000</lastBuildDate><atom:link href="https://rgozi.com/tags/staticmethod/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>python中@classmethod和@staticmethod的理解</title>
+      <link>https://rgozi.com/post/%E5%85%B3%E4%BA%8Epython%E7%9A%84classmethod%E5%92%8Cstaticmethod%E7%9A%84%E7%90%86%E8%A7%A3/</link>
+      <pubDate>Thu, 03 Aug 2017 11:31:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/%E5%85%B3%E4%BA%8Epython%E7%9A%84classmethod%E5%92%8Cstaticmethod%E7%9A%84%E7%90%86%E8%A7%A3/</guid>
+      <description>&lt;p&gt;一直对python中@classmethod和@staticmethod的用法和区别不是很理解,一顿google之后发现还是stackoverflow真的是程序员的好朋友.在这个问题&lt;a href=&#34;https://stackoverflow.com/questions/12179271/meaning-of-classmethod-and-staticmethod-for-beginner&#34;&gt;Meaning of @classmethod and @staticmethod for beginner?&lt;/a&gt;中,几个大神的回答还是很好的.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

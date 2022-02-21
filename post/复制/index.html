@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>复制 - 搬砖工的日常</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="rgozi" /><meta name="description" content="复制指的是在通过网络连接的多台机器上保留相同数据的副本。
+" /><meta name="keywords" content="搬砖工, 技术博客" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.84.1 with theme even" />
+
+
+<link rel="canonical" href="https://rgozi.com/post/%E5%A4%8D%E5%88%B6/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="复制" />
+<meta property="og:description" content="复制指的是在通过网络连接的多台机器上保留相同数据的副本。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://rgozi.com/post/%E5%A4%8D%E5%88%B6/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-07-24T09:27:12&#43;00:00" />
+<meta property="article:modified_time" content="2021-07-24T09:27:12&#43;00:00" />
+
+<meta itemprop="name" content="复制">
+<meta itemprop="description" content="复制指的是在通过网络连接的多台机器上保留相同数据的副本。"><meta itemprop="datePublished" content="2021-07-24T09:27:12&#43;00:00" />
+<meta itemprop="dateModified" content="2021-07-24T09:27:12&#43;00:00" />
+<meta itemprop="wordCount" content="4902">
+<meta itemprop="keywords" content="数据密集型系统设计,DDIA,读书笔记,复制,副本集," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="复制"/>
+<meta name="twitter:description" content="复制指的是在通过网络连接的多台机器上保留相同数据的副本。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">搬砖工的日常</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">搬砖工的日常</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">复制</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-07-24 </span>
+        <div class="post-category">
+            <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"> 读书笔记 </a>
+            </div>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#基于领导者-跟随者的复制">基于领导者-跟随者的复制</a>
+      <ul>
+        <li><a href="#数据复制的过程">数据复制的过程</a></li>
+        <li><a href="#同步复制和异步复制">同步复制和异步复制</a></li>
+        <li><a href="#增加新的跟随者">增加新的跟随者</a></li>
+        <li><a href="#处理宕机副本">处理宕机副本</a></li>
+        <li><a href="#复制日志的实现">复制日志的实现</a></li>
+      </ul>
+    </li>
+    <li><a href="#复制延迟处理">复制延迟处理</a>
+      <ul>
+        <li><a href="#读己之写">读己之写</a></li>
+        <li><a href="#单调读">单调读</a></li>
+        <li><a href="#一致前缀读">一致前缀读</a></li>
+        <li><a href="#复制延迟的解决方案">复制延迟的解决方案</a></li>
+      </ul>
+    </li>
+    <li><a href="#多主复制">多主复制</a>
+      <ul>
+        <li><a href="#多主复制拓扑">多主复制拓扑</a></li>
+      </ul>
+    </li>
+    <li><a href="#无主复制">无主复制</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>复制指的是在通过网络连接的<strong>多台机器</strong>上保留<strong>相同数据</strong>的副本。</p>
+<h2 id="基于领导者-跟随者的复制">基于领导者-跟随者的复制</h2>
+<p>复制的出现是因为各种各样的原因，主要包括：</p>
+<ul>
+<li>通过降低数据和访问用户在空间上的距离从而<strong>减少访问延迟</strong></li>
+<li>在系统一部分出现故障时，系统能够对外提供服务，保证<strong>服务高可用</strong></li>
+<li>增加提供读取数据服务的节点，增加<strong>数据读取吞吐量</strong></li>
+</ul>
+<p>数据复制困难之处在于处理复制数据的<strong>变更</strong>，为了解决变更带来的问题，有多种处理变更的算法：<strong>单领导者、多领导者和无领导者</strong>。</p>
+<p>复制过程是同步复制还是异步复制对于数据库实现来说也是一个重要的因素。</p>
+<p>另外，数据复制带来的另外一个问题——<strong>数据一致性</strong>在分布式系统中也广泛存在，最终一致性等问题也需要我们了解研究。</p>
+<h3 id="数据复制的过程">数据复制的过程</h3>
+<p>存储数据库副本的每个节点被称为副本（replica）。当存在多个副本的时候，如何才能确保所有数据都存在于每个副本上？</p>
+<p>常见的方案是<strong>基于领导者的复制（leader-based replication）</strong>，也称为主从复制（master/slave）。它的大致工作流程如下：</p>
+<ol>
+<li>副本之一被选定为领导者。当客户端要写入数据时，它必须将写入请求发送给领导者，领导者负责将数据写入本地存储；</li>
+<li>其他副本被指定为追随者。每当领导者将新数据写入本地存储时，它也会将数据变更发送给追随者，这些变更构成了<strong>复制日志（relication log）<strong>或者</strong>变更流（change stream）</strong>。每个跟随者从领导者拉取复制日志，并相应地按照领导者处理的相同顺序更新其本地数据库副本；</li>
+<li>当客户想要从数据库中读取数据时，可以向领导者<strong>或者</strong>追随者查询。但是对于写操作，只有领导者才能相应请求。</li>
+</ol>
+<p>上述的复制过程是很多关系型数据库（mysql，sql server）内置功能，它也被用于一些非关系型数据库（mongodb）或者分布式消息代理（rabbitmq、kafka）等。</p>
+<h3 id="同步复制和异步复制">同步复制和异步复制</h3>
+<p>复制系统的一个重要细节：复制是同步还是异步。这同时会影响到数据写入过程和数据读取过程：</p>
+<ul>
+<li>同步复制的优点是：跟随者保证有与领导者一致的最新数据副本。如果领导者突然失效，我们可以确信这些数据仍然能够在跟随者中找到；但是完全同步复制的缺点是：如果同步跟随者没有响应，领导者就无法处理写入操作，领导者会阻止所有写入并等待跟随者再次可用；</li>
+<li>将所有从库都设置为同步是不切实际的：任何一个跟随者中断都会导致整个系统的不可用。通常在数据库上启用同步复制往往意味着只需要其中一部分跟随者保持同步复制即可。这样可以保证至少有两个及以上的副本拥有最新的数据副本。这种配置有时也被称为<strong>半同步</strong>；</li>
+<li>通常情况下，基于领导者的复制配置都是完全异步的，这种情况下，如果领导者失效且不可恢复，任何尚未复制给跟随者的写入都会丢失，难以保证数据的持久性；完全异步的优势在于，即使所有的跟随者都落后于领导者，领导者也仍然能够继续处理写入。</li>
+</ul>
+<h3 id="增加新的跟随者">增加新的跟随者</h3>
+<p>系统运行过程中，有时会需要增加一个新的副本。对于新增加的副本来说，如何将副本完整的同步到本地存储，大致过程如下：</p>
+<ol>
+<li>在某个时刻获取主库的一致性快照；</li>
+<li>将快照复制到新的跟随者节点；</li>
+<li>跟随者连接领导者，并拉取快照之后的所有数据变更；</li>
+<li>跟随者处理完成积压的复制日志后，我们就可以说新增加的这个跟随者**赶上（catch up）**了领导者，它现在可以继续处理新的数据库变更了。</li>
+</ol>
+<h3 id="处理宕机副本">处理宕机副本</h3>
+<p>如何基于领导者的复制实现系统高可用？</p>
+<h4 id="从库失效追赶恢复">从库失效：追赶恢复</h4>
+<p>对于跟随者而言，它记录从领导者处收到的数据变更。如果跟随者崩溃并重新启动，或者由于网络原因导致跟随者和领导者之间暂时网络中断，这种情况比较容易恢复：跟随者从复制日志中可以指导，在发生故障之前处理的最后一个写操作，所以在跟随者重新连接到领导者之后，它可以向领导者请求最后一个写操作之后的所有数据变更。当处理完所有变更后，跟随者就重新赶上了领导者，可以继续处理接收并处理变更流。</p>
+<h4 id="主库失效故障切换">主库失效：故障切换</h4>
+<p>领导者失效处理过程相对于从库失效来说会更加麻烦：其中一个跟随者需要被提升为信任领导者，并完成副本配置——后续写入请求都将转发到新任领导者，其他跟随者也要拉取来自新任领导者的数据变更。上述的过程被称为<strong>故障切换（failover）</strong>。</p>
+<p>故障切换过程可以手动进行或者自动进行：</p>
+<ol>
+<li>确认领导者失效，引起领导者失效的原因会有很多：断网、断电、系统崩溃等等。常见的实现机制是<strong>超时（timeout）</strong>：副本节点之间频繁的互相发送心跳，如果一个节点在一段时间内没有相应，就认为它失效了；</li>
+<li>选择一个新任领导者：这个过程可由选举算法完成或者由运维人员手动指定。通常新任领导者拥有失效领导者最新的数据集副本；</li>
+<li>重新配置系统以启用新任领导者。系统后续的写入操作都有新任领导者处理。</li>
+</ol>
+<p>故障切换会有很多麻烦问题需要处理：</p>
+<ul>
+<li>如果使用异步复制，新的领导者可能没有收到旧领导者最新的写入操作。这在老的领导者重新加入系统后会导致数据冲突：常见的解决方案是简单丢弃旧领导者未被复制的写入——这会影响到系统数据的持久性；</li>
+<li>如果数据库需要和其他外部系统协调，丢弃写入内容非常危险，会带来难以预料的风险；</li>
+<li>领导者发生故障时，可能会出现多个跟随者认为自己是新任领导者，这种情况被称为<strong>脑裂（split brain）</strong>。如果有多个主库同时接收写操作但却没有冲突消解机制，就会造成数据写入的丢失或损坏；</li>
+<li>如何判定领导者失效，对于超时时间的设置也需要考虑：如果超时时间太短会造成不必要的故障切换过程，在系统负载较高的时候，发生故障切换可能会让情况变得更糟；如果超时时间设置太长，就意味着恢复时间会更长。</li>
+</ul>
+<h3 id="复制日志的实现">复制日志的实现</h3>
+<p>基于领导者的复制底层实现方式有多种：</p>
+<h4 id="基于语句的复制">基于语句的复制</h4>
+<p>最简单的情况下，领导者记录它执行的每个写入语句：每个<strong>INSERT、UPDATE、DELETE</strong>等都被转发给每个跟随者，每个跟随者解析并执行写入语句，就像从客户端收到请求的处理一样。</p>
+<p>这种实现可能会有一些问题：</p>
+<ul>
+<li>任何调用**非确定性函数（nondeterministic）**的语句，可能在每个副本上产生不同的效果，如NOW()或者RAND()等；</li>
+<li>如果语句使用自增列或者依赖数据库中现有数据，则必须在每个副本上按照完全相同的顺序执行他们，否则会产生意料外的效果；</li>
+<li>有副作用的语句可能在每个副本上产生不同的效果。</li>
+</ul>
+<p>上述的问题，可以由领导者使用固定的返回内容代替上述不确定函数的调用。但是这种方案需要考虑的情况实在是太多了。</p>
+<h4 id="传输预写式日志wal">传输预写式日志（WAL）</h4>
+<p>存储引擎的写操作通常都是追加到日志中的，对于日志结构存储或者是基于B树的块存储均是这样。</p>
+<p>日志都包含了所有数据库写入的仅追加字节序列。可以使用完全相同的日志在另一个节点上构建副本：除了将日志写入磁盘之外，领导者还可以通过网络将其发送给跟随者。</p>
+<p>这种方式的确定是：日志记录的数据非常底层，WAL甚至包含了哪些磁盘块中的哪些字节发生了变更。这使得复制与存储引擎紧密耦合，不利于后续存储引擎版本的升级或者整个副本存在不同版本的数据库软件。</p>
+<h4 id="逻辑日志复制基于行的复制">逻辑日志复制（基于行的复制）</h4>
+<p>另外一种方法是，复制和存储引擎使用不同的日志格式，这样使得复制日志可以从存储引擎分离出来，这种复制日志被称为逻辑日志，将其与基于存储引擎的数据复制区分开来。</p>
+<h4 id="基于触发器的复制">基于触发器的复制</h4>
+<p>pass</p>
+<h2 id="复制延迟处理">复制延迟处理</h2>
+<p>数据复制能够将系统的读请求分散到多个跟随者上，对于读多写少的应用来说，数据复制非常有价值。对于同步复制来说，单点故障会影响到整个系统的可用性，在真实应用过程中，更多的系统还是采用了异步同步的方式来进行数据复制。</p>
+<p>当应用程序从异步跟随者读取数据时，如果跟随者落后，它可能会看到过时的信息。同时对领导者和跟随者发起相同的查询，可能会得到不同的结果，因为并非所有的写入都反应到了跟随者中。这种不一致只是一个<strong>暂时的状态</strong>——如果停止写入操作并等待一段时间，所有跟随者最终都会赶上领导者并保持一致。上述的这种效应被称为<strong>最终一致性</strong>。</p>
+<p>最终一致性并不仅仅针对于NOSQL，关系型数据库的异步复制追随者也有相同的特性。</p>
+<p>最终一致性中的<strong>最终</strong>，在实际情况中跟随者落后于领导者的程度是没有限制的。这种落后程度可以通过**复制延迟（replication lag）**来反应：写入领导者到同步至跟随者之间的延迟，可能是很短的时间，也可能会因为网络问题变为几秒或者几分钟。</p>
+<p>为了解决复制延迟问题，通常的方案有以下几种：</p>
+<h3 id="读己之写">读己之写</h3>
+<p>在一些需要保证读写一致性的应用来说，通过读己之写来保证。这取决于应用程序的业务逻辑、应用场景和数据库的具体实现细节。</p>
+<h3 id="单调读">单调读</h3>
+<p>对于同一个客户端，多次分别向不同跟随者发起读请求后得到的查询结果不一致现象。通过单调读来避免上述问题：在读取数据时，可能会得到一个旧值，单调读意味着如果一个用户顺序的进行多次读取，他们不会看到时间上的后退，即如果先前读到较新的数据，后续读取不会得到更旧的数据。</p>
+<p>单调读的一个实现方式：确保每个用户总是从同一个副本读取。</p>
+<h3 id="一致前缀读">一致前缀读</h3>
+<p>对于一系列按照某个顺序发生的写入读取操作来说，任何人读取数据时，他们也期望以同样的顺序读取到相应的数据。</p>
+<p>由于分区的存在，在分布式系统中，不同的分区质检不存在全局写入顺序：用户从数据库中读取数据时，可能会看到数据库某些部分处于较旧的状态，而某些部分处于较新的状态。</p>
+<p>一种解决方案是：确保任何有因果关系的写入都写入分布式系统相同的分区。</p>
+<h3 id="复制延迟的解决方案">复制延迟的解决方案</h3>
+<p>在使用最终一致性的系统时，由于各种可能的原因，复制延迟可能会增加到几秒或者十几分钟。为了避免由于复制延迟带来应用层出现的问题，常用的方法一般有两种：</p>
+<ol>
+<li>由应用层代码来提供更为精细的控制，从而为系统提供更有力的保障，例如读己之写等等；</li>
+<li>通过数据库提供的<strong>事务</strong>功能，并信赖数据库可以做正确的事情。这里的事务更多的指的是分布式事务。</li>
+</ol>
+<h2 id="多主复制">多主复制</h2>
+<p>基于领导者-跟随者模式的复制，一个最大的问题是同一时间只能有一个领导者处理写入请求。基于领导者-跟随者模型的一个延伸——允许多个节点接收写入操作。复制仍然以原有的方式进行：处理写入的每个节点将写入操作转发到其他所有节点，这种模式也被称为多领导模式。</p>
+<p>多主复制模式通常的应用场景：</p>
+<ul>
+<li>运维多个数据中心</li>
+<li>需要客户端离线操作</li>
+<li>协同编辑</li>
+</ul>
+<p>这种模式虽然能够同时有多个节点可以接收写入操作，但是会带来另一个问题：写入冲突。A节点接收写入操作，并把这个写入同步到B节点，同样作为领导者的B节点发现这条写入操作和它已经处理过的写入是有冲突的，如何处理冲突就成为多领导模式的一个主要问题。关于如何消解冲突，后续在研究一致性共识的时候，会有更深入的了解。</p>
+<h3 id="多主复制拓扑">多主复制拓扑</h3>
+<p>复制拓扑（replication topology）描述写入从一个节点到另一个节点的通信链路。常见的拓扑模式有：</p>
+<ul>
+<li>环形拓扑：每个节点接收来自一个节点的写入，并将这些写入外加自身的写入传播给另外一个节点</li>
+<li>星型拓扑：一个指定的根节点将写入传播给所有其他节点</li>
+<li>全部到全部拓扑：每个领导者都将其所有写入传播给其他所有领导者</li>
+</ul>
+<p>了解这些内容有助于我们做出更好的技术选型以及在出现故障的时候更好的排查问题。</p>
+<h4 id="环形或星型拓扑的问题">环形或星型拓扑的问题</h4>
+<p>在环形或者星型拓扑中，每个写入可能需要在到达其他所有副本之前经过多个节点。每个节点需要转发从其他节点收到的数据更改。这就需要在转发和接收数据的时候避免复制内容成环导致无限循环。通常每个节点被赋予一个唯一的标识符，并且在复制日志中，每个写入都被标记了所有已经过的节点的标识符。当一个节点收到用自己的标识符标记的数据更改时，该数据更改将被忽略，因为节点知道它已经被处理过。</p>
+<p>另外，如果复制传播链路中如果有一个节点发生故障，可能会导致后续的传播流程中断，直到这个节点被修复。这种情况往往只能通过手动重新配置来解决。</p>
+<h4 id="全部到全部拓扑的问题">全部到全部拓扑的问题</h4>
+<p>更密集的拓扑结构容错性会更好，因为复制的传播链路在全部到全部的拓扑结构中会有多条路径，避免单点故障。但是全部到全部拓扑结构可能会带来其他问题：由于复制传播路径不确定，可能会由于网络问题导致写入的时序和其他节点接收处理的时间不一致。这个问题类似于<strong>一致前缀读</strong>：这是一个因果关系的问题。后续会在检测并发写入时做更深入的了解。</p>
+<h2 id="无主复制">无主复制</h2>
+<p>这种模式在实际应用中接触的较少，可以先不做了解。</p>
+<blockquote>
+<p>原文地址：<a href="https://ddia.vonng.com/#/ch5">https://ddia.vonng.com/#/ch5</a></p>
+</blockquote>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">rgozi</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-07-24
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E6%95%B0%E6%8D%AE%E5%AF%86%E9%9B%86%E5%9E%8B%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/">数据密集型系统设计</a>
+          <a href="/tags/ddia/">DDIA</a>
+          <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a>
+          <a href="/tags/%E5%A4%8D%E5%88%B6/">复制</a>
+          <a href="/tags/%E5%89%AF%E6%9C%AC%E9%9B%86/">副本集</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/%E8%AE%B0%E5%8F%A6%E4%B8%80%E4%BE%8Bmongo-can-not-add-session-to-cache/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">记另一例mongo can not add session to cache</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/11-asyncio-loop%E8%BF%90%E8%A1%8C%E6%B5%81%E7%A8%8B/">
+            <span class="next-text nav-default">asyncio loop的运行循环</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="eclipse_sv@whu.edu.cn" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/iamwm" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.douban.com/people/Eclipsesss/" class="iconfont icon-douban" title="douban"></a>
+      <a href="https://space.bilibili.com/44041814/" class="iconfont icon-bilibili" title="bilibili"></a>
+  <a href="https://rgozi.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>rgozi</span>
+  </span>
+  <div class="container">
+        备案号：<a href="https://beian.miit.gov.cn/" target="_blank">鄂ICP备20003011号-1</a>
+    </div>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-173630995-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

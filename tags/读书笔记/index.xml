@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>读书笔记 on 搬砖工的日常</title>
+    <link>https://rgozi.com/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</link>
+    <description>Recent content in 读书笔记 on 搬砖工的日常</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 13 Feb 2022 09:27:12 +0000</lastBuildDate><atom:link href="https://rgozi.com/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>事务</title>
+      <link>https://rgozi.com/post/%E4%BA%8B%E5%8A%A1/</link>
+      <pubDate>Sun, 13 Feb 2022 09:27:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/%E4%BA%8B%E5%8A%A1/</guid>
+      <description>&lt;p&gt;在系统运行过程中，可能随时随地都会发生意外中断：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;数据库软件或硬件故障&lt;/li&gt;
+&lt;li&gt;应用程序崩溃&lt;/li&gt;
+&lt;li&gt;网络连接断开&lt;/li&gt;
+&lt;li&gt;数据库并发读写&lt;/li&gt;
+&lt;li&gt;应用程序竞态条件&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;为了实现可靠性，整个系统必须处理这些故障，但是实现相对完备的容错机制工作量巨大。**事务（transaction）**一直是简化问题的首选机制。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>分区</title>
+      <link>https://rgozi.com/post/%E5%88%86%E5%8C%BA/</link>
+      <pubDate>Sat, 11 Sep 2021 09:27:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/%E5%88%86%E5%8C%BA/</guid>
+      <description>&lt;p&gt;对于非常大的数据集，或者非常高的吞吐量，仅仅通过复制是无法满足需求的。我们需要对数据进行分区（partion）。&lt;/p&gt;
+&lt;p&gt;在MongoDB，Elasticsearch和Solr Cloud中被称为&lt;strong&gt;分片（shard）&lt;/strong&gt;，在HBase中称之为区域（Region），Bigtable中则是&lt;strong&gt;表块（tablet）&lt;/strong&gt;，Cassandra和Riak中是&lt;strong&gt;虚节点（vnode)&lt;/strong&gt;，Couchbase中叫做&lt;strong&gt;虚桶（vBucket）&lt;/strong&gt;。但是&lt;strong&gt;分区（partitioning）&lt;/strong&gt; 是最约定俗成的叫法。&lt;/p&gt;
+&lt;p&gt;分区主要是为了系统的&lt;strong&gt;可伸缩性&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;分区常常与复制结合使用，使得每个分区的数据存储在多个副本节点中。在保证系统可伸缩的同时，保证系统的高可用。我们在设计系统分区的时候通常需要同时考虑如何将系统的整体&lt;strong&gt;读写负载&lt;/strong&gt;按照预期分配到各个分区。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>复制</title>
+      <link>https://rgozi.com/post/%E5%A4%8D%E5%88%B6/</link>
+      <pubDate>Sat, 24 Jul 2021 09:27:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/%E5%A4%8D%E5%88%B6/</guid>
+      <description>&lt;p&gt;复制指的是在通过网络连接的&lt;strong&gt;多台机器&lt;/strong&gt;上保留&lt;strong&gt;相同数据&lt;/strong&gt;的副本。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>数据的存储与检索</title>
+      <link>https://rgozi.com/post/%E6%95%B0%E6%8D%AE%E7%9A%84%E5%AD%98%E5%82%A8%E4%B8%8E%E6%A3%80%E7%B4%A2/</link>
+      <pubDate>Sat, 05 Jun 2021 09:27:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/%E6%95%B0%E6%8D%AE%E7%9A%84%E5%AD%98%E5%82%A8%E4%B8%8E%E6%A3%80%E7%B4%A2/</guid>
+      <description>&lt;p&gt;对于一个数据库来说，它要完成最基础的两件事情：当你把数据交给数据库时，它负责将其存储起来；当你需要数据时，数据库能够将指定数据检索并返回给你，即&lt;strong&gt;数据存储与检索&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;从数据库的视角来说，上边的两件事情一般会交给底层数据库&lt;strong&gt;存储引擎&lt;/strong&gt;来完成。对于开发人员来说，选择一个合适的存储引擎能够为后续系统的建设非常重要。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>数据模型与查询</title>
+      <link>https://rgozi.com/post/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%9F%A5%E8%AF%A2/</link>
+      <pubDate>Sat, 15 May 2021 09:27:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%9F%A5%E8%AF%A2/</guid>
+      <description>&lt;p&gt;对于应用程序开发人员来说，我们的编码过程很多场景下都是对现实世界的代码描述。这个描述过程可以理解为数据模型的构建过程。数据模型不仅影响着代码的编写方式（面向对象、函数式编程等等），它也会影响我们后续解决问题的思路。&lt;/p&gt;
+&lt;p&gt;在计算机系统中，我们常常通过构建层级结构来解构整个系统（例如计算机存储器的层级结构），一个复杂的应用程序往往会有多个中间层次，每个层次都提供一个明确的数据模型来隐藏更低层次中的复杂性。这些抽象出来的数据模型能够为构建整个系统的不同角色提供有效协作的基础。&lt;/p&gt;
+&lt;p&gt;常见和常用的数据模型，可以抽象为几大类：关系模型、文档模型和图数据模型。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>异常控制流</title>
+      <link>https://rgozi.com/post/%E5%BC%82%E5%B8%B8%E6%8E%A7%E5%88%B6%E6%B5%81/</link>
+      <pubDate>Sat, 17 Apr 2021 09:27:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/%E5%BC%82%E5%B8%B8%E6%8E%A7%E5%88%B6%E6%B5%81/</guid>
+      <description>&lt;p&gt;这部分内容相当重要，这部分我们可以学习到应用是如何与操作系统交互的。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>代码如何在系统中运行</title>
+      <link>https://rgozi.com/post/%E4%BB%A3%E7%A0%81%E5%A6%82%E4%BD%95%E5%9C%A8%E7%B3%BB%E7%BB%9F%E4%B8%AD%E8%BF%90%E8%A1%8C/</link>
+      <pubDate>Sun, 07 Mar 2021 09:27:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/%E4%BB%A3%E7%A0%81%E5%A6%82%E4%BD%95%E5%9C%A8%E7%B3%BB%E7%BB%9F%E4%B8%AD%E8%BF%90%E8%A1%8C/</guid>
+      <description>&lt;p&gt;我们平常所编写的代码，无论是c代码、go代码、rust代码或其他代码，大都是以文本文件的形式存储在计算机硬盘上。以最简单的&lt;code&gt;hello_world&lt;/code&gt;程序为例：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span class=&#34;cp&#34;&gt;#include&lt;/span&gt; &lt;span class=&#34;cpf&#34;&gt;&amp;lt;stdio.h&amp;gt;&lt;/span&gt;&lt;span class=&#34;cp&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;cp&#34;&gt;&lt;/span&gt;
+&lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+		&lt;span class=&#34;n&#34;&gt;printf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;hello world&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\n&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+		&lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

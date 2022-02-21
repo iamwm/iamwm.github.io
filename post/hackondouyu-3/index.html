@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Hack On Douyu -- 3 - 搬砖工的日常</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="rgozi" /><meta name="description" content="在拥有了数据获取和存储的能力之后，如何利用好这些数据成为一个问题。 本来也一直打算把之前学习的flask框架用起来，现在有了这些数据，我打算利用这些数据做一个对斗鱼网站的小型监控页面。
+" /><meta name="keywords" content="搬砖工, 技术博客" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.84.1 with theme even" />
+
+
+<link rel="canonical" href="https://rgozi.com/post/hackondouyu-3/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Hack On Douyu -- 3" />
+<meta property="og:description" content="在拥有了数据获取和存储的能力之后，如何利用好这些数据成为一个问题。
+本来也一直打算把之前学习的flask框架用起来，现在有了这些数据，我打算利用这些数据做一个对斗鱼网站的小型监控页面。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://rgozi.com/post/hackondouyu-3/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2016-07-27T08:07:12&#43;00:00" />
+<meta property="article:modified_time" content="2016-07-27T08:07:12&#43;00:00" />
+
+<meta itemprop="name" content="Hack On Douyu -- 3">
+<meta itemprop="description" content="在拥有了数据获取和存储的能力之后，如何利用好这些数据成为一个问题。
+本来也一直打算把之前学习的flask框架用起来，现在有了这些数据，我打算利用这些数据做一个对斗鱼网站的小型监控页面。"><meta itemprop="datePublished" content="2016-07-27T08:07:12&#43;00:00" />
+<meta itemprop="dateModified" content="2016-07-27T08:07:12&#43;00:00" />
+<meta itemprop="wordCount" content="2355">
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Hack On Douyu -- 3"/>
+<meta name="twitter:description" content="在拥有了数据获取和存储的能力之后，如何利用好这些数据成为一个问题。
+本来也一直打算把之前学习的flask框架用起来，现在有了这些数据，我打算利用这些数据做一个对斗鱼网站的小型监控页面。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">搬砖工的日常</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">搬砖工的日常</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Hack On Douyu -- 3</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2016-07-27 </span>
+        <div class="post-category">
+            <a href="/categories/coding/"> coding </a>
+            </div>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents"></nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>在拥有了数据获取和存储的能力之后，如何利用好这些数据成为一个问题。
+本来也一直打算把之前学习的flask框架用起来，现在有了这些数据，我打算利用这些数据做一个对斗鱼网站的小型监控页面。</p>
+<h1 id="初步构想">初步构想</h1>
+<p>通过弹幕可以基本上获取到所有的斗鱼火箭礼物发送和接收情况以及这些火箭发送的时间，因此可以利用这些数据得到每天每个小时斗鱼全站火箭的发送情况，利用发送者的id和接收者的id可以统计出每天的火箭排名。每天的数据在凌晨完成统计汇总，可以构成历史数据。
+在这个小项目中，我主要用到两种方法完成前后端数据交互：一种是直接根据请求url知道前端需要的数据具体是什么，我就直接在后端完成数据的获取和处理，通过flask模板完成要返回的页面；另一种方法则是实时性比较强的或者是需要和前端js有交集的我才用socket.io完成数据交互。</p>
+<p>通过抓取斗鱼直播间分类的静态页面可以按照人气值进行排名，获取到当前的热门房间，利用这些房间id可以获取到该直播间的直播视频数据，在flash插件上就可以直接转播(本来一直很纠结视频流如何获取，在参考了dotamax的转播方法之后就醒悟了)。</p>
+<p>另外，在获取实时聊天弹幕的时候可以获取到火箭发送信息，将这些信息通过redis转发，再由socket.io提供给前端页面，实时推送火箭礼物消息。</p>
+<h1 id="火箭发送数据交互">火箭发送数据交互</h1>
+<p>上边说到，火箭发送信息通过弹幕获取，在数据库中存储包括发送者id、接收者id和发送时间，这些数据同样可以通过redis完成pub/sub。
+因此为了得到每日火箭逐小时发送情况，在后端完成了数据的预处理：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">def sortbyDay(date):
+    if isinstance(date, datetime):
+        year = date.year
+        m = date.month
+        d = date.day
+        singledate = datetime(year, m, d)
+        print singledate
+        singledata = []
+        count = 0
+        hour = range(0, 24)
+        for h in hour:
+            data = []
+            value = {}
+            start = datetime(year, m, d, h, 0, 0)
+            end = datetime(year, m, d, h, 59, 59)
+            daydata = col.find(
+                {&#39;date&#39;: {&#39;$gt&#39;: start, &#39;$lt&#39;: end}}, {&#39;_id&#39;: 0})
+            if daydata is not None:
+                for item in daydata:
+                    data.append(item)
+                    count = count + 1
+            else:
+                data = None
+            value[&#39;hour&#39;] = h
+            value[&#39;rockets&#39;] = data
+            singledata.append(value)
+        if count != 0:
+            insertdata = {
+                &#39;date&#39;: singledate,
+                &#39;data&#39;: singledata,
+                &#39;count&#39;: count
+            }
+            return insertdata
+        else:
+            return None
+</code></pre></td></tr></table>
+</div>
+</div><p>通过输入指定的日期date，在数据库中检索该天内rocket表中所有数据，返回当天火箭礼物总量、以及每个小时火箭的发送量。
+在获取到每天所有火箭数据之后，统计每天发送者和接收者排名：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">def valuebyHour(date):
+    daydata = sortbyDay(date)
+    count = 0
+    hourvalue = []
+    sendervalue = {}
+    recvervalue = {}
+    if daydata is not None:
+        count = daydata[&#39;count&#39;]
+        hourdata = daydata[&#39;data&#39;]
+        for h in hourdata:
+            hourvalue.append(len(h[&#39;rockets&#39;]))
+            sender = &#39;sender_id&#39;
+            recver = &#39;recver_id&#39;
+            rocket = h[&#39;rockets&#39;]
+            if len(rocket) != 0:
+                sendervalue = sortNames(rocket, sender, sendervalue)
+                recvervalue = sortNames(rocket, recver, recvervalue)
+        return (count, hourvalue, sendervalue, recvervalue)
+    else:
+        return None
+</code></pre></td></tr></table>
+</div>
+</div><p>最终返回当天火箭发送总量，火箭逐小时发送情况，发送者对应的发送量和接收者对应的接收量。</p>
+<p>完成数据预处理之后，就可以根据前端的请求返回对应的数据了。由于前端获取数据之后前端js根据数据完成不同图表的绘制，我是采用socket.io的方式完成数据交互。
+在后端，我是直接使用flask的一个扩展flask_socketio完成socket.io服务器的搭建(当然，socket.io拥有不同开发语言版本的实现，可根据具体情况有不同选择)。在flask中建立一个socket.io服务器是很简便的：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">from flask_socketio import SocketIO
+from flask_socketio import send, emit
+# flask 主程序
+app = Flask(__name__)
+app.config[&#39;SECRET_KEY&#39;] = &#39;secret&#39;
+socketio = SocketIO(app)
+if __name__ == &#39;__main__&#39;:
+    socketio.run(app, host=&#39;0.0.0.0&#39;, port=3000)
+</code></pre></td></tr></table>
+</div>
+</div><p>建立socket服务器之后，只需要根据具体情况建立不同的监听事件。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># historyDate事件，接收来自前端的日期date，将其解析之后调用上述数据获取方法
+@socketio.on(&#39;historyDate&#39;)
+def sendDate(date):
+    if date:
+        print date
+        time = date.split(&#39;-&#39;)
+        timevalue = [int(item) for item in time]
+        y = timevalue[0]
+        m = timevalue[1]
+        d = timevalue[2]
+        recordDate = datetime(y,m,d)
+        returnValue = valuebyHour(recordDate)
+        if returnValue:
+            (a, b, c, d) = returnValue
+            if b is not None:
+                socketio.emit(&#39;historyRockets&#39;, b)
+        else:
+            socketio.emit(&#39;historyRockets&#39;,None)
+# historyRockets事件，接收来自historyDate的数据并将其返回给前端           
+@socketio.on(&#39;historyRockets&#39;)
+def sendHistory(data):
+    emit(&#39;historyRockets&#39;,data)
+</code></pre></td></tr></table>
+</div>
+</div><p>服务器端的内容弄完之后，前端只需要建立连接，并在恰当的时候触发对应的事件即可：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">// 连接socket.io服务器
+var socket = io.connect(&#39;http://ip:&#39; + port);
+// 触发事件
+socket.emit(&#39;historyDate&#39;,date);
+//接收数据
+socket.on(&#39;historyRockets&#39;, function(msg){
+ 	dosth();
+ });
+</code></pre></td></tr></table>
+</div>
+</div><p>每天的数据只需要前端发送一个指定的date就可以获取到了。</p>
+<h1 id="最热房间数据获取">最热房间数据获取</h1>
+<p>通过socket.io可以完成数据交互，但是这些数据都需要建立额外的连接、消耗额外的网络资源，一些直接可以从后端获取的数据则可直接通过flask模板完成渲染。
+以最热房间为例，由于通过爬虫抓取到的数据都在数据库中，页面在加载的时候直接调用即可。</p>
+<p>首先获取人气排名前21位(页面显示3*7)。获取这些房间的房间标题、主播名、房间编号和房间封面。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># 按照观众人数，前20名房间
+def HotRoom():
+    hotroom = roomcol.find({}, {&#34;_id&#34;: 0, &#34;date&#34;: 0}).sort(
+        &#34;audience&#34;, pymongo.DESCENDING).limit(21)
+    rooms = []
+    if hotroom:
+        for item in hotroom:
+            rooms.append(item)
+    return rooms
+</code></pre></td></tr></table>
+</div>
+</div><p>数据获取之后，只需要在flask的router中添加对应规则并则模板中完成元素添加即可：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># 添加路由规则
+@app.route(&#39;/chatmsg&#39;)
+def chatmsg():
+    rooms = HotRoom()
+    return render_template(&#39;gift.html&#39;, hotroom=rooms, flag=0)    
+</code></pre></td></tr></table>
+</div>
+</div><p>完成模板：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">    &lt;h2 style=&#34;color:rgba(228, 230, 232, 0.53);&#34;&gt;热门房间&lt;/h2&gt;
+    {%if hotroom%}
+        {%for room in hotroom%}
+            {%if flag%3==0 %}
+            &lt;div class=&#34;row nopx&#34;&gt;
+            {%endif%}
+            &lt;div class=&#34;col-sm-6 col-md-4 nopx&#34;&gt;
+                &lt;div class=&#34;thumbnail&#34; style=&#34;border:1px solid rgba(135, 144, 160, 0.15);line-height: 0px;
+background-color: rgba(8, 8, 8, 0.72);&#34;&gt;
+                    &lt;img src={{room[&#39;img&#39;]}} alt=&#34;http://eclipsesv.com:4321/tv/{{room[&#39;roomid&#39;]}}&#34;&gt;
+                    &lt;div class=&#34;caption&#34;&gt;
+                        &lt;h4 style=&#34;color:rgba(228, 230, 232, 0.53);&#34;&gt;{{room[&#39;roomtitle&#39;]}}&lt;/h4&gt;
+                        &lt;p&gt;
+                            &lt;a href=&#34;http://eclipsesv.com:4321/tv/{{room[&#39;roomid&#39;]}}&#34; target=&#34;_blank&#34;&gt;
+                                {{room[&#39;anchor&#39;]}}@{{room[&#39;tag&#39;]}}
+                            &lt;/a&gt;
+                        &lt;/p&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            {%set flag=flag+1%}
+            {%if flag%3==0 %}
+            &lt;/div&gt;
+            {%endif%}
+        {%endfor%}
+    {%endif%}
+</code></pre></td></tr></table>
+</div>
+</div><p>这样就可以啦。</p>
+<h1 id="视频流转播">视频流转播</h1>
+<p>热门房间页面完成之后，想要直接在页面中观看视频而不是跳转到斗鱼，之前一直想复杂了，在看了dotamax直播视频之后看了源码就恍然大悟了。原来只需要一个直播间id就可以了。</p>
+<p>在flask中添加路由规则，通过roomid返回对应页面：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">@app.route(&#39;/tv/&lt;int:roomid&gt;&#39;)
+def tvstream(roomid):
+    if roomid:
+        return render_template(&#39;tv.html&#39;, roomid=roomid)
+</code></pre></td></tr></table>
+</div>
+</div><p>前端模板只需要这样即可：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">{%if roomid%}
+ &lt;object type=&#34;application/x-shockwave-flash&#34; data=&#34;http://staticlive.douyutv.com/common/share/play.swf?room_id={{roomid}}&#34; width=&#34;1200px&#34; height=&#34;750px&#34; allowscriptaccess=&#34;always&#34; allowfullscreen=&#34;true&#34; allowfullscreeninteractive=&#34;true&#34;&gt;&lt;param name=&#34;quality&#34; value=&#34;high&#34;&gt;&lt;param name=&#34;bgcolor&#34; value=&#34;#000000&#34;&gt;&lt;param name=&#34;allowscriptaccess&#34; value=&#34;always&#34;&gt;&lt;param name=&#34;allowfullscreen&#34; value=&#34;true&#34;&gt;&lt;param name=&#34;wmode&#34; value=&#34;transparent&#34;&gt;&lt;param name=&#34;allowFullScreenInteractive&#34; value=&#34;true&#34;&gt;
+			&lt;param name=&#34;quality&#34; value=&#34;high&#34;&gt;
+			&lt;param name=&#34;bgcolor&#34; value=&#34;#000000&#34;&gt;
+			&lt;param name=&#34;allowscriptaccess&#34; value=&#34;always&#34;&gt;
+			&lt;param name=&#34;allowfullscreen&#34; value=&#34;true&#34;&gt;
+			&lt;param name=&#34;wmode&#34; value=&#34;transparent&#34;&gt;
+			&lt;param name=&#34;allowFullScreenInteractive&#34; value=&#34;true&#34;&gt;
+ &lt;/object&gt;
+{%endif%}
+</code></pre></td></tr></table>
+</div>
+</div><p>这样就可以盗用斗鱼的视频啦，哈哈哈。</p>
+<h1 id="todo">TODO</h1>
+<p>到目前为止，站点基本上可以正常运行，由于前端的内容都是初步接触，总体上应该还有较大的可改进余地。接下来准备完成的点主要包括这些：</p>
+<ul>
+<li>数据库结构优化，充分考虑利用mongodb自身aggregation来完成数据预处理</li>
+<li>提供完善的restful api 完成数据调用</li>
+<li>提供针对直播分类和主播的人气监控</li>
+</ul>
+<p>暂时就先这些，继续努力！</p>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">rgozi</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2016-07-27
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/post/hackondouyu-4/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Hack On Douyu -- 4</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/hackondouyu-2/">
+            <span class="next-text nav-default">Hack On Douyu -- 2</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="eclipse_sv@whu.edu.cn" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/iamwm" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.douban.com/people/Eclipsesss/" class="iconfont icon-douban" title="douban"></a>
+      <a href="https://space.bilibili.com/44041814/" class="iconfont icon-bilibili" title="bilibili"></a>
+  <a href="https://rgozi.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>rgozi</span>
+  </span>
+  <div class="container">
+        备案号：<a href="https://beian.miit.gov.cn/" target="_blank">鄂ICP备20003011号-1</a>
+    </div>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-173630995-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

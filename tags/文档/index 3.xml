@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>文档 on 搬砖工的日常</title>
+    <link>https://rgozi.com/tags/%E6%96%87%E6%A1%A3/</link>
+    <description>Recent content in 文档 on 搬砖工的日常</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Wed, 09 Aug 2017 19:23:12 +0000</lastBuildDate><atom:link href="https://rgozi.com/tags/%E6%96%87%E6%A1%A3/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>python的itertools[读文档]</title>
+      <link>https://rgozi.com/post/python%E7%9A%84itertools/</link>
+      <pubDate>Wed, 09 Aug 2017 19:23:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/python%E7%9A%84itertools/</guid>
+      <description>&lt;p&gt;python的itertools库受到了来自APL, Haskell和SML的灵感，并且用最适合python语言特性的形式重构。它差不多可以说是定义了一套高效、节省内存的方法使用纯python来构建开发者所需要的各种不同迭代器。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

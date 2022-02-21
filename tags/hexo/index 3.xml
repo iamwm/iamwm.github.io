@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>hexo on 搬砖工的日常</title>
+    <link>https://rgozi.com/tags/hexo/</link>
+    <description>Recent content in hexo on 搬砖工的日常</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 06 Nov 2016 18:33:12 +0000</lastBuildDate><atom:link href="https://rgozi.com/tags/hexo/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>windows下hexo&#43;github搭建个人博客</title>
+      <link>https://rgozi.com/post/hexo&#43;github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</link>
+      <pubDate>Sun, 06 Nov 2016 18:33:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/hexo&#43;github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</guid>
+      <description>&lt;p&gt;之前自己的博客也是托管在github上，但是访问速度有时候欠佳，并且缺少个人定制的感觉，所以就放在了自己的云主机上，周末恰巧有个机会让我重新温习一下hexo在github上托管的过程。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

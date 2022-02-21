@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>python中@classmethod和@staticmethod的理解 - 搬砖工的日常</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="rgozi" /><meta name="description" content="一直对python中@classmethod和@staticmethod的用法和区别不是很理解,一顿google之后发现还是stackoverflow真的是程序员的好朋友.在这个问题Meaning of @classmethod and @staticmethod for beginner?中,几个大神的回答还是很好的.
+" /><meta name="keywords" content="搬砖工, 技术博客" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.84.1 with theme even" />
+
+
+<link rel="canonical" href="https://rgozi.com/post/%E5%85%B3%E4%BA%8Epython%E7%9A%84classmethod%E5%92%8Cstaticmethod%E7%9A%84%E7%90%86%E8%A7%A3/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="python中@classmethod和@staticmethod的理解" />
+<meta property="og:description" content="一直对python中@classmethod和@staticmethod的用法和区别不是很理解,一顿google之后发现还是stackoverflow真的是程序员的好朋友.在这个问题Meaning of @classmethod and @staticmethod for beginner?中,几个大神的回答还是很好的." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://rgozi.com/post/%E5%85%B3%E4%BA%8Epython%E7%9A%84classmethod%E5%92%8Cstaticmethod%E7%9A%84%E7%90%86%E8%A7%A3/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2017-08-03T11:31:12&#43;00:00" />
+<meta property="article:modified_time" content="2017-08-03T11:31:12&#43;00:00" />
+
+<meta itemprop="name" content="python中@classmethod和@staticmethod的理解">
+<meta itemprop="description" content="一直对python中@classmethod和@staticmethod的用法和区别不是很理解,一顿google之后发现还是stackoverflow真的是程序员的好朋友.在这个问题Meaning of @classmethod and @staticmethod for beginner?中,几个大神的回答还是很好的."><meta itemprop="datePublished" content="2017-08-03T11:31:12&#43;00:00" />
+<meta itemprop="dateModified" content="2017-08-03T11:31:12&#43;00:00" />
+<meta itemprop="wordCount" content="2380">
+<meta itemprop="keywords" content="python,classmethod,staticmethod,oop," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="python中@classmethod和@staticmethod的理解"/>
+<meta name="twitter:description" content="一直对python中@classmethod和@staticmethod的用法和区别不是很理解,一顿google之后发现还是stackoverflow真的是程序员的好朋友.在这个问题Meaning of @classmethod and @staticmethod for beginner?中,几个大神的回答还是很好的."/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">搬砖工的日常</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">搬砖工的日常</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">python中@classmethod和@staticmethod的理解</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2017-08-03 </span>
+        <div class="post-category">
+            <a href="/categories/python/"> python </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#样板代码">样板代码</a></li>
+    <li><a href="#class-method">Class Method</a></li>
+    <li><a href="#static-method">Static Method</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#小小的总结一下">小小的总结一下</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>一直对python中@classmethod和@staticmethod的用法和区别不是很理解,一顿google之后发现还是stackoverflow真的是程序员的好朋友.在这个问题<a href="https://stackoverflow.com/questions/12179271/meaning-of-classmethod-and-staticmethod-for-beginner">Meaning of @classmethod and @staticmethod for beginner?</a>中,几个大神的回答还是很好的.</p>
+<h1 id="rostyslav-dzinkohttpsstackoverflowcomusers789649rostyslav-dzinko这样说"><a href="https://stackoverflow.com/users/789649/rostyslav-dzinko">@Rostyslav Dzinko</a>这样说</h1>
+<p>虽然classmethod和staticmethod十分相似,但他们之间确实存在一些细微的差别:classmethod必须有一个类对象作为方法的第一个参数,然而staticmethod却可以不需要参数.
+下面👇,举个例子🌰:</p>
+<h2 id="样板代码">样板代码</h2>
+<p>假设我们需要一个类来处理和日期相关的信息:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">class Date(object):
+
+    def __init__(self, day=0, month=0, year=0):
+        self.day = day
+        self.month = month
+        self.year = year
+</code></pre></td></tr></table>
+</div>
+</div><p>显然,这个类能够存储一些日期相关的信息,通过__init__方法,我们传入day,month和year能够实例化一个Date对象,其中__init__方法的第一个参数self就代表我们新建的Date实例.</p>
+<h2 id="class-method">Class Method</h2>
+<p>通过@classmethod我们可以比较优雅的完成一些任务.如果仅仅通过__init__方法来完成Date类的实例化,就必须这样实现:<code>x = Date(day,month,year)</code>.如果现在想要将一个日期的字符串形式(&lsquo;dd-mm-yy&rsquo;)转为Date对象,我们需要完成这两个步骤:</p>
+<ol>
+<li>将字符串转为day,month,year三个整型对象或者一个包含三个值的元组;</li>
+<li>通过__init__方法完成Date对象的实例化.
+上边的两步实现过程就像这样:</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">day, month, year = map(int, string_date.split(&#39;-&#39;))
+date1 = Date(day, month, year)
+</code></pre></td></tr></table>
+</div>
+</div><p>在其他编程语言中,以c++为例,它可以重构自己的构造函数来接受某个日期的字符串形式最终返回一个Date实例.但是python没有这样的特性,于是classmethod就在这里派上了用场:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">@classmethod
+    def from_string(cls, date_as_string):
+        day, month, year = map(int, date_as_string.split(&#39;-&#39;))
+        date1 = cls(day, month, year)
+        return date1
+date2 = Date.from_string(&#39;11-09-2012&#39;)
+</code></pre></td></tr></table>
+</div>
+</div><p>上边利用classmethod来完成将字符串转为Date实例主要有这些优势:</p>
+<ol>
+<li>将字符串转化的过程放在类中,并且能够重用;</li>
+<li>封装的较好,符合面向对象思想;</li>
+<li>classmethod中的cls代表Date,它不是类的一个实例,就是类对象本身,如果我们派生了其他的子类,它们也都能继承from_string方法.</li>
+</ol>
+<h2 id="static-method">Static Method</h2>
+<p>说完了classmethod,接着唠一唠staticmethod.它其实和classmethod十分相似,但是它不需要像类方法或者普通的实例方法一样需要必须的参数(cls或者self).
+再举个例子🌰:
+通过classmethod我们完成了将一个字符串转为Date实例的过程,现在给我们一个字符串,在使用Date.from_string(&lsquo;str&rsquo;)生成实例之前,判断这个str是否满足要求.
+很显然,这个方法和类Date有密切的联系,但仅仅判断一个字符串是否满足转换的要求,并不需要实例化一个Date对象,这时候staticmethod就可以派上用场:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">@staticmethod
+    def is_date_valid(date_as_string):
+        day, month, year = map(int, date_as_string.split(&#39;-&#39;))
+        return day &lt;= 31 and month &lt;= 12 and year &lt;= 3999
+
+# usage:
+is_date = Date.is_date_valid(&#39;11-09-2012&#39;)
+</code></pre></td></tr></table>
+</div>
+</div><p>也就是说,staticmethod可以像一个普通的方法被调用,它与这个类有明确的相关性,但是不需要访问这个类内部的属性或者方法.</p>
+<h1 id="yaw-boakyehttpsstackoverflowcomusers1248059yaw-boakye补充说"><a href="https://stackoverflow.com/users/1248059/yaw-boakye">@Yaw Boakye</a>补充说</h1>
+<p>Rostyslav Dzinko说的非常好,不过他(Yaw Boakye)从另外一个方面对classmethod和staticmethod的区别做了补充:
+在上边的例子中,使用@classmethod from_string作为一个生成Date实例的工厂,然而通过@staticmethod也可以完成类似的操作:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">class Date:
+	def __init__(self, month, day, year):
+    	self.month = month
+    	self.day   = day
+    	self.year  = year
+
+
+  	def display(self):
+    	return &#34;{0}-{1}-{2}&#34;.format(self.month, self.day, self.year)
+
+
+  	@staticmethod
+  	def millenium(month, day):
+    	return Date(month, day, 2000)
+
+new_year = Date(1, 1, 2013)               # Creates a new Date object
+millenium_new_year = Date.millenium(1, 1) # also creates a Date object. 
+
+# Proof:
+new_year.display()           # &#34;1-1-2013&#34;
+millenium_new_year.display() # &#34;1-1-2000&#34;
+
+isinstance(new_year, Date) # True
+isinstance(millenium_new_year, Date) # True
+</code></pre></td></tr></table>
+</div>
+</div><p>通过@staticmethod millenium我们现在也可以生成类似于工厂函数@classmethod from_string的功能,生成Date实例.但是这样的实现却有点硬编码的嫌疑,因为@staticmethod millenium的最终返回结果是通过<code>return Date(month, day, 2000)</code>这句代码实现的,也就是说它明确了返回对象就是就是一个Date的实例.
+下面我们派生一个Date的子类DateTime:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">class DateTime(Date):
+  def display(self):
+      return &#34;{0}-{1}-{2} - 00:00:00PM&#34;.format(self.month, self.day, self.year)
+
+datetime1 = DateTime(10, 10, 1990)
+datetime2 = DateTime.millenium(10, 10)
+
+datetime1.display() # returns &#34;10-10-1990 - 00:00:00PM&#34;
+datetime2.display() # returns &#34;10-10-2000&#34;
+</code></pre></td></tr></table>
+</div>
+</div><p>我们可以看到<code>datetime1.display()</code>的返回值<code>&quot;10-10-1990 - 00:00:00PM&quot;</code>而<code>datetime2.display()</code>的返回值是<code>returns &quot;10-10-2000&quot;</code>,这是怎么回事？原因在于datetime1和datetime2实例创建的方法是不同的:</p>
+<ol>
+<li>datetime1通过DateTime的__init__方法生成 <code>isinstance(datetime1, DateTime) # True</code></li>
+<li>datetime2通过DateTime.millenium方法生成	<code>isinstance(datetime2, DateTime) # False</code></li>
+</ol>
+<p>这里就可以看到@staticmethod和@classmethod的一些不同,将millenium使用@classmethod重写:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">@classmethod
+def millenium(cls, month, day):
+    return cls(month, day, 2000)
+</code></pre></td></tr></table>
+</div>
+</div><p>这里的cls替代了之前的Date,它可以是任何一个派生出来的子类,millenium返回的实例当然也是对应的cls的实例.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">datetime1 = DateTime(10, 10, 1990)
+datetime2 = DateTime.millenium(10, 10)
+
+isinstance(datetime1, DateTime) # True
+isinstance(datetime2, DateTime) # True
+
+
+datetime1.display() # &#34;10-10-1990 - 00:00:00PM&#34;
+datetime2.display() # &#34;10-10-2000 - 00:00:00PM&#34;
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="小小的总结一下">小小的总结一下</h2>
+<p>通过这两个很精彩的解释,现在对@classmethod和@staticmethod有了进一步的理解:</p>
+<ol>
+<li>@classmethod,由于其强制要求有cls参数存在,可以更多的用于当作一个类实例工厂🏭,或者可以作为一个可以用于派生类中的构造函数;</li>
+<li>@staticmethod,如果一个方法不需要使用类内部的属性和方法,但确实和类有明确的相关性,它就可以使用@staticmethod来修饰.</li>
+</ol>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">rgozi</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2017-08-03
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/python/">python</a>
+          <a href="/tags/classmethod/">classmethod</a>
+          <a href="/tags/staticmethod/">staticmethod</a>
+          <a href="/tags/oop/">oop</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/python%E7%9A%84itertools/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">python的itertools[读文档]</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/celery%E5%92%8Cfabric%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/">
+            <span class="next-text nav-default">celery和fabric的使用</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="eclipse_sv@whu.edu.cn" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/iamwm" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.douban.com/people/Eclipsesss/" class="iconfont icon-douban" title="douban"></a>
+      <a href="https://space.bilibili.com/44041814/" class="iconfont icon-bilibili" title="bilibili"></a>
+  <a href="https://rgozi.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">rgozi</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-173630995-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

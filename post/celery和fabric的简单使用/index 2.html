@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>celery和fabric的使用 - 搬砖工的日常</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="rgozi" /><meta name="description" content="很早就听说celery和fabric这两个神器,最近同时在做两个自己的小项目，更新比较频繁，一遍一遍手动部署太过僵硬，所以才真正用到了这俩好东西。
+" /><meta name="keywords" content="搬砖工, 技术博客" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.84.1 with theme even" />
+
+
+<link rel="canonical" href="https://rgozi.com/post/celery%E5%92%8Cfabric%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="celery和fabric的使用" />
+<meta property="og:description" content="很早就听说celery和fabric这两个神器,最近同时在做两个自己的小项目，更新比较频繁，一遍一遍手动部署太过僵硬，所以才真正用到了这俩好东西。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://rgozi.com/post/celery%E5%92%8Cfabric%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2017-07-19T14:05:12&#43;00:00" />
+<meta property="article:modified_time" content="2017-07-19T14:05:12&#43;00:00" />
+
+<meta itemprop="name" content="celery和fabric的使用">
+<meta itemprop="description" content="很早就听说celery和fabric这两个神器,最近同时在做两个自己的小项目，更新比较频繁，一遍一遍手动部署太过僵硬，所以才真正用到了这俩好东西。"><meta itemprop="datePublished" content="2017-07-19T14:05:12&#43;00:00" />
+<meta itemprop="dateModified" content="2017-07-19T14:05:12&#43;00:00" />
+<meta itemprop="wordCount" content="1598">
+<meta itemprop="keywords" content="celery,fabric,自动化," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="celery和fabric的使用"/>
+<meta name="twitter:description" content="很早就听说celery和fabric这两个神器,最近同时在做两个自己的小项目，更新比较频繁，一遍一遍手动部署太过僵硬，所以才真正用到了这俩好东西。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">搬砖工的日常</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">搬砖工的日常</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">celery和fabric的使用</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2017-07-19 </span>
+        <div class="post-category">
+            <a href="/categories/python/"> python </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents"></nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>很早就听说<a href="http://www.celeryproject.org/">celery</a>和<a href="http://www.fabfile.org/">fabric</a>这两个神器,最近同时在做两个自己的小项目，更新比较频繁，一遍一遍手动部署太过僵硬，所以才真正用到了这俩好东西。</p>
+<h1 id="celery">celery</h1>
+<p>在用到celery之前，如果有定时任务这样的需求，我一般都是直接写crontab，但是如果单个任务时间消耗较长的话，使用celery就可以让长时间消耗的任务异步执行，避免程序主线程的阻塞。另外一点，celery结合<a href="http://flower.readthedocs.io/en/latest/">flower</a>这个celery监控工具，能够让你看到自己的任务执行状况。</p>
+<p>celery作为一个分布式任务调度模块，它拥有独立的职程（Worker）进程持续监视队列中是否有需要处理的新任务，是否有要处理的任务则取决于中间人（Broker）在客户端和职程间斡旋。Broker从客户端向队列添加消息，之后Broker把消息派送给Worker。
+在真正使用的时候，也不会有多少难度。</p>
+<ol>
+<li>安装celery</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">pip install celery
+</code></pre></td></tr></table>
+</div>
+</div><ol start="2">
+<li>选择一个中间人，我直接用redis，比较方便</li>
+<li>新建celery app，douyu_app.py文件</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">from celery import Celery
+import celery_douyu_config	# celery配置
+
+
+app = Celery(&#39;douyuapp&#39;, include=[&#39;task_douyu&#39;])	# task_douyu为celery任务
+app.config_from_object(&#39;celery_douyu_config&#39;)
+
+if __name__ == &#39;__main__&#39;:
+    app.start()
+</code></pre></td></tr></table>
+</div>
+</div><ol start="4">
+<li>新建任务task_douyu.py文件</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">from douyu_app import app
+from collector.danmu.CDouyu import Douyu
+
+
+@app.task
+def SAVE_DOUYU_DATA():
+    douyu = Douyu()
+    douyu.getRoomInfos()
+</code></pre></td></tr></table>
+</div>
+</div><ol start="5">
+<li>celery配置celery_douyu_config.py文件</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">from celery.schedules import crontab
+
+BROKER_URL = &#39;redis://127.0.0.1:6379/2&#39;		# 任务发布队列
+CELERY_RESULT_BACKEND = &#39;redis://127.0.0.1:6379/3&#39;		# 任务执行结果存储
+
+CELERY_TIMEZONE = &#39;Asia/Shanghai&#39; 	# 时区选择
+
+CELERYBEAT_SCHEDULE = {								
+    &#39;SAVE_DOUYU_ROOMINFO&#39;: { 	# 任务名称
+        &#39;task&#39;: &#39;task_douyu.SAVE_DOUYU_DATA&#39;, 	# 具体任务 task_douyu.SAVE_DOUYU_DATA 是一个真正要执行的任务
+        &#39;schedule&#39;: crontab(minute=[40]), 	# 任务计划时间，每小时40分的时候执行
+    }
+}
+</code></pre></td></tr></table>
+</div>
+</div><ol start="6">
+<li>运行</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">celery -A douyu_app worker -B --loglevel=info
+</code></pre></td></tr></table>
+</div>
+</div><p>这里的-B主要用于celery定时任务，通过heartbeat来通知Worker是否有任务需要执行。</p>
+<p>我这里只是简单的用了一下celery，并且只用到了定时任务，celery作为一款分布式任务调度工具，肯定会有更多更厉害的用法，留待以后用到的时候再研究。</p>
+<h1 id="fabric">fabric</h1>
+<p>之所以用到fabric还是因为自己比较懒，前边说到最近在频繁更新两个小项目，这两个项目都有向外提供api数据服务的部分，所以每次修改代码，运行测试，提交代码，ssh到远程主机pull最新代码，杀死原先服务进程，nohup最新服务。这个链路还是比较长的，并且有个项目长期的爬取网络数据，然后存储在mongodb中，自己的低配云主机硬盘有限，需要不定期地将数据迁移出来，所以想到了fabric这个好东西，应该可以满足自己的需求，自动化完成上述整个任务链路。</p>
+<ol>
+<li>安装</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">pip install fabric
+</code></pre></td></tr></table>
+</div>
+</div><ol start="2">
+<li>在项目根目录创建fabfile.py(默认使用这个名字，如果想要自定义，在运行的时候fab -f xxx.py也是可以的)</li>
+<li>配置远程主机
+fabric是通过ssh的方式登录到远程主机的，可以通过用户名/密码的方式或者是通过密钥的形式，因为也就三台主机，也都是自己的机器，我选择使用密钥登陆。</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># 配置~/.ssh/config
+Host host_name
+	HostName ip or domain
+	User user 
+	IdentityFile ~/.ssh/id_rsa
+
+# 在fabfile中增加相关配置
+env.use_ssh_config = True
+env.hosts = [&#39;al&#39;, &#39;al1&#39;]  # 这里的名字就是config中的host_name
+env.roledefs = {		   # 不同的主机要是有不同的任务，可以通过指定role来进行区分
+    &#39;douyu&#39;: [&#39;al&#39;],	   
+    &#39;other&#39;: [&#39;al1&#39;],
+}
+</code></pre></td></tr></table>
+</div>
+</div><ol start="4">
+<li>添加运行测试</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">@task
+def run_test():
+    with settings(warn_only=True):
+        result = local(&#39;python tester.py&#39;, capture=True)
+    if result.failed and not confirm(&#34;Tests failed. Continue anyway?&#34;):
+        abort(&#34;Aborting at user request.&#34;)
+</code></pre></td></tr></table>
+</div>
+</div><ol start="5">
+<li>提交代码</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">@runs_once
+@task
+def pre_deploy():
+    local(&#39;git add -A &amp;&amp; git commit&#39;)
+    local(&#39;git push origin master &amp;&amp; git push tx master&#39;)
+</code></pre></td></tr></table>
+</div>
+</div><ol start="6">
+<li>更新代码，发布新的服务</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">def deploy_code(cmd):
+    code_dir = &#39;~/git/Hotroom&#39;
+    with settings(warn_only=True):
+        if run(&#34;ls {}&#34;.format(code_dir)).failed:
+            run(&#34;git clone hhttps://github.com/love3forever/Hotroom.git {}&#34;.format(code_dir))
+    with cd(code_dir):
+        run(&#34;git pull&#34;)
+        run(&#34;sudo pip install -r ./requirement.txt&#34;)
+        with cd(&#39;./hotroom&#39;):
+            pids = run(
+                &#34;ps -ef | grep celery | grep -v grep | awk &#39;{print $2}&#39;&#34;)
+            if pids:
+                pid_list = pids.split(&#39;\r\n&#39;)
+                for i in pid_list:
+                    with settings(warn_only=True):
+                        run(&#39;kill -9 %s&#39; % i)
+            run(&#39;pwd&#39;)
+            run(&#34;(nohup celery -A {} worker -B --loglevel=error &gt;&amp; /dev/null &lt; /dev/null &amp;) &amp;&amp; sleep 1&#34;.format(cmd))
+            run(&#39;echo deployed&#39;)
+</code></pre></td></tr></table>
+</div>
+</div><ol start="7">
+<li>备份还原数据库，清空数据库</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">def dump(db):
+    stamp = datetime.now().strftime(&#39;%y_%m_%d_%H_%M&#39;)
+    cd_dir = &#39;~/tars/dump/&#39;
+    dump_dir = &#39;~/tars/dump/dump_{}&#39;.format(stamp)
+    dump_tar = &#39;dump_{}.tar.gz&#39;.format(stamp)
+    local_dir = &#39;/Users/eclipse/Downloads/mongo34/dump/&#39;
+    local_tar_dir = &#39;/Users/eclipse/Downloads/mongo34/dump/dump_{}&#39;.format(
+        stamp)
+    local_dump_dir = &#39;/Users/eclipse/Downloads/mongo34/dump/dump_{}.tar.gz&#39;.format(
+        stamp)
+    with settings(warn_only=True):
+        run(&#39;mkdir -p {}&#39;.format(dump_dir))
+        run(&#39;mongodump -d {} -c Roominfo -o {} --gzip&#39;.format(db, dump_dir))
+    with cd(cd_dir):
+        run(&#39;ls&#39;)
+        run(&#39;tar -zcvf {} {}&#39;.format(dump_tar, &#39;dump_{}&#39;.format(stamp)))
+    with settings(warn_only=True):
+        get(&#39;~/tars/dump/{}&#39;.format(dump_tar), local_dir)
+        run(&#39;echo current db:{}&#39;.format(db))
+        run(&#39;mongo&#39;)
+        local(&#39;mkdir -p {}&#39;.format(local_tar_dir))
+        local(&#39;tar -zxvf {} -C {}&#39;.format(local_dump_dir, local_dir))
+        local(&#39;/Users/eclipse/Downloads/mongo34/bin/mongorestore --dir={} \
+            --gzip&#39;.format(local_tar_dir))
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="小结">小结</h1>
+<p>目前都只用到了这两个库的一点点功能，相信在以后的工作中会让这俩库有更多的作用！</p>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">rgozi</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2017-07-19
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/celery/">celery</a>
+          <a href="/tags/fabric/">fabric</a>
+          <a href="/tags/%E8%87%AA%E5%8A%A8%E5%8C%96/">自动化</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/%E5%85%B3%E4%BA%8Epython%E7%9A%84classmethod%E5%92%8Cstaticmethod%E7%9A%84%E7%90%86%E8%A7%A3/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">python中@classmethod和@staticmethod的理解</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/%E6%9C%80%E8%BF%91%E5%85%B3%E4%BA%8Epython%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%BB%E7%BB%93/">
+            <span class="next-text nav-default">近期的一些总结</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="eclipse_sv@whu.edu.cn" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/iamwm" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.douban.com/people/Eclipsesss/" class="iconfont icon-douban" title="douban"></a>
+      <a href="https://space.bilibili.com/44041814/" class="iconfont icon-bilibili" title="bilibili"></a>
+  <a href="https://rgozi.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">rgozi</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-173630995-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

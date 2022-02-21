@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>菜鸟在springboot使用中遇到的问题和解决方法 - 搬砖工的日常</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="rgozi" /><meta name="description" content="   人的惰性真是可怕啊！ 差不多从中秋以来，都一直处于偷懒的状态，基本上没学习什么新东西，这都要归功于暴雪家的魔兽世界和守望先锋了。玩了这么久，是该总结下这段时间遇到的问题和已经找到的解决方法了，省的以后再遇到这些问题。
+" /><meta name="keywords" content="搬砖工, 技术博客" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.84.1 with theme even" />
+
+
+<link rel="canonical" href="https://rgozi.com/post/%E8%8F%9C%E9%B8%9F%E5%9C%A8springboot%E4%BD%BF%E7%94%A8%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%92%8C%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="菜鸟在springboot使用中遇到的问题和解决方法" />
+<meta property="og:description" content="
+
+
+人的惰性真是可怕啊！
+差不多从中秋以来，都一直处于偷懒的状态，基本上没学习什么新东西，这都要归功于暴雪家的魔兽世界和守望先锋了。玩了这么久，是该总结下这段时间遇到的问题和已经找到的解决方法了，省的以后再遇到这些问题。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://rgozi.com/post/%E8%8F%9C%E9%B8%9F%E5%9C%A8springboot%E4%BD%BF%E7%94%A8%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%92%8C%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2016-09-21T08:26:12&#43;00:00" />
+<meta property="article:modified_time" content="2016-09-21T08:26:12&#43;00:00" />
+
+<meta itemprop="name" content="菜鸟在springboot使用中遇到的问题和解决方法">
+<meta itemprop="description" content="
+
+
+人的惰性真是可怕啊！
+差不多从中秋以来，都一直处于偷懒的状态，基本上没学习什么新东西，这都要归功于暴雪家的魔兽世界和守望先锋了。玩了这么久，是该总结下这段时间遇到的问题和已经找到的解决方法了，省的以后再遇到这些问题。"><meta itemprop="datePublished" content="2016-09-21T08:26:12&#43;00:00" />
+<meta itemprop="dateModified" content="2016-09-21T08:26:12&#43;00:00" />
+<meta itemprop="wordCount" content="3031">
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="菜鸟在springboot使用中遇到的问题和解决方法"/>
+<meta name="twitter:description" content="
+
+
+人的惰性真是可怕啊！
+差不多从中秋以来，都一直处于偷懒的状态，基本上没学习什么新东西，这都要归功于暴雪家的魔兽世界和守望先锋了。玩了这么久，是该总结下这段时间遇到的问题和已经找到的解决方法了，省的以后再遇到这些问题。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">搬砖工的日常</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">搬砖工的日常</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">菜鸟在springboot使用中遇到的问题和解决方法</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2016-09-21 </span>
+        <div class="post-category">
+            <a href="/categories/java/"> Java </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#cas服务器的配置方法">cas服务器的配置方法</a>
+      <ul>
+        <li><a href="#1tomcat的https配置方法">1.tomcat的https配置方法</a></li>
+        <li><a href="#2获取cas-server">2.获取cas server</a></li>
+        <li><a href="#3自定义cas-server">3.自定义cas server</a></li>
+      </ul>
+    </li>
+    <li><a href="#springboot集成cas">springboot集成cas</a></li>
+    <li><a href="#thymeleaf模版的使用">thymeleaf模版的使用</a></li>
+    <li><a href="#前端post数据给后端">前端post数据给后端</a>
+      <ul>
+        <li><a href="#form表单结合thymeleaf">form表单结合thymeleaf</a></li>
+        <li><a href="#ajax数据传输">ajax数据传输</a></li>
+      </ul>
+    </li>
+    <li><a href="#后端如何解析来自前端的数据">后端如何解析来自前端的数据</a>
+      <ul>
+        <li><a href="#解析form表单提交的数据">解析form表单提交的数据</a></li>
+        <li><a href="#解析ajax提交的数据">解析ajax提交的数据</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <ul>
+<li></li>
+</ul>
+<p>人的惰性真是可怕啊！
+差不多从中秋以来，都一直处于偷懒的状态，基本上没学习什么新东西，这都要归功于暴雪家的魔兽世界和守望先锋了。玩了这么久，是该总结下这段时间遇到的问题和已经找到的解决方法了，省的以后再遇到这些问题。</p>
+<h1 id="遇到的问题">遇到的问题</h1>
+<p>前段时间，领导让学习java并尝试做一个用户管理模块，使用cas管理用户登陆。由于之前也是没做过这类东西，所以在这个过程中主要遇到的问题有这些：</p>
+<ol>
+<li>cas服务器的配置；</li>
+<li>集成cas客户端到springboot中；</li>
+<li>如何使用springboot默认的模版<a href="http://www.thymeleaf.org/">thymeleaf</a>；</li>
+<li>前端数据如何传给服务器端；</li>
+<li>服务器端在接受不同类型数据的时候，如何做出响应的处理，获取前端传送的数据；</li>
+<li>后端发送的数据传给前端，如何通过模版来表现。</li>
+</ol>
+<p>大致归纳起来就是这些，由于是java新手，虽然之前接触过mvc类型的框架，但是在面对这些问题的时候，还是会出这样那样的问题。</p>
+<h1 id="如何解决">如何解决</h1>
+<p>上边的这些问题，有的甚至花费了我一天的时间，详细的记录这些问题已经解决方法对之后的学习肯定会有帮助。</p>
+<h2 id="cas服务器的配置方法">cas服务器的配置方法</h2>
+<p>在我看来，cas可以当做是类似譬如数据库一样提供服务的东西，而它的作用则是为系统模块提供单点登录功能。各个系统模块通过集成cas客户端，并完成响应的配置即可实现用户登录管理。
+要想模块获得单点登录功能，第一步要先完成自己tomcat对https的支持：</p>
+<h3 id="1tomcat的https配置方法">1.tomcat的https配置方法</h3>
+<p>这一步操作可以参考网上相关教程，比较多，我参考的主要是<a href="http://www.cnblogs.com/richaaaard/p/5035812.html">这个</a>，特别要注意的是，在配置秘钥的时候，输入名字和姓氏、组织单位和组织的时候，一定要配置成自己的服务器域名。
+比如我在自己的hosts文件中增加了一条<code>127.0.0.1 cas.eclipsesv.com</code>，我在本地进行测试，就把上边要配置的内容写成cas.eclipsesv.com。
+另外要注意的就是在配置过程中一定要细心，注意字母大小写，文件路径这些东西。</p>
+<h3 id="2获取cas-server">2.获取cas server</h3>
+<p>在完成https配置之后从cas官网上下载完整的cas server，地址在<a href="http://developer.jasig.org/cas/cas-server-4.0.0-release.zip">这里</a>；
+完成下载之后，解压压缩包，将modules文件夹中的cas-server-webapp-4.0.0.war复制出来，放在配置好的tomcat的webapp文件夹中。
+这个时候，cas就算差不多配置完成了。</p>
+<h3 id="3自定义cas-server">3.自定义cas server</h3>
+<p>默认的cas server只能按照配置文件中的用户名和密码进行登录，并且登录页面和登出页面都是cas官方提供的，自己如果要用的话肯定是要改改的。</p>
+<p>我们学习过程中用的是oralce数据库，所以要给cas server提供访问oracle的能力，从数据库中读取用户名和密码。
+完成这一步需要做两个操作，在cas的lib文件夹中增加commons-pool-1.5.7、commons-dbcp-1.4、ojdbc6这三个jar包；</p>
+<p>另外就是在tomcat/webapps/cas/文件夹中的deployerConfigContext.xml中增加如下配置：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">&lt;bean id=&#34;casDataSource&#34; class=&#34;org.apache.commons.dbcp.BasicDataSource&#34;&gt;
+   &lt;property name=&#34;driverClassName&#34;&gt;
+     &lt;value&gt;oracle.jdbc.driver.OracleDriver&lt;/value&gt;
+   &lt;/property&gt;
+   &lt;property name=&#34;url&#34;&gt;
+     &lt;value&gt;jdbc:oracle:thin:@10.211.55.17:1521:xe&lt;/value&gt;
+   &lt;/property&gt;    
+   &lt;property name=&#34;username&#34;&gt;
+     &lt;value&gt;wangmeng&lt;/value&gt;    
+   &lt;/property&gt;
+   &lt;property name=&#34;password&#34;&gt;
+     &lt;value&gt;abc123&lt;/value&gt;
+   &lt;/property&gt;
+&lt;/bean&gt;
+&lt;bean id=&#34;primaryAuthenticationHandler&#34; 
+    class=&#34;org.jasig.cas.adaptors.jdbc.QueryDatabaseAuthenticationHandler&#34;&gt;
+    &lt;property name=&#34;dataSource&#34; ref=&#34;casDataSource&#34; /&gt;
+    &lt;property name=&#34;sql&#34; value=&#34;select PASSWORD from USERS where USER_NAME = ?&#34; /&gt;
+&lt;/bean&gt;
+</code></pre></td></tr></table>
+</div>
+</div><p>其中上边的bean中是关于数据库的连接，包括数据库ip、端口和实例名以及登录用户名和密码；后边一个bean中则是关于操作用户表的内容，以及查询语句。</p>
+<p>另外，如果要自定义cas serveer的默认登录和登出页面，可以在cas文件夹中的WEB-INF/view/jsp/default/ui/中完成修改，casLogoutView.jsp是登出页面，casLoginView.jsp是登录页面。</p>
+<p>经过以上三步操作cas server配置基本就可以完成了。</p>
+<h2 id="springboot集成cas">springboot集成cas</h2>
+<p>在这里，我使用的是Shiro，并主要参考了这两篇博客，<a href="http://blog.csdn.net/catoop/article/details/50534006">spring boot集成shiro和cas</a>和<a href="http://howiefh.github.io/2015/05/19/shiro-cas-single-sign-on/">Shiro &amp; CAS 实现单点登录</a>。按照这两篇博客中讲的内容就可以把cas客户端即成到springboot中了。</p>
+<h2 id="thymeleaf模版的使用">thymeleaf模版的使用</h2>
+<p>thymeleaf 是springboot 默认使用的模版，在官网上可以找到比较丰富的文档，讲的还是比较好的。我在使用中主要用到了后端传对象给thymeleaf进行渲染，thymeleaf循环、判断这些很基本的功能。打算这周参考官方文档再系统的过一遍它的其它功能。</p>
+<h2 id="前端post数据给后端">前端post数据给后端</h2>
+<p>在这个小模块的开发过程中，前端post数据我主要是用两种方式，form表单提交和ajax传输。</p>
+<h3 id="form表单结合thymeleaf">form表单结合thymeleaf</h3>
+<p>由于使用了thymeleaf模版，因此表单提交的方法变得更加简便：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">&lt;form method=&#34;POST&#34; th:action=&#34;@{&#39;/newDiscussion/&#39;+${groupid.groupID}}&#34; th:object=&#34;${newDiscuss}&#34;&gt;
+    &lt;div class=&#34;form-group&#34;&gt; 
+        &lt;label for=&#34;groupname&#34;&gt;讨论组名&lt;/label&gt;
+        &lt;input type=&#34;text&#34; th:field=&#34;*{discussionName}&#34; class=&#34;form-control&#34; id=&#34;groupname&#34;&gt;&lt;/input&gt;
+        &lt;label for=&#34;desc&#34;&gt;描述&lt;/label&gt;
+        &lt;input type=&#34;text&#34; th:field=&#34;*{desc}&#34; class=&#34;form-control&#34; id=&#34;desc&#34;&gt;&lt;/input&gt;
+    &lt;/div&gt;
+    &lt;button type=&#34;submit&#34; class=&#34;btn btn-default&#34;&gt;Submit&lt;/button&gt;
+&lt;/form&gt;
+</code></pre></td></tr></table>
+</div>
+</div><p>以上述代码为例，该表单是填写信件讨论组相关的内容，我需要做的只是在对应的input中完成newDiscuss对象discussionName、desc属性的填写即可完成。而newDiscuss对象是怎么来的，将会在后边有详细解释。</p>
+<h3 id="ajax数据传输">ajax数据传输</h3>
+<p>除了form表单，我可能需要在点击某个按钮之后将某些东西post给后端，并做出响应。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">function sendData(){
+    var addusers = [];
+    uniqueGroup = $(&#34;h2[name=&#39;uniqueGroup&#39;]&#34;).attr(&#34;id&#34;);
+    addusers.push(uniqueGroup);
+    $(&#34;input[type=&#39;checkbox&#39;]&#34;).each(
+                    function() {
+                        if($(this)[0].checked==true)
+                        {
+                            userid = ($(this).attr(&#34;id&#34;));
+                            addusers.push(userid);
+                        }     
+                    }
+                );
+    $.ajax({
+        url:&#34;http://cas.eclipsesv.com:9000/group/adduser&#34;,
+        data:JSON.stringify(addusers),
+        type:&#34;post&#34;,
+        contentType: &#34;application/json; charset=utf-8&#34;,
+        dataType:&#34;json&#34;,
+        success:function(responseText){
+                $(&#39;#myModal&#39;).modal(&#39;hide&#39;);
+                var groupid = responseText.redirect;
+                    var url = &#34;http://cas.eclipsesv.com:9000/group/&#34;+groupid;
+                    window.location.href = url
+                }
+    });
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>上述代码是要完成将一个由用户id组成的数组post给后端，并在数据传输成功之后将页面重定向。</p>
+<h2 id="后端如何解析来自前端的数据">后端如何解析来自前端的数据</h2>
+<p>对应上述前端post数据方法，springboot也有对应的数据解析方法：</p>
+<h3 id="解析form表单提交的数据">解析form表单提交的数据</h3>
+<p>刚才提到，前端在提交form表单的时候，只需要完成newDiscuss对应属性的填写即可，而这个newDiscuss对象则是我在form表单页面中通过模版嵌入的对象。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">@RequestMapping(value = &#34;/group/{groupid}&#34;,method = RequestMethod.GET)
+public String group(@PathVariable String groupid,Model model){
+    DiscussionGroup discussionGroup = new DiscussionGroup();
+    model.addAttribute(&#34;newDiscuss&#34;, discussionGroup);
+    return &#34;group&#34;;
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>在前端get此页面的时候，new一个DiscussionGroup对象，在模版中用newDiscuss代表它，这样就可以在前端填写表单的时候完成newDiscuss属性的设置。</p>
+<p>在完成属性填写之后，后端解析数据通过以下方法：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">@RequestMapping(value = &#34;/newDiscussion/{groupid}&#34;,method = RequestMethod.POST)
+public String newDiscussion(@PathVariable String groupid,ModelMap model, DiscussionGroup discussionGroup){
+    if (discussionGroup != null) {
+        System.out.print(groupid);
+    }
+    ControllerHelper helper = new ControllerHelper(userDAOImpl, groupUserDAOImpl, groupDAOImpl,
+            discussionDAOImpl,commentDAOImpl);
+    helper.newDiscussionGroup(discussionGroup,helper.getCurrentUser().getUserId(),groupid);
+    return &#34;redirect:/group/&#34;+groupid;
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>直接在函数签名中对应写一个DiscussionGroup对象，用以接受刚刚的newDiscuss，就是这样简单。需要额外做的就是在DiscussionGroup中完成相应属性的getter和setter以及默认构造函数。</p>
+<h3 id="解析ajax提交的数据">解析ajax提交的数据</h3>
+<p>不同于上边form表单提交那样，接受ajax传输的数据需要按照下边这样来：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">@RequestMapping(value = &#34;/comments/delete&#34;,method = RequestMethod.POST)
+@ResponseBody
+public Map&lt;String, String&gt;  delComment(@RequestBody String[] userArray){
+    ControllerHelper helper = new ControllerHelper(userDAOImpl, groupUserDAOImpl, groupDAOImpl,
+            discussionDAOImpl,commentDAOImpl);
+    if (userArray[0] != null) {
+        String groupid = helper.delComment(userArray[0]);
+        System.out.println(userArray[0]+&#34;评论已删除&#34;);
+        Map&lt;String, String&gt; result = new HashMap&lt;String, String&gt;();
+        result.put(&#34;redirect&#34;, groupid);
+        return result;
+    }
+    else
+        return null;
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>需要用到@ResponseBody注解，并且这次返回给前端的数据也不是具体的某个view名，而是实实在在的数据，比如说一个键值对，而返回的数据可以在ajax的sucess中处理：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">success:function(responseText){
+    $(&#39;#myModal&#39;).modal(&#39;hide&#39;);
+    var groupid = responseText.redirect;
+        var url = &#34;http://cas.eclipsesv.com:9000/group/&#34;+groupid;
+        window.location.href = url
+}
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="未完待续">未完待续</h1>
+<p>上边写的都是作为一个入门菜鸟在学习过程中遇到的问题和一些稚嫩的解决方法，后边会遇到更复杂的问题，我也会一如即往的记录自己的成长过程。</p>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">rgozi</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2016-09-21
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/post/hexo&#43;github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">windows下hexo&#43;github搭建个人博客</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/%E6%83%B3%E8%A6%81%E8%B5%B0%E5%87%BA%E8%88%92%E9%80%82%E5%8C%BA/">
+            <span class="next-text nav-default">想要走出舒适区</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="eclipse_sv@whu.edu.cn" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/iamwm" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.douban.com/people/Eclipsesss/" class="iconfont icon-douban" title="douban"></a>
+      <a href="https://space.bilibili.com/44041814/" class="iconfont icon-bilibili" title="bilibili"></a>
+  <a href="https://rgozi.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">rgozi</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-173630995-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

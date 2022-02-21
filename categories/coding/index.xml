@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>coding on 搬砖工的日常</title>
+    <link>https://rgozi.com/categories/coding/</link>
+    <description>Recent content in coding on 搬砖工的日常</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 02 Aug 2016 09:40:12 +0000</lastBuildDate><atom:link href="https://rgozi.com/categories/coding/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>最简便的爬虫效率提升方法</title>
+      <link>https://rgozi.com/post/multiprocessing.dummy/</link>
+      <pubDate>Tue, 02 Aug 2016 09:40:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/multiprocessing.dummy/</guid>
+      <description>&lt;p&gt;昨晚发现放在腾讯云主机上通过crontab定时执行用以爬去斗鱼分类页面数据的爬虫在执行的时候速度特别慢，于是想通过多线程来提高效率。
+打开浏览器，键入关键字“python 多线程”，发现大多数内容都是使用threading、Queue这些看起来很笨重的实例。不过直到multiprocessing.dummy出现在眼前之后，一切都变得辣么简单。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Hack On Douyu -- 4</title>
+      <link>https://rgozi.com/post/hackondouyu-4/</link>
+      <pubDate>Sun, 31 Jul 2016 15:04:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/hackondouyu-4/</guid>
+      <description>&lt;p&gt;原本打算使用&lt;a href=&#34;http://selenium-python.readthedocs.io/&#34;&gt;selenium&lt;/a&gt;给这个小项目做自动化测试的，没成想selenium功能如此强大，那就顺势做个自动抢鱼丸的小工具吧。😊&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Hack On Douyu -- 3</title>
+      <link>https://rgozi.com/post/hackondouyu-3/</link>
+      <pubDate>Wed, 27 Jul 2016 08:07:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/hackondouyu-3/</guid>
+      <description>&lt;p&gt;在拥有了数据获取和存储的能力之后，如何利用好这些数据成为一个问题。
+本来也一直打算把之前学习的flask框架用起来，现在有了这些数据，我打算利用这些数据做一个对斗鱼网站的小型监控页面。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Hack On Douyu -- 2</title>
+      <link>https://rgozi.com/post/hackondouyu-2/</link>
+      <pubDate>Sat, 23 Jul 2016 22:18:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/hackondouyu-2/</guid>
+      <description>&lt;p&gt;在上一篇文章中，主要讲了我获取斗鱼弹幕和某些静态页面的方法，在数据获取到之后，如何有效的组织和存储数据直接关系到后续数据能否可以背有效使用。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Hack On Douyu -- 1</title>
+      <link>https://rgozi.com/post/hackondouyu-1/</link>
+      <pubDate>Wed, 20 Jul 2016 21:52:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/hackondouyu-1/</guid>
+      <description>&lt;p&gt;距离上次更新又有一段时间了，毕业答辩之后，确实和同学们一起出去嗨了一段时间，由于还没入职，在家清净的环境中可以好好学一下一直感兴趣的东西啦。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

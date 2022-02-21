@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>mongodb on 搬砖工的日常</title>
+    <link>https://rgozi.com/tags/mongodb/</link>
+    <description>Recent content in mongodb on 搬砖工的日常</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 19 Jul 2020 09:27:12 +0000</lastBuildDate><atom:link href="https://rgozi.com/tags/mongodb/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>mongo can not add session to cache问题排查和解决</title>
+      <link>https://rgozi.com/post/mongo-can-not-add-session-to-cache-%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E5%92%8C%E8%A7%A3%E5%86%B3/</link>
+      <pubDate>Sun, 19 Jul 2020 09:27:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/mongo-can-not-add-session-to-cache-%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E5%92%8C%E8%A7%A3%E5%86%B3/</guid>
+      <description>最近我们的线上mongo集群发生了一次事故，主要原因是后台应用在进行mongo读写的时候报错，错误描述是pymongo.errors.Ope</description>
+    </item>
+    
+    <item>
+      <title>mongodb使用总结</title>
+      <link>https://rgozi.com/post/mongodb%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/</link>
+      <pubDate>Mon, 18 Sep 2017 17:03:05 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/mongodb%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/</guid>
+      <description>&lt;p&gt;本想上周末写好这篇总结的，无奈一起开黑的时间总是过得很快，就偷了个懒，并且还学了个新菜：西红柿牛腩.jpg。所以就把总结的事情放到今天来了。
+初次接触mongodb还是在研一刚入学的时候，那时候接触的东西少，很多概念都不清楚，到现在差不多已经有三年了，所以总结一下我用mongodb做了哪些事情还是比较有意义的。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>mongodb用户名密码登录</title>
+      <link>https://rgozi.com/post/mongodb%E5%B8%A6%E5%AF%86%E7%A0%81%E9%AA%8C%E8%AF%81%E4%BD%BF%E7%94%A8/</link>
+      <pubDate>Tue, 17 Jan 2017 11:11:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/mongodb%E5%B8%A6%E5%AF%86%E7%A0%81%E9%AA%8C%E8%AF%81%E4%BD%BF%E7%94%A8/</guid>
+      <description>&lt;p&gt;写这篇博客是为了纪念最近闹的沸沸扬扬的大规模mongodb库被黑的事件，我自己也不幸中招，索性被黑的数据都是自己做试验的一些数据，并不是很重要。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>读Mongodb权威指南有感</title>
+      <link>https://rgozi.com/post/%E8%AF%BBmongodb%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97%E6%9C%89%E6%84%9F/</link>
+      <pubDate>Fri, 25 Nov 2016 10:50:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/%E8%AF%BBmongodb%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97%E6%9C%89%E6%84%9F/</guid>
+      <description>&lt;p&gt;由于之前从图书馆借的书已经到期了，前天下午趁着好天气去图书馆了一趟，顺便借回来两本&lt;a href=&#34;https://book.douban.com/subject/25798102/&#34;&gt;《Mongodb权威指南》&lt;/a&gt;和&lt;a href=&#34;https://book.douban.com/subject/25856314/&#34;&gt;《Web性能权威指南》&lt;/a&gt;。没想到两天时间就把前边那本看完了。总体感觉还不错，这本书写的比较细致，很适合入门学习，同时在看书的过程中，我发现了之前没有主要到的一些知识点，并且改变了我之前的一些错误认识，所以还是很有必要记录一下的。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Mongodb Aggregation Pipleline</title>
+      <link>https://rgozi.com/post/mongodb_aggregation/</link>
+      <pubDate>Wed, 23 Nov 2016 09:27:12 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/mongodb_aggregation/</guid>
+      <description>&lt;p&gt;Mongodb作为目前最流行的nosql数据库之一，它给我们提供了海量数据的管理能力。而现在正处于大数据最为火热的时代，如何将海量的数据转化为可用的信息，这一步至关重要，面向应用而设计的mongodb在基础的数据分析上提供了aggregation这一功能，足以满足很多日常需求。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Mongodb副本集在nginx-gridfs中的使用</title>
+      <link>https://rgozi.com/post/mongodb%E5%89%AF%E6%9C%AC%E9%9B%86%E5%9C%A8nginx-gridfs%E4%B8%AD%E7%9A%84%E4%BD%BF%E7%94%A8/</link>
+      <pubDate>Mon, 17 Aug 2015 22:41:24 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/mongodb%E5%89%AF%E6%9C%AC%E9%9B%86%E5%9C%A8nginx-gridfs%E4%B8%AD%E7%9A%84%E4%BD%BF%E7%94%A8/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://www.mongodb.org/&#34;&gt;Mongodb&lt;/a&gt;作为一款非常流行的NOSQL数据库，应用范围非常广泛，它和&lt;a href=&#34;https://github.com/mdirolf/nginx-gridfs&#34;&gt;Nginx-gridfs&lt;/a&gt;组合可以构建性能非常出色的应用。下边简单介绍一下如何搭建这套应用。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>服务器端缓存环境配置(三)</title>
+      <link>https://rgozi.com/post/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E7%BC%93%E5%AD%98%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-%E4%B8%89/</link>
+      <pubDate>Tue, 04 Aug 2015 09:14:27 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E7%BC%93%E5%AD%98%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-%E4%B8%89/</guid>
+      <description>&lt;h1 id=&#34;nginx的lua扩展&#34;&gt;&lt;strong&gt;nginx的Lua扩展&lt;/strong&gt;&lt;/h1&gt;
+&lt;p&gt;接着上两篇博客，现在开始搭建nginx的LUA和mongodb扩展，完成整个流程的最后一步配置。
+Lua是一个可以嵌入到nginx配置文件的动态脚本语言，这样就可以在nginx请求处理的各个阶段执行各种进行逻辑控制的Lua代码。
+想要在nginx里边增加lua扩展，需要的模块如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://luajit.org&#34;&gt;luajit&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/simpl/ngx_devel_kit&#34;&gt;ngx_devel_kit&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/chaoslawful/lua-nginx-module&#34;&gt;lua_nginx_module&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>服务器端缓存环境配置(二)</title>
+      <link>https://rgozi.com/post/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E7%BC%93%E5%AD%98%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-%E4%BA%8C/</link>
+      <pubDate>Sun, 02 Aug 2015 19:14:56 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E7%BC%93%E5%AD%98%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-%E4%BA%8C/</guid>
+      <description>&lt;p&gt;上一篇博客讲解了整个缓存流程中数据库部分的搭建，有了最基础的部分，现在可以搭建上层的内容了。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>服务器端缓存环境配置</title>
+      <link>https://rgozi.com/post/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E7%BC%93%E5%AD%98%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/</link>
+      <pubDate>Fri, 31 Jul 2015 23:39:02 +0000</pubDate>
+      
+      <guid>https://rgozi.com/post/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E7%BC%93%E5%AD%98%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/</guid>
+      <description>&lt;h1 id=&#34;原材料&#34;&gt;&lt;strong&gt;原材料&lt;/strong&gt;&lt;/h1&gt;
+&lt;p&gt;正所谓“巧妇难为无米之炊”，在进行服务器端缓存搭建之前，需要将整个流程所需的元素准备好。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://nginx.org/&#34; title=&#34;作为Web服务器的存在&#34;&gt;Nginx&lt;/a&gt;作为Web服务器的存在&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.mongodb.org/&#34; title=&#34;磁盘数据库&#34;&gt;Mongodb&lt;/a&gt;磁盘数据库&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.lua.org/&#34; title=&#34;与Nginx结合，进行服务器端的逻辑控制&#34;&gt;Lua&lt;/a&gt;与Nginx结合，进行服务器端的逻辑控制&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://redis.io/&#34; title=&#34;高速缓存&#34;&gt;Redis&lt;/a&gt;内存数据库，高速缓存&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.php.net/&#34; title=&#34;返回数据库信息给客户端&#34;&gt;PHP&lt;/a&gt;读取磁盘数据库信息，返回给客户端&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

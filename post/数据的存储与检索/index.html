@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>数据的存储与检索 - 搬砖工的日常</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="rgozi" /><meta name="description" content="对于一个数据库来说，它要完成最基础的两件事情：当你把数据交给数据库时，它负责将其存储起来；当你需要数据时，数据库能够将指定数据检索并返回给你，即数据存储与检索。
+从数据库的视角来说，上边的两件事情一般会交给底层数据库存储引擎来完成。对于开发人员来说，选择一个合适的存储引擎能够为后续系统的建设非常重要。
+" /><meta name="keywords" content="搬砖工, 技术博客" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.84.1 with theme even" />
+
+
+<link rel="canonical" href="https://rgozi.com/post/%E6%95%B0%E6%8D%AE%E7%9A%84%E5%AD%98%E5%82%A8%E4%B8%8E%E6%A3%80%E7%B4%A2/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="数据的存储与检索" />
+<meta property="og:description" content="对于一个数据库来说，它要完成最基础的两件事情：当你把数据交给数据库时，它负责将其存储起来；当你需要数据时，数据库能够将指定数据检索并返回给你，即数据存储与检索。
+从数据库的视角来说，上边的两件事情一般会交给底层数据库存储引擎来完成。对于开发人员来说，选择一个合适的存储引擎能够为后续系统的建设非常重要。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://rgozi.com/post/%E6%95%B0%E6%8D%AE%E7%9A%84%E5%AD%98%E5%82%A8%E4%B8%8E%E6%A3%80%E7%B4%A2/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-06-05T09:27:12&#43;00:00" />
+<meta property="article:modified_time" content="2021-06-05T09:27:12&#43;00:00" />
+
+<meta itemprop="name" content="数据的存储与检索">
+<meta itemprop="description" content="对于一个数据库来说，它要完成最基础的两件事情：当你把数据交给数据库时，它负责将其存储起来；当你需要数据时，数据库能够将指定数据检索并返回给你，即数据存储与检索。
+从数据库的视角来说，上边的两件事情一般会交给底层数据库存储引擎来完成。对于开发人员来说，选择一个合适的存储引擎能够为后续系统的建设非常重要。"><meta itemprop="datePublished" content="2021-06-05T09:27:12&#43;00:00" />
+<meta itemprop="dateModified" content="2021-06-05T09:27:12&#43;00:00" />
+<meta itemprop="wordCount" content="5282">
+<meta itemprop="keywords" content="数据密集型系统设计,DDIA,读书笔记,数据的存储与检索," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="数据的存储与检索"/>
+<meta name="twitter:description" content="对于一个数据库来说，它要完成最基础的两件事情：当你把数据交给数据库时，它负责将其存储起来；当你需要数据时，数据库能够将指定数据检索并返回给你，即数据存储与检索。
+从数据库的视角来说，上边的两件事情一般会交给底层数据库存储引擎来完成。对于开发人员来说，选择一个合适的存储引擎能够为后续系统的建设非常重要。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">搬砖工的日常</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">搬砖工的日常</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">数据的存储与检索</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-06-05 </span>
+        <div class="post-category">
+            <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"> 读书笔记 </a>
+            </div>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#基于索引类型划分">基于索引类型划分</a>
+      <ul>
+        <li><a href="#散列索引">散列索引</a></li>
+        <li><a href="#sstable与lsm树">SSTable与LSM树</a></li>
+        <li><a href="#b树">B树</a></li>
+        <li><a href="#其他索引">其他索引</a></li>
+        <li><a href="#内存数据库">内存数据库</a></li>
+      </ul>
+    </li>
+    <li><a href="#基于应用类型划分">基于应用类型划分</a></li>
+    <li><a href="#超大数据量存储方案列式存储">超大数据量存储方案——列式存储</a></li>
+    <li><a href="#小结">小结</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>对于一个数据库来说，它要完成最基础的两件事情：当你把数据交给数据库时，它负责将其存储起来；当你需要数据时，数据库能够将指定数据检索并返回给你，即<strong>数据存储与检索</strong>。</p>
+<p>从数据库的视角来说，上边的两件事情一般会交给底层数据库<strong>存储引擎</strong>来完成。对于开发人员来说，选择一个合适的存储引擎能够为后续系统的建设非常重要。</p>
+<h2 id="基于索引类型划分">基于索引类型划分</h2>
+<p>数据库在完成数据存储后，需要<strong>索引</strong>来帮助我们高效地找到数据库中特定数据。</p>
+<p>索引是从主数据衍生的额外的结构。许多数据库允许添加或者删除索引，这不会影响数据本身的内容，它只会影响到数据的读写性能。维护索引需要额外的开销，特别是在写入数据时，每次数据写入都需要更新索引。因此对于我们开发人员来说，了解数据库底层的索引机制十分重要。</p>
+<h3 id="散列索引">散列索引</h3>
+<p>最简单的键值数据与大多数编程语言中的字典类型非常相似，通常字典都是用散列映射（hash map）或者散列表（hash table）来实现的。散列索引就是借助散列结构在内存中的特性来为存储与磁盘上的数据提供索引。</p>
+<p>假设我们的数据存储只是一个追加写入的文件，那么最简单的索引策略就是：保留一个<strong>内存中的散列映射</strong>，每个键都映射到数据文件中的一个字节偏移量，指明可以找到目标值的位置；在写入新数据时，持续地更新散列映射，以反映不断写入数据的偏移量；在进行数据检索时，使用散列映射来找到数据在文件中的偏移量，寻找到该位置并完成数据值的读取。</p>
+<p>由于我们只需要将散列映射保存在内存中，我们想要存储的数据可以比可用内存大得多，为了避免不断写入的数据占满磁盘空间，我们可以将硬盘上存储的日志文件分为特定大小的段，当日志文件增长到特定体积时关闭当前文件，并将新数据写入新的段文件。与此同时，我们可以对已经关闭的段文件进行<strong>压缩合并</strong>。在完成文件压缩合并后，我们可以将读取请求转换为使用新合并的段而不是旧的段文件，这时旧的段文件就可以被简单的删除从而释放磁盘空间。</p>
+<p>每个段文件都有自己对应的内存散列映射，将键映射到文件偏移量。为了找到一个指定的键的值，需要首先检查最近的段文件对应的散列映射，如果键不存在，就继续检查第二个最近的段，以此类推。</p>
+<p>为了完成上述过程的技术实现，有诸多因素需要考虑：</p>
+<ul>
+<li>段文件文件格式：通常文本文件不是最佳选择，二进制格式可以更快；</li>
+<li>记录删除：如果要删除一个键以及其关联的值，则必须在数据文件中追加一个特殊的删除标记，在日志被合并时，删除逻辑要告诉合并流程丢弃被删除键的任何以前的值；</li>
+<li>崩溃恢复：由于散列索引保存在内存中，需要将散列映射保存在磁盘上以确保数据启动时能够快速地将其加载到内存中；</li>
+<li>部分写入记录：数据库可能随时崩溃，需要设计合适的机制来对未完成的写入的检测和恢复；</li>
+<li>并发控制：通常来说，写操作是以严格的顺序将数据追加到段文件中，常见的实现只有一个写入线程，可以有多个数据读取线程。</li>
+</ul>
+<h4 id="散列索引append-only机制的优势">散列索引append only机制的优势</h4>
+<ol>
+<li>追加和分段合并都是顺序写入操作，可以比随机写入快很多，尤其对于机械磁盘（寻址过程占用磁盘读写的大部分时间消耗）来说；</li>
+<li>由于段文件只能顺序追加或是不可变的（已完成压缩合并的段文件），并发和崩溃恢复流程会简单很多，不需要担心文件里同时包含键的旧值和新值；</li>
+<li>合并旧的段文件可以避免数据文件随着时间的推移碎片化。</li>
+</ol>
+<h4 id="散列索引局限性">散列索引局限性</h4>
+<ol>
+<li>散列映射必须放入内存，如果键非常多，对于这种类型的存储来说较难控制。如果将部分散列映射写入磁盘，那么在读写过程将会有大量的随机I/O，读写性能成问题；</li>
+<li>范围查询效率不高，对于散列索引来说，单独查询指定键比较容易，但是想要范围查询对它来说确实是一件难事。</li>
+</ol>
+<h3 id="sstable与lsm树">SSTable与LSM树</h3>
+<p>上述过程基于散列索引的日志存储结构保存的都是一系列的键值对，这些键值对按照它们写入的顺序排列，这使得它难以处理<strong>范围查询</strong>。在日志存储结构的基础之上，我们做一些微小的调整：要求键值对的序列按照键排序，每个键只在每个段文件中出现一次。我们把这种格式称为<strong>排序字符串表（sorted string table，SSTable）</strong>。相较与基于散列索引的段文件，SSTable的优势如下：</p>
+<ol>
+<li>即使文件大于可用内存，合并段操作仍然是高效的。这种合并方法就类似于归并排序一样：并排读取多个段文件，查看每个文件的第一个键，将其复制到输出文件，不断重复此过程，多个旧的段文件最终合并为新的段文件，在多个段文件包含相同的键时，我们只需要保留最近的段的值，并丢弃旧的值；</li>
+<li>为了找到一个特定的键，我们不需要在内存中保存所有的键的索引。我们只需要保存一个相对稀疏的内存索引，例如几千字节段文件只需要一个键即可。我们想要查找的键，只需要在内存中定位到该键附近在内存索引中出现的键的位置即可；</li>
+<li>稀疏内存索引中每个条目都指向磁盘段文件的压缩块开始处，在将记录写入磁盘之前先对其进行压缩操作能够有效减少磁盘占用和I/O带宽的使用。</li>
+</ol>
+<h4 id="sstable的构建">SSTable的构建</h4>
+<p>上边说到的都是SSTable的优势，但是这些优势都是建立在我们能够将键顺序写入段文件的基础之上。</p>
+<p>可以利用多种树形数据结构来讲写入数据在内存中保序。例如红黑树或AVL树。</p>
+<p>对于存储引擎来说，读写操作的工作方式如下：</p>
+<ul>
+<li>有数据写入时，将其添加到内存中的平衡树数据结构，这个内存树被称为内存表（memtable）</li>
+<li>在内存表到达阈值后，将其作为SSTable文件写入磁盘并成为数据库中最新的段，然后由新建的内存表实例继续提供服务</li>
+<li>有读数据请求时，首先尝试在内存表中找到对应的键，如果没有就即可在最近的硬盘段文件中寻找，以此类推</li>
+<li>读写操作的同时，后台可以执行一个合并和压缩的过程进行段文件的合并压缩和将删除的值移除</li>
+</ul>
+<p>基于上述方案，在数据库崩溃的时候，在内存表但并未写入硬盘的数据将会被丢失，为了避免这种问题，一般会在硬盘上单独保存一个日志，每个写入都会立即被追加到这个文件中。对于这个在硬盘上保存的文件，对其写入顺序没有要求，因为它的存在是为了崩溃后内存表的恢复。在内存表写入到SSTable后，相应的日志都可以被移除。</p>
+<h4 id="lsm树">LSM树</h4>
+<p>基于上述SSTable实现的存储引擎通常被称为LSM存储引擎。LSM树的基本思想：保存一系列在后台合并的SSTable，过程简单有效。即使数据集比可用内存大得多，它仍然能够有效运行；由于数据排序按照顺序存储，可以高效地完成范围查询；由于硬盘写入是连续的，LSM数可以支持非常高的写入吞吐量。</p>
+<p>为了让存储引擎在实践中表现良好，还有许多设计细节需要考虑：</p>
+<ol>
+<li>在查找数据库中不存在的键时，按照上述过程将会非常耗时：你必须先检查内存表然后查看从近到远的所有段文件后才能确定这个键不存在，为了避免这种问题，存储引擎通常使用额外的布隆过滤器（bloom filters）；</li>
+<li>对于SSTable的压缩过程，也有多种备选方案来完成性能优化，常见的选择是size-tiered和leveled compaction</li>
+</ol>
+<h3 id="b树">B树</h3>
+<p>与SSTable一样，B树保持按键排序的键值对，这允许高效地键值查找和范围查询。但除此之外，B树和SSTable从设计上差别就很大了。</p>
+<ol>
+<li>日志结构索引将数据库分为可变大小的段，并且总是按顺序写入段。B树将数据库分解成固定大小的块或页面，每次只能读取或写入一个页面，这种设计更接近底层硬件，因为硬盘空间这是按固定大小的块来组织的；</li>
+<li>每个页面都可以使用地址或位置来标识，这允许一个页面可以引用内一个页面（像指针一样，但是在硬盘而不是内存中）。我们可以用这些页面构成一个页面树；</li>
+<li>一个页面会被指定为页面树的根节点，在索引一个键时，就从这个页面开始进行。每个页面包含几个键以及其对子页面的引用。每个子页面负责一段连续范围的键。引用之间的键，指明了引用子页面的键范围；</li>
+<li>B树中一个页面对子页面的引用数量称为<strong>分支因子</strong>，数量通常是几百个；</li>
+<li>如果在新建一个键的时候，发现目标页面没有足够可用的空间，就会将当前页面拆分为两个半满页面，并更新其父页面来反应新的键范围。通过分割页面来生长B树，从而确保树的平衡（具有n个键的B树总是具有O(logn)的深度，分支因子为500的4KB页面的四层树可以存储256TB的数据）。</li>
+</ol>
+<h4 id="预写式日志write-ahead-logwal">预写式日志(write-ahead log，WAL)</h4>
+<p>B树的基本底层写操作是用新数据覆盖硬盘上的页面，并假定覆写不改变页面的位置，即当页面覆写时，对该页面的所有引用都保持完整。我们可以把覆写硬盘上的页面对应为实际的硬件操作：在磁性硬盘盘驱动器将磁头移动到正确的位置，等待旋转磁盘上正确的位置出现，然后用新的数据覆写适当的扇区；对于固态硬盘来说，必须一次擦除和重写相当大的存储芯片块，这个过程更加复杂。</p>
+<p>在一个覆写操作涉及到多个页面的时候，过程更为复杂并且相当危险：若果数据库在仅有部分页面写入时崩溃，最终会导致一个损坏的页面引用。</p>
+<p>B树为了处理这种异常，引入一个额外的磁盘数据结构：<strong>预写式日志（WAL）</strong>。每个B树修改操作被应用到页面树之前都必须将其写入此文件。当数据库崩溃后，这个日志被用来使B树恢复到一致的状态。</p>
+<p>mysql的redo log或者是mongodb的journal其实就是WAL的实现形式。</p>
+<h4 id="b树与lsm树">B树与LSM树</h4>
+<p>一般根据经验来讲，B树的读取速度更快，而LSM树的写入速度更快。而我们在真实的技术选型时，需要结合自己的业务特定和数据负载做出真正的测试工作之后进行比较。</p>
+<h5 id="写放大">写放大</h5>
+<p>B树索引中每块数据都必须至少写入两次：一次写入WAL，一次写入页面树本身。</p>
+<p>LSM树由于SSTable需要反复的压缩和合并，日志结构索引也会多次重复写入数据。</p>
+<p>对于数据库生命周期中每次写入数据库导致对硬盘的多次写入称为<strong>写放大</strong>。对于固态硬盘来说，这个问题需要额外关注。</p>
+<p>在写入压力较大的应用中，性能瓶颈可能是数据库可以写入硬盘的速度。写放大会导致直接的性能代价：存储引擎写入次数越多，可用的硬盘带宽和数据库每秒能够处理的写操作就会越少。</p>
+<p>LSM树通常能够支持比B树更大的写入吞吐量：LSM通常具有较低的写放大；LSM顺序地写入紧凑的SSTable文件而不是必须覆写树中的几个页面。这使得LSM在磁性硬盘驱动器上优势更明显：顺序写入要比随机写入快得多。</p>
+<h5 id="碎片化">碎片化</h5>
+<p>LSM树能够较好的压缩数据库段文件，通常能够比B树在磁盘上产生更小的文件，也会比B树存储引擎带来更少的碎片化硬盘空间。</p>
+<h5 id="高百分位相应时间">高百分位相应时间</h5>
+<p>LSM日志存储结构压缩过程有时会影响到正在进行的读写操作。B树的行为相对来说更具可预测性，服务相应时间相对来说会更稳定。</p>
+<h5 id="压缩配置">压缩配置</h5>
+<p>LSM日志存储压缩过程的另一个问题是：硬盘的有限带宽需要同时满足正常的写入流程和段文件压缩流程，这在数据库数据总量很大并且面临较高写入负载的时候，可能会导致写入性能受限；并且如果压缩速率跟不上写入速率的时候，硬盘空间占用会较快，需要额外的监控来检测这种情况。</p>
+<h5 id="事务语义">事务语义</h5>
+<p>B树的一个优点是每个键只存在于索引中的一个位置，而日志结构化的存储引擎可能在不同的段文件中出现同一个键的多个副本。这使得B树在想要提供强大的事务语义的时候更具吸引力。</p>
+<h3 id="其他索引">其他索引</h3>
+<p>上述讨论的都是键值索引，它们就像关系型数据库的主键索引。初次之外还有多种类型的其他索引：多列索引、全文搜索和模糊索引等等。这些索引也都可以使用B树和日志结构索引来实现。</p>
+<h3 id="内存数据库">内存数据库</h3>
+<p>上述的索引都是应对硬盘的限制。随着主存价格的不断下降，完全将数据存储在内存中变为可能。</p>
+<h2 id="基于应用类型划分">基于应用类型划分</h2>
+<p>根据应用程序的特点，我们可以将应用划分为**在线事务处理（OnLine Transaction Processing，OLTP）<strong>和</strong>在线分析处理（OnLine Analytice Processing，OLAP）**两大类：</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>事务处理系统 OLTP</th>
+<th>分析系统 OLAP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>主要读取模式</td>
+<td>查询少量记录，按键读取</td>
+<td>在大批量记录上聚合</td>
+</tr>
+<tr>
+<td>主要写入模式</td>
+<td>随机访问，写入要求低延时</td>
+<td>批量导入（ETL）或者事件流</td>
+</tr>
+<tr>
+<td>主要用户</td>
+<td>终端用户，通过Web应用</td>
+<td>内部数据分析师，用于决策支持</td>
+</tr>
+<tr>
+<td>处理的数据</td>
+<td>数据的最新状态（当前时间点）</td>
+<td>随时间推移的历史事件</td>
+</tr>
+<tr>
+<td>数据集尺寸</td>
+<td>GB ~ TB</td>
+<td>TB ~ PB</td>
+</tr>
+</tbody>
+</table>
+<p>OLTP通常会要求<strong>高可用与低延时</strong>，OLAP则会有更多的ETL需求。</p>
+<h2 id="超大数据量存储方案列式存储">超大数据量存储方案——列式存储</h2>
+<p>如果数据表中有万亿行的数据，如何高效地存储和查询它们是一个非常有挑战性的问题。</p>
+<p>在大多数OLTP数据库中，存储都是面向行的方式进行布局的：表格的一行中的数据所有值都相邻存储，文档数据库也是相似的：整个文档通常作为一个整体存储为一个连续的字节序列。</p>
+<p>在我们发出指定条件的查询时，面向行的存储引擎需要将相关数据的行记录从硬盘加载到内存并完成解析并过滤掉不符合要求的属性后，将数据返回给我们。这可能需要很长时间。</p>
+<p>列式存储不需要将来自一行的数据值存储在一起，而是将每一列所有值存储在一起，如果每个列存储在一个单独文件中，查询指定字段只需要解析查询中使用的那些列即可。</p>
+<p>除了能够减少从硬盘中加载的目标数据以外，列式存储另外一个优势在于可以通过数据压缩进一步降低对硬盘吞吐量的需求。可以通过<strong>位图编码</strong>高效地完成压缩任务。</p>
+<h2 id="小结">小结</h2>
+<p>较为系统的了解了上述内容后，如何选用工具完成任务对于我们开发人员来说会更加得心应手。</p>
+<p>后续补充内容：</p>
+<ul>
+<li>B树的基本实现与变形实现及其应用</li>
+<li>SSTable的基本实现</li>
+</ul>
+<blockquote>
+<p>原文地址：<a href="https://ddia.vonng.com/#/ch3">https://ddia.vonng.com/#/ch3</a></p>
+</blockquote>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">rgozi</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-06-05
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E6%95%B0%E6%8D%AE%E5%AF%86%E9%9B%86%E5%9E%8B%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/">数据密集型系统设计</a>
+          <a href="/tags/ddia/">DDIA</a>
+          <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a>
+          <a href="/tags/%E6%95%B0%E6%8D%AE%E7%9A%84%E5%AD%98%E5%82%A8%E4%B8%8E%E6%A3%80%E7%B4%A2/">数据的存储与检索</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/11-asyncio-loop%E8%BF%90%E8%A1%8C%E6%B5%81%E7%A8%8B/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">asyncio loop的运行循环</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%9F%A5%E8%AF%A2/">
+            <span class="next-text nav-default">数据模型与查询</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="eclipse_sv@whu.edu.cn" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/iamwm" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.douban.com/people/Eclipsesss/" class="iconfont icon-douban" title="douban"></a>
+      <a href="https://space.bilibili.com/44041814/" class="iconfont icon-bilibili" title="bilibili"></a>
+  <a href="https://rgozi.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>rgozi</span>
+  </span>
+  <div class="container">
+        备案号：<a href="https://beian.miit.gov.cn/" target="_blank">鄂ICP备20003011号-1</a>
+    </div>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-173630995-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

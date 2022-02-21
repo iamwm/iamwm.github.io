@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>服务器端缓存环境配置(三) - 搬砖工的日常</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="rgozi" /><meta name="description" content="nginx的Lua扩展 接着上两篇博客，现在开始搭建nginx的LUA和mongodb扩展，完成整个流程的最后一步配置。 Lua是一个可以嵌入到nginx配置文件的动态脚本语言，这样就可以在nginx请求处理的各个阶段执行各种进行逻辑控制的Lua代码。 想要在nginx里边增加lua扩展，需要的模块如下：
+ luajit ngx_devel_kit lua_nginx_module " /><meta name="keywords" content="搬砖工, 技术博客" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.84.1 with theme even" />
+
+
+<link rel="canonical" href="https://rgozi.com/post/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E7%BC%93%E5%AD%98%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-%E4%B8%89/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="服务器端缓存环境配置(三)" />
+<meta property="og:description" content="nginx的Lua扩展
+接着上两篇博客，现在开始搭建nginx的LUA和mongodb扩展，完成整个流程的最后一步配置。
+Lua是一个可以嵌入到nginx配置文件的动态脚本语言，这样就可以在nginx请求处理的各个阶段执行各种进行逻辑控制的Lua代码。
+想要在nginx里边增加lua扩展，需要的模块如下：
+
+luajit
+ngx_devel_kit
+lua_nginx_module
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://rgozi.com/post/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E7%BC%93%E5%AD%98%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-%E4%B8%89/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2015-08-04T09:14:27&#43;00:00" />
+<meta property="article:modified_time" content="2015-08-04T09:14:27&#43;00:00" />
+
+<meta itemprop="name" content="服务器端缓存环境配置(三)">
+<meta itemprop="description" content="nginx的Lua扩展
+接着上两篇博客，现在开始搭建nginx的LUA和mongodb扩展，完成整个流程的最后一步配置。
+Lua是一个可以嵌入到nginx配置文件的动态脚本语言，这样就可以在nginx请求处理的各个阶段执行各种进行逻辑控制的Lua代码。
+想要在nginx里边增加lua扩展，需要的模块如下：
+
+luajit
+ngx_devel_kit
+lua_nginx_module
+"><meta itemprop="datePublished" content="2015-08-04T09:14:27&#43;00:00" />
+<meta itemprop="dateModified" content="2015-08-04T09:14:27&#43;00:00" />
+<meta itemprop="wordCount" content="1019">
+<meta itemprop="keywords" content="Nginx,Redis,Lua,Mongodb," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="服务器端缓存环境配置(三)"/>
+<meta name="twitter:description" content="nginx的Lua扩展
+接着上两篇博客，现在开始搭建nginx的LUA和mongodb扩展，完成整个流程的最后一步配置。
+Lua是一个可以嵌入到nginx配置文件的动态脚本语言，这样就可以在nginx请求处理的各个阶段执行各种进行逻辑控制的Lua代码。
+想要在nginx里边增加lua扩展，需要的模块如下：
+
+luajit
+ngx_devel_kit
+lua_nginx_module
+"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">搬砖工的日常</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">搬砖工的日常</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">服务器端缓存环境配置(三)</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2015-08-04 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/"> 服务器 </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#安装luajit">安装luajit</a></li>
+    <li><a href="#安装ngx_devel_kit">安装ngx_devel_kit</a></li>
+    <li><a href="#安装lua-nginx-module">安装lua-nginx-module</a></li>
+    <li><a href="#重新编译nginx">重新编译nginx</a></li>
+    <li><a href="#测试lua模块">测试lua模块</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="nginx的lua扩展"><strong>nginx的Lua扩展</strong></h1>
+<p>接着上两篇博客，现在开始搭建nginx的LUA和mongodb扩展，完成整个流程的最后一步配置。
+Lua是一个可以嵌入到nginx配置文件的动态脚本语言，这样就可以在nginx请求处理的各个阶段执行各种进行逻辑控制的Lua代码。
+想要在nginx里边增加lua扩展，需要的模块如下：</p>
+<ul>
+<li><a href="http://luajit.org">luajit</a></li>
+<li><a href="https://github.com/simpl/ngx_devel_kit">ngx_devel_kit</a></li>
+<li><a href="https://github.com/chaoslawful/lua-nginx-module">lua_nginx_module</a></li>
+</ul>
+<h2 id="安装luajit">安装luajit</h2>
+<p>惯例，先要下载安装：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">wget http://luajit.org/download/LuaJIT-2.0.0-beta9.tar.gz 
+tar -zxvf LuaJIT-2.0.0-beta9.tar.gz
+cd LuaJIT-2.0.0-beta9/
+make
+make install PREFIX=/usr/local/luajit
+ln -sf luajit-2.0.0-beta9 /usr/local/luajit/bin/luajit
+</code></pre></td></tr></table>
+</div>
+</div><p>接下来，配置luajit的环境变量，这个在nginx重新编译的时候需要。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">export LUAJIT_LIB=/usr/local/luajit/lib  
+export LUAJIT_INC=/usr/local/luajit/include/luajit-2.0  
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="安装ngx_devel_kit">安装ngx_devel_kit</h2>
+<p><a href="https://github.com/simpl/ngx_devel_kit.git">点击获取ngx_devel_kit</a>，将其放在/usr/local目录下，或者使用git来快捷获取。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">cd /usr/local
+git clone https://github.com/simpl/ngx_devel_kit.git  
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="安装lua-nginx-module">安装lua-nginx-module</h2>
+<p><a href="https://github.com/chaoslawful/lua-nginx-module.git">点击获取lua-nginx-kit</a>，跟ngx_devel_kit一样，将其解压放于/usr/local目录下。或者使用git快捷获取。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">cd /usr/local/
+git clone https://github.com/chaoslawful/lua-nginx-module.git  
+</code></pre></td></tr></table>
+</div>
+</div><p>使用git来获取github上的资源，是不是十分方便？</p>
+<h2 id="重新编译nginx">重新编译nginx</h2>
+<p>进入nginx源码放置的文件夹，重新配置configure，再次make，增加nginx的扩展。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">cd /usr/local/nginx-1.8.0/
+./configure --prefix=/usr/local/nginx --with-ld-opt=&#34;-Wl,-rpath,$LUAJIT_LIB&#34; --add-module=/usr/local/ngx_devel_kit --add-module=/usr/local/lua-nginx-module
+make -j2 
+make install
+</code></pre></td></tr></table>
+</div>
+</div><p>至此，nginx的lua 扩展模块已经安装完毕，下面进行一下测试。</p>
+<h2 id="测试lua模块">测试lua模块</h2>
+<p>在nginx的配置文件中增加一段代码就OK了。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">gedit /usr/local/nginx/conf/nginx.conf
+</code></pre></td></tr></table>
+</div>
+</div><p>在监听80端口的server中增加一下内容：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">location /lua {
+	    default_type &#39;text/plain&#39;;
+	    content_by_lua &#39;ngx.say(&#34;I am lua in nginx&#34;)&#39;;
+	}
+
+</code></pre></td></tr></table>
+</div>
+</div><p>启动nginx</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">/usr/local/nginx/sbin/nginx
+</code></pre></td></tr></table>
+</div>
+</div><p>现在在浏览器中输入<a href="http://127.0.0.1/lua">127.0.0.1/lua</a>，就可以看到“I am lua in nginx”。这样就说明，nginx的lua模块也安装成功了。</p>
+<h1 id="nginx的mongodb-gridfs扩展"><strong>nginx的mongodb gridfs扩展</strong></h1>
+<p>先从github上将nginx-gridfs模块下载下来。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">cd /usr/local
+git clone https://github.com/mdirolf/nginx-gridfs.git
+cd nginx-gridfs/
+git submodule init
+git submodule update
+
+</code></pre></td></tr></table>
+</div>
+</div><p>重新编译nginx，这里要注意，由于上边已经增加了nginx的lua扩展，现在需要增加模块，方法如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">/usr/local/nginx/sbin/nginx -V
+</code></pre></td></tr></table>
+</div>
+</div><p>获取当前nginx已有的模块：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">nginx version: nginx/1.8.0
+built by gcc 4.8.3 20140911 (Red Hat 4.8.3-9) (GCC) 
+configure arguments: --prefix=/usr/local/nginx --with-ld-opt=-Wl,-rpath,/usr/local/luajit/lib --add-module=/usr/local/ngx_devel_kit --add-module=/usr/local/lua-nginx-module
+
+</code></pre></td></tr></table>
+</div>
+</div><p>可以看到，configure arguments后边的参数，将他们拷贝，供等下使用。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">cd /usr/local/nginx-1.8.0/
+./configure --prefix=/usr/local/nginx --with-ld-opt=-Wl,-rpath,/usr/local/luajit/lib --add-module=/usr/local/ngx_devel_kit --add-module=/usr/local/lua-nginx-module --with-openssl=/usr/include/openssl --with-http_stub_status_module --add-module=/usr/local/nginx-gridfs
+make 
+make install
+</code></pre></td></tr></table>
+</div>
+</div><p>这样，nginx-gridfs模块就也安装完成了，现在就可以使用nginx来直接操作mongodb中的gridfs了。</p>
+<h1 id="结束"><strong>结束</strong></h1>
+<p>到这里，整个流程的环境安装和配置就算完成了。后边的博客会继续记录我在学习这些内容的过程。
+最后，再来张美图吧
+<img src="http://7xkswi.com1.z0.glb.clouddn.com/eclipsesv_jpgIMG_1877.JPG" alt="">
+~~ 武汉最近的天气，确实很好！</p>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">rgozi</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2015-08-04
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/nginx/">Nginx</a>
+          <a href="/tags/redis/">Redis</a>
+          <a href="/tags/lua/">Lua</a>
+          <a href="/tags/mongodb/">Mongodb</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/linux%E4%B8%8B%E7%A8%8B%E5%BA%8F%E5%BC%80%E6%9C%BA%E8%87%AA%E5%90%AF%E5%8A%A8/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Linux下程序开机自启动</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E7%BC%93%E5%AD%98%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-%E4%BA%8C/">
+            <span class="next-text nav-default">服务器端缓存环境配置(二)</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="eclipse_sv@whu.edu.cn" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/iamwm" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.douban.com/people/Eclipsesss/" class="iconfont icon-douban" title="douban"></a>
+      <a href="https://space.bilibili.com/44041814/" class="iconfont icon-bilibili" title="bilibili"></a>
+  <a href="https://rgozi.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">rgozi</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-173630995-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

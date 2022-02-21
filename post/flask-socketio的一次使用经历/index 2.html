@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>flask-socketio的一次使用记录 - 搬砖工的日常</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="rgozi" /><meta name="description" content="最近在做一个小项目，其中一部分即时通信的功能我是通过flask-socketio来完成的后端代码编写。在尝试过程中遇到了一些问题，特在此记录，以备后用。
+" /><meta name="keywords" content="搬砖工, 技术博客" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.84.1 with theme even" />
+
+
+<link rel="canonical" href="https://rgozi.com/post/flask-socketio%E7%9A%84%E4%B8%80%E6%AC%A1%E4%BD%BF%E7%94%A8%E7%BB%8F%E5%8E%86/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="flask-socketio的一次使用记录" />
+<meta property="og:description" content="最近在做一个小项目，其中一部分即时通信的功能我是通过flask-socketio来完成的后端代码编写。在尝试过程中遇到了一些问题，特在此记录，以备后用。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://rgozi.com/post/flask-socketio%E7%9A%84%E4%B8%80%E6%AC%A1%E4%BD%BF%E7%94%A8%E7%BB%8F%E5%8E%86/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2016-12-28T16:11:12&#43;00:00" />
+<meta property="article:modified_time" content="2016-12-28T16:11:12&#43;00:00" />
+
+<meta itemprop="name" content="flask-socketio的一次使用记录">
+<meta itemprop="description" content="最近在做一个小项目，其中一部分即时通信的功能我是通过flask-socketio来完成的后端代码编写。在尝试过程中遇到了一些问题，特在此记录，以备后用。"><meta itemprop="datePublished" content="2016-12-28T16:11:12&#43;00:00" />
+<meta itemprop="dateModified" content="2016-12-28T16:11:12&#43;00:00" />
+<meta itemprop="wordCount" content="694">
+<meta itemprop="keywords" content="Python,flask,socketio," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="flask-socketio的一次使用记录"/>
+<meta name="twitter:description" content="最近在做一个小项目，其中一部分即时通信的功能我是通过flask-socketio来完成的后端代码编写。在尝试过程中遇到了一些问题，特在此记录，以备后用。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">搬砖工的日常</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">搬砖工的日常</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">flask-socketio的一次使用记录</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2016-12-28 </span>
+        <div class="post-category">
+            <a href="/categories/python/"> python </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents"></nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>最近在做一个小项目，其中一部分即时通信的功能我是通过flask-socketio来完成的后端代码编写。在尝试过程中遇到了一些问题，特在此记录，以备后用。</p>
+<p>具体说来，想要实现的功能是这样的：每两个用户通过通过一个pair保存起来，而每个pair通过唯一的标识符加以区分；在用户连接到后端聊天服务器之后，后端通过该用户对应的pair标识符简历一个专属的聊天频道(room)；这个聊天频道只有这个pair中的两个人能够进入（类似于qq私聊）。</p>
+<h1 id="具体实现">具体实现</h1>
+<p>现在具体流程已经很清楚了，要实现的功能也比较简单，所以具体实现如下：
+首先，要建立一个socketio服务器实例：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">from flask_socketio import SocketIO, Namespace
+from flask import Flask
+def createApp():
+    app = Flask(__name__)
+    app.config[&#39;SECRET_KEY&#39;] = &#39;wtf&#39;
+    return app
+app = createApp()
+socketio = SocketIO(app)
+</code></pre></td></tr></table>
+</div>
+</div><p>现在有了这个socketio，我们就可以为他添加对应的事件：前端发来连接请求并且把该用户所属的pair标识符一并发来，我们需要接受连接请求并建立一个room，room建立之后，用户加入对应的room。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">// 前端请求
+var chat = io.connect(&#39;ws://localhost:4000&#39;);	// 通过指定的ip和port连接后端
+chat.on(&#39;connect&#39;, function(data) {
+    chat.emit(&#39;message&#39;,{msg: &#39;{{roomid}}&#39;},function(){		//连接建立之后，向后端发送标识符
+        room = io.connect(&#39;ws://localhost:4000/{{roomid}}&#39;);	//后端生成对应的room，并提供连接
+        room.on(&#39;liaoxian&#39;,function(data){					//监听后端的事件
+            msgPanel.append(&#39;&lt;p&gt;&#39;+data+&#39;&lt;/p&gt;&lt;br&gt;&#39;)
+        });
+        });
+});
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># 后端处理
+# 由于在实际运行中，可能会有大量的room需要建立，通过class将room抽象出来会更方便
+class ChatRoom(Namespace):
+    def on_connect(self):
+        print(&#39;client connected to room&#39;)
+
+    def on_disconnect(self):
+        print(&#39;client disconnected from room&#39;)
+	# 自定义的事件，前边需要加上on_
+    def on_liaoxian(self, msg):
+        print(&#39;running liaoxian&#39;)
+        print(msg)
+        self.send(msg)
+    def on_recv(self, data):
+        self.emit(&#39;liaoxian&#39;, data[&#39;msg&#39;])
+@socketio.on(&#39;message&#39;)
+def getMsg(sss):
+    print(sss)
+    room = sss[&#39;msg&#39;]
+    newRoom = ChatRoom(&#39;/{}&#39;.format(room))	# 通过制定的room生成对应的聊天频道
+    socketio.on_namespace(newRoom)
+</code></pre></td></tr></table>
+</div>
+</div><p>通过上边很简单的代码就可以完成一个简单的点到点即时通信应用，详细代码在我的<a href="">github</a>中。</p>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">rgozi</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2016-12-28
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/python/">Python</a>
+          <a href="/tags/flask/">flask</a>
+          <a href="/tags/socketio/">socketio</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/mongodb%E5%B8%A6%E5%AF%86%E7%A0%81%E9%AA%8C%E8%AF%81%E4%BD%BF%E7%94%A8/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">mongodb用户名密码登录</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/flask%E9%83%A8%E7%BD%B2%E6%96%B9%E5%BC%8F%E5%AE%9E%E8%B7%B5/">
+            <span class="next-text nav-default">flask几种部署方式实践</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="eclipse_sv@whu.edu.cn" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/iamwm" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.douban.com/people/Eclipsesss/" class="iconfont icon-douban" title="douban"></a>
+      <a href="https://space.bilibili.com/44041814/" class="iconfont icon-bilibili" title="bilibili"></a>
+  <a href="https://rgozi.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">rgozi</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-173630995-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

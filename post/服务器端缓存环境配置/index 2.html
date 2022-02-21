@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>服务器端缓存环境配置 - 搬砖工的日常</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="rgozi" /><meta name="description" content="原材料 正所谓“巧妇难为无米之炊”，在进行服务器端缓存搭建之前，需要将整个流程所需的元素准备好。
+ Nginx作为Web服务器的存在 Mongodb磁盘数据库 Lua与Nginx结合，进行服务器端的逻辑控制 Redis内存数据库，高速缓存 PHP读取磁盘数据库信息，返回给客户端 " /><meta name="keywords" content="搬砖工, 技术博客" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.84.1 with theme even" />
+
+
+<link rel="canonical" href="https://rgozi.com/post/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E7%BC%93%E5%AD%98%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="服务器端缓存环境配置" />
+<meta property="og:description" content="原材料
+正所谓“巧妇难为无米之炊”，在进行服务器端缓存搭建之前，需要将整个流程所需的元素准备好。
+
+Nginx作为Web服务器的存在
+Mongodb磁盘数据库
+Lua与Nginx结合，进行服务器端的逻辑控制
+Redis内存数据库，高速缓存
+PHP读取磁盘数据库信息，返回给客户端
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://rgozi.com/post/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E7%BC%93%E5%AD%98%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2015-07-31T23:39:02&#43;00:00" />
+<meta property="article:modified_time" content="2015-07-31T23:39:02&#43;00:00" />
+
+<meta itemprop="name" content="服务器端缓存环境配置">
+<meta itemprop="description" content="原材料
+正所谓“巧妇难为无米之炊”，在进行服务器端缓存搭建之前，需要将整个流程所需的元素准备好。
+
+Nginx作为Web服务器的存在
+Mongodb磁盘数据库
+Lua与Nginx结合，进行服务器端的逻辑控制
+Redis内存数据库，高速缓存
+PHP读取磁盘数据库信息，返回给客户端
+"><meta itemprop="datePublished" content="2015-07-31T23:39:02&#43;00:00" />
+<meta itemprop="dateModified" content="2015-07-31T23:39:02&#43;00:00" />
+<meta itemprop="wordCount" content="2714">
+<meta itemprop="keywords" content="Nginx,Mongodb,Redis,PHP,Lua," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="服务器端缓存环境配置"/>
+<meta name="twitter:description" content="原材料
+正所谓“巧妇难为无米之炊”，在进行服务器端缓存搭建之前，需要将整个流程所需的元素准备好。
+
+Nginx作为Web服务器的存在
+Mongodb磁盘数据库
+Lua与Nginx结合，进行服务器端的逻辑控制
+Redis内存数据库，高速缓存
+PHP读取磁盘数据库信息，返回给客户端
+"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">搬砖工的日常</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">搬砖工的日常</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">服务器端缓存环境配置</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2015-07-31 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/"> 服务器 </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#下载">下载</a></li>
+    <li><a href="#解压缩">解压缩</a></li>
+    <li><a href="#运行起来">运行起来</a></li>
+    <li><a href="#停止mongodb">停止Mongodb</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#下载-1">下载</a></li>
+    <li><a href="#解压缩-1">解压缩</a></li>
+    <li><a href="#单独实例先run起来">单独实例先Run起来</a></li>
+    <li><a href="#redis集群high起来">Redis集群，High起来</a>
+      <ul>
+        <li><a href="#集群搭建准备工作">集群搭建准备工作</a></li>
+        <li><a href="#集群-走起">集群 走起</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="原材料"><strong>原材料</strong></h1>
+<p>正所谓“巧妇难为无米之炊”，在进行服务器端缓存搭建之前，需要将整个流程所需的元素准备好。</p>
+<ul>
+<li><a href="http://nginx.org/" title="作为Web服务器的存在">Nginx</a>作为Web服务器的存在</li>
+<li><a href="https://www.mongodb.org/" title="磁盘数据库">Mongodb</a>磁盘数据库</li>
+<li><a href="http://www.lua.org/" title="与Nginx结合，进行服务器端的逻辑控制">Lua</a>与Nginx结合，进行服务器端的逻辑控制</li>
+<li><a href="http://redis.io/" title="高速缓存">Redis</a>内存数据库，高速缓存</li>
+<li><a href="http://www.php.net/" title="返回数据库信息给客户端">PHP</a>读取磁盘数据库信息，返回给客户端</li>
+</ul>
+<h1 id="调料包"><strong>调料包</strong></h1>
+<p>有了原材料，当然需要将它们融合在一起，才能烹调出美味，下面这些内容则可以称之为调料包：</p>
+<ul>
+<li><strong>Nginx的Lua扩展</strong>
+<a href="http://luajit.org">LuaJit</a>
+<a href="https://github.com/simpl/ngx_devel_kit">ngx_devel_kit</a>
+<a href="https://github.com/chaoslawful/lua-nginx-module">lua-nginx-module</a></li>
+<li><strong>Nginx的Mongodb扩展</strong>
+<a href="https://github.com/mdirolf/nginx-gridfs">Nginx-gridfs</a></li>
+<li><strong>PHP的Mongodb扩展</strong>
+<a href="https://github.com/mongodb/mongo-php-driver">Mongo-php-driver</a></li>
+<li><a href="https://github.com/h4lflife/lua-resty-redis"><strong>Lua的Redis扩展</strong></a></li>
+</ul>
+<h1 id="mongodb的安装配置"><strong>Mongodb的安装配置</strong></h1>
+<p>柿子先挑软的捏，整个流程中需要安装和配置的内容比较多，相比来说，Mongodb算是最简单的一个了。</p>
+<h2 id="下载">下载</h2>
+<p>在写这篇博客的时候，最新的Mongodb版本是<a href="https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-rhel70-3.0.5.tgz">3.0.5</a>，下载的方法如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$ cd /usr/local
+$ su
+Password: 
+# wget https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-rhel70-3.0.5.tgz
+	--2015-08-01 11:06:41--  https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-rhel70-3.0.5.tgz
+	Resolving fastdl.mongodb.org (fastdl.mongodb.org)... 54.230.156.11, 54.230.156.102, 54.230.156.123, ...
+	Connecting to fastdl.mongodb.org (fastdl.mongodb.org)|54.230.156.11|:443... connected.
+	HTTP request sent, awaiting response... 200 OK
+	Length: 50203367 (48M) [application/x-gzip]
+	Saving to: ‘mongodb-linux-x86_64-rhel70-3.0.5.tgz’
+
+100%[======================================&gt;] 50,203,367   582KB/s   in 4m 40s 
+
+	2015-08-01 11:11:31 (175 KB/s) - ‘mongodb-linux-x86_64-rhel70-3.0.5.tgz’ saved [50203367/50203367]
+
+</code></pre></td></tr></table>
+</div>
+</div><p>首先进入/usr/local目录，下载这个文件需要root权限，输入su之后，输入自己的root密码，使用wget命令，下载MongoDB到/usr/local目录下；
+有的时候官网上资源不容易下载，提供下载地址<a href="http://yunpan.cn/cdARXPYP7FRPT">MongoDB3.0.5点击下载，访问密码0cdf</a>。</p>
+<h2 id="解压缩">解压缩</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># tar zxvf mongodb-linux-x86_64-rhel70-3.0.5.tgz 
+# mv ./mongodb-linux-x86_64-rhel70-3.0.5 /usr/local/Mongodb3.0
+</code></pre></td></tr></table>
+</div>
+</div><p>使用tar zxvf 解压缩*.tgz文件，mv 命令将解压缩后的文件夹重命名为Mongodb3.0；</p>
+<h2 id="运行起来">运行起来</h2>
+<p>在运行之前，需要建立两个文件夹：</p>
+<pre><code>[root@localhost local]# cd Mongodb3.0/
+[root@localhost Mongodb3.0]# mkdir ./db
+[root@localhost Mongodb3.0]# mkdir ./log
+</code></pre>
+<p>先进入/usr/local/Mongodb3.0文件夹：cd Mongodb3.0/ ，在当前文件夹中建立db和log文件夹。</p>
+<pre><code>[root@localhost Mongodb3.0]# cd ./bin/
+[root@localhost bin]# ls
+bsondump  mongodump    mongoimport  mongorestore  mongotop
+mongo     mongoexport  mongooplog   mongos
+mongod    mongofiles   mongoperf    mongostat
+[root@localhost bin]# ./mongod --dbpath=../db --port=27017 --logpath=../log/mongodb.log --fork
+about to fork child process, waiting until server is ready for connections.
+forked process: 12246
+child process started successfully, parent exiting
+</code></pre>
+<p>进入/usr/local/Mongodb3.0/bin/文件夹：cd ./bin/；
+bin文件夹下mongod为mongodb启动文件，运行命令 ./mongod &ndash;dbpath=../db &ndash;port=27017 &ndash;logpath=../log/mongodb.log &ndash;fork 启动Mongodb。
+&ndash;dbpath 代表Mongodb数据存储的位置； &ndash;port 表示Mongodb所占用的端口号； &ndash;logpath 表示日志文件的路径；&ndash;fork 表示Mongodb以守护进程的形式启动。
+现在可以看到
+about to fork child process, waiting until server is ready for connections.
+forked process: 12246
+child process started successfully, parent exiting
+表示Mongodb已经正常启动！</p>
+<h2 id="停止mongodb">停止Mongodb</h2>
+<p>按照上边的步骤，可以已守护进程的方式启动Mongodb，在需要停止Mongodb的时候，可以使用以下操作：</p>
+<pre><code>[root@localhost bin]# ps -e | grep mongod
+12246 ?        00:00:04 mongod
+</code></pre>
+<p>键入命令 ps -e | grep mongod，可以看到正在运行的Mongodb的pid（进程号）;</p>
+<pre><code>[root@localhost bin]# kill 12246
+[root@localhost bin]# ps -e | grep mongod
+[root@localhost bin]# 
+</code></pre>
+<p>得到进程号之后，使用kill命令来停止Mongodb，再次输入ps -e | grep mongod 终端就不会再有显示，表示进程已被杀死。</p>
+<h1 id="redis-集群的搭建">Redis 集群的搭建</h1>
+<p>这里需要说明以下，下载的时候选择支持集群模式的Redis3.0之后的版本。</p>
+<h2 id="下载-1">下载</h2>
+<p>跟Mongodb一样，第一步肯定是先把文件下载下来：</p>
+<pre><code>[root@localhost bin]# cd /usr/local
+[root@localhost local]# wget http://download.redis.io/releases/redis-3.0.3.tar.gz
+--2015-08-01 13:02:27--  http://download.redis.io/releases/redis-3.0.3.tar.gz
+Resolving download.redis.io (download.redis.io)... 109.74.203.151
+Connecting to download.redis.io (download.redis.io)|109.74.203.151|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 1360959 (1.3M) [application/x-gzip]
+Saving to: ‘redis-3.0.3.tar.gz.1’
+
+100%[======================================&gt;] 1,360,959    149KB/s   in 1m 41s 
+
+2015-08-01 13:04:20 (13.2 KB/s) - ‘redis-3.0.3.tar.gz.1’ saved [1360959/1360959]
+</code></pre>
+<p>相比Mongodb，Redis文件还是很小的。
+同样，在下载失败的时候，可以<a href="http://yunpan.cn/cdABZJ4uNn7vQ">点击下载Redis3.0.3 访问密码dc5a</a>。</p>
+<h2 id="解压缩-1">解压缩</h2>
+<pre><code>[root@localhost local]# tar -zxvf redis-3.0.3.tar.gz.1 
+</code></pre>
+<p>将文件解压缩到/usr/local文件夹下。</p>
+<h2 id="单独实例先run起来">单独实例先Run起来</h2>
+<p>这里与Mongodb不太一样，运行之前需要编译一下：</p>
+<pre><code>[root@localhost local]# cd redis-3.0.3/
+[root@localhost redis-3.0.3]# make 
+</code></pre>
+<p>需要稍等一下，终端显示</p>
+<pre><code>Hint: It's a good idea to run 'make test' ;)
+
+make[1]: Leaving directory `/usr/local/redis-3.0.3/src'
+</code></pre>
+<p>则表示make成功。</p>
+<pre><code>[root@localhost redis-3.0.3]# cd src/
+[root@localhost src]# ./redis-server ../redis.conf 
+
+16790:M 01 Aug 13:15:44.020 * The server is now ready to accept connections on port 6379
+</code></pre>
+<p>进入src文件夹下，键入命令：./redis-server ../redis.conf ，就可以启动Redis实例。正常的运行结果则如上所示。</p>
+<p>在这里，因为不是以守护进程的形式启动的Redis，如果需要停止进行，在运行Redis的终端使用Ctrl+C来停止进程。</p>
+<pre><code>^C16790:signal-handler (1438406388) Received SIGINT scheduling shutdown...
+16790:M 01 Aug 13:19:48.465 # User requested shutdown...
+16790:M 01 Aug 13:19:48.465 * Saving the final RDB snapshot before exiting.
+16790:M 01 Aug 13:19:48.507 * DB saved on disk
+16790:M 01 Aug 13:19:48.507 # Redis is now ready to exit, bye bye...
+</code></pre>
+<h2 id="redis集群high起来">Redis集群，High起来</h2>
+<p>Redis作为一个内存数据库，在实际的使用环境中，经常会受到机器内存大小的限制，在3.0之前的版本，集群需要采用proxy的方法，现在redis自身提供了cluster的支持。</p>
+<h3 id="集群搭建准备工作">集群搭建准备工作</h3>
+<p>集群的搭建需要使用Redis下src文件夹中redis-trib.rb，这是一个ruby程序，因此需要系统中有ruby环境。</p>
+<pre><code>root@localhost src]# yum install ruby 
+[root@localhost src]# gem install redis
+</code></pre>
+<p>键入上边的命令，安装ruby 和 ruby 的redis 扩展。在安装扩展的时候，很有可能不能安装，可能是资源被墙了。可以使用我自己下载到的资源<a href="http://yunpan.cn/cdABc69IzjVvG">redis.gem 访问密码9727</a>进行本地安装。</p>
+<pre><code>[root@localhost src]# gem install --local /usr/local/redis-3.0.0.gem 
+</code></pre>
+<p>将下载到的gem文件放到/usr/local目录下，使用上边的命令进行安装。这样，Redis集群的运行环境就搭建完毕。</p>
+<p>要做redis集群，至少需要3个Master实例。
+先把redis的配置文件redis.conf和redis-server文件放到一个文件夹中：</p>
+<pre><code>[root@localhost local]# cd /usr/local
+[root@localhost local]# mkdir -p ./redis-cluster/6379
+[root@localhost local]# cp ./redis-3.0.3/redis.conf ./redis-3.0.3/src/redis-server ./redis-cluster/6379/
+</code></pre>
+<p>然后将文件夹6379复制两份：</p>
+<pre><code>[root@localhost local]# cd ./redis-cluster/
+[root@localhost redis-cluster]# cp -rf ./6379/ ./6380
+[root@localhost redis-cluster]# cp -rf ./6379 ./6381
+</code></pre>
+<p>接下来，需要作的就是修改对应文件夹下的redis.conf文件。</p>
+<pre><code>port 6379 #不同目录，这里端口对应不同
+cluster-enabled yes #开启集群功能
+cluster-config-file nodes.conf #节点配置文件，这个文件是服务启动时自己配置创建的
+cluster-node-timeout 6000
+appendonly yes
+</code></pre>
+<p>建议将conf文件中的save字段都屏蔽了，在使用过程中，发现开启之后，redis写rdb文件的时候对集群性能有很大影响。</p>
+<h3 id="集群-走起">集群 走起</h3>
+<p>上边的步骤，完成了集群搭建的准备工作。下边要开始运行起来了！
+先把三个redis实例启动起来。</p>
+<pre><code>[root@localhost src]# ps -ef | grep redis
+root      18979  18297  0 14:24 pts/0    00:00:00 ./redis-server *:6379 [cluster]
+root      19094  19057  0 14:25 pts/4    00:00:00 ./redis-server *:6380 [cluster]
+root      19181  19146  0 14:25 pts/7    00:00:00 ./redis-server *:6381 [cluster]
+</code></pre>
+<p>键入 ps -ef | grep redis 可以看到三个redis实例都在运行。
+接下来使用redis-trib.rb来将三个实例连接起来。</p>
+<pre><code>[root@localhost src]# cd /usr/local/redis-3.0.3/src/
+[root@localhost src]# ./redis-trib.rb create --replicas 0 127.0.0.1:6379 127.0.0.1:6380 127.0.0.1:6381
+</code></pre>
+<p>终端会有这样的显示：</p>
+<pre><code>&gt;&gt;&gt; Performing hash slots allocation on 3 nodes...
+Using 3 masters:
+127.0.0.1:6379
+127.0.0.1:6380
+127.0.0.1:6381
+M: 4ee119039aebd0e1d48b3f52149a7940db34c6fb 127.0.0.1:6379
+   slots:0-5460 (5461 slots) master
+M: f6ad85a038a05e297130f6e112e223db54c47ea5 127.0.0.1:6380
+   slots:5461-10922 (5462 slots) master
+M: 0b97e4a7f8e5ced1f2f2471694b76dcf77ce1fc7 127.0.0.1:6381
+   slots:10923-16383 (5461 slots) master
+Can I set the above configuration? (type 'yes' to accept):
+</code></pre>
+<p>键入 yes</p>
+<pre><code>&gt;&gt;&gt; Nodes configuration updated
+&gt;&gt;&gt; Assign a different config epoch to each node
+&gt;&gt;&gt; Sending CLUSTER MEET messages to join the cluster
+Waiting for the cluster to join.
+&gt;&gt;&gt; Performing Cluster Check (using node 127.0.0.1:6379)
+M: 4ee119039aebd0e1d48b3f52149a7940db34c6fb 127.0.0.1:6379
+   slots:0-5460 (5461 slots) master
+M: f6ad85a038a05e297130f6e112e223db54c47ea5 127.0.0.1:6380
+   slots:5461-10922 (5462 slots) master
+M: 0b97e4a7f8e5ced1f2f2471694b76dcf77ce1fc7 127.0.0.1:6381
+   slots:10923-16383 (5461 slots) master
+[OK] All nodes agree about slots configuration.
+&gt;&gt;&gt; Check for open slots...
+&gt;&gt;&gt; Check slots coverage...
+[OK] All 16384 slots covered.
+</code></pre>
+<p>测试一下，集群是否正常工作。</p>
+<pre><code>[root@localhost src]# ./redis-cli -c -h 127.0.0.1 -p 6379
+127.0.0.1:6379&gt; set key values
+-&gt; Redirected to slot [12539] located at 127.0.0.1:6381
+OK
+</code></pre>
+<p>这样，集群就算搭建完成了。哈哈哈。</p>
+<h1 id="未完待续">未完待续</h1>
+<p>至此，整个服务器缓存流程中的数据库部分已经搭建完毕，接下来要配置的是Web服务器和PHP的安装配置，我会在后续的文章中继续更新。</p>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">rgozi</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2015-07-31
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/nginx/">Nginx</a>
+          <a href="/tags/mongodb/">Mongodb</a>
+          <a href="/tags/redis/">Redis</a>
+          <a href="/tags/php/">PHP</a>
+          <a href="/tags/lua/">Lua</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E7%BC%93%E5%AD%98%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-%E4%BA%8C/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">服务器端缓存环境配置(二)</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="eclipse_sv@whu.edu.cn" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/iamwm" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.douban.com/people/Eclipsesss/" class="iconfont icon-douban" title="douban"></a>
+      <a href="https://space.bilibili.com/44041814/" class="iconfont icon-bilibili" title="bilibili"></a>
+  <a href="https://rgozi.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">rgozi</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-173630995-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>
